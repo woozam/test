@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="main_navigation_top_margin">56dp</dimen>
+    <dimen name="main_tab_divider_height">1dp</dimen>
+</resources>

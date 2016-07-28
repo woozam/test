@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="@bool/fitsSystemWindows">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextAppearance="@style/AppBarTitleTextAppearance"/>
+    </android.support.design.widget.AppBarLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/user_button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/user_cancel"
+                style="@style/Button.02"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="취소"/>
+
+            <Button
+                android:id="@+id/user_save"
+                style="@style/Button.01"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="저장"/>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/user_button_layout">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:id="@+id/user_id"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/user_id_edit_text"
+                    android:layout_alignTop="@+id/user_id_edit_text"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:gravity="center_vertical"
+                    android:text="아이디"
+                    android:textSize="14sp"/>
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/user_id_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_toEndOf="@+id/user_id"
+                    android:layout_toRightOf="@+id/user_id"
+                    android:hint="아이디"
+                    android:inputType="textEmailAddress"
+                    android:text="woozam"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/user_pw"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/user_pw_edit_text"
+                    android:layout_alignTop="@+id/user_pw_edit_text"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:gravity="center_vertical"
+                    android:text="비밀번호"
+                    android:textSize="14sp"/>
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/user_pw_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_id_edit_text"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@+id/user_id"
+                    android:layout_toRightOf="@+id/user_id"
+                    android:drawableEnd="@mipmap/pen"
+                    android:drawablePadding="8dp"
+                    android:drawableRight="@mipmap/pen"
+                    android:hint="현재 비밀번호"
+                    android:inputType="textPassword"
+                    android:maxLength="50"
+                    android:textSize="14sp"/>
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/user_new_pw_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_pw_edit_text"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@+id/user_id"
+                    android:layout_toRightOf="@+id/user_id"
+                    android:drawableEnd="@mipmap/pen"
+                    android:drawablePadding="8dp"
+                    android:drawableRight="@mipmap/pen"
+                    android:hint="새 비밀번호"
+                    android:inputType="textPassword"
+                    android:maxLength="50"
+                    android:textSize="14sp"/>
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/user_new_pw_confirm_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_new_pw_edit_text"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@+id/user_id"
+                    android:layout_toRightOf="@+id/user_id"
+                    android:drawableEnd="@mipmap/pen"
+                    android:drawablePadding="8dp"
+                    android:drawableRight="@mipmap/pen"
+                    android:hint="새 비밀번호 재입력"
+                    android:inputType="textPassword"
+                    android:maxLength="50"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/user_number"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/user_number_edit_text"
+                    android:layout_alignTop="@+id/user_number_edit_text"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:gravity="center_vertical"
+                    android:text="연락처"
+                    android:textSize="14sp"/>
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/user_number_re_send"
+                    style="@style/Button.Small.01"
+                    android:layout_width="80dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/user_new_pw_confirm_edit_text"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginRight="18dp"
+                    android:layout_marginTop="8dp"
+                    android:text="재전송"
+                    android:textScaleX="0.95"/>
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/user_number_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_new_pw_confirm_edit_text"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@+id/user_number"
+                    android:layout_toLeftOf="@+id/user_number_re_send"
+                    android:layout_toRightOf="@+id/user_number"
+                    android:layout_toStartOf="@+id/user_number_re_send"
+                    android:drawableEnd="@mipmap/pen"
+                    android:drawablePadding="8dp"
+                    android:drawableRight="@mipmap/pen"
+                    android:hint="연락처"
+                    android:inputType="phone"
+                    android:maxLength="13"
+                    android:textSize="14sp"/>
+
+                <RelativeLayout
+                    android:id="@+id/user_number_auth_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_number_edit_text"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@+id/user_number"
+                    android:layout_toRightOf="@+id/user_number"
+                    android:visibility="gone">
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/user_number_auth"
+                        style="@style/Button.Small.01"
+                        android:layout_width="80dp"
+                        android:layout_height="36dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="18dp"
+                        android:layout_marginRight="18dp"
+                        android:text="인증"
+                        android:textScaleX="0.95"/>
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/user_number_auth_code_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_toLeftOf="@+id/user_number_auth"
+                        android:layout_toStartOf="@+id/user_number_auth"
+                        android:hint="인증번호"
+                        android:inputType="number"
+                        android:maxLength="8"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/user_number_auth_code_stop_watch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/user_number_auth"
+                        android:layout_alignTop="@+id/user_number_auth"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_toLeftOf="@+id/user_number_auth"
+                        android:layout_toStartOf="@+id/user_number_auth"
+                        android:gravity="center_vertical"
+                        android:text="3:23"
+                        android:textColor="@color/textColorHint"
+                        android:textSize="14sp"/>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/user_email"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/user_email_edit_text"
+                    android:layout_alignTop="@+id/user_email_edit_text"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:gravity="center_vertical"
+                    android:text="이메일"
+                    android:textSize="14sp"/>
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/user_email_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_number_auth_layout"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@+id/user_email"
+                    android:layout_toRightOf="@+id/user_email"
+                    android:drawableEnd="@mipmap/pen"
+                    android:drawablePadding="8dp"
+                    android:drawableRight="@mipmap/pen"
+                    android:hint="이메일"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="50"
+                    android:textSize="14sp"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/user_agree_recv_sms"
+                    android:layout_width="172dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_email_edit_text"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@+id/user_email"
+                    android:layout_toRightOf="@+id/user_email"
+                    android:padding="6dp"
+                    android:text="SMS"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="14sp"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/user_agree_recv_email"
+                    android:layout_width="172dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_agree_recv_sms"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@+id/user_email"
+                    android:layout_toRightOf="@+id/user_email"
+                    android:padding="6dp"
+                    android:text="이메일"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="14sp"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/user_agree_recv_push"
+                    android:layout_width="172dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_agree_recv_email"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@+id/user_email"
+                    android:layout_toRightOf="@+id/user_email"
+                    android:padding="6dp"
+                    android:text="푸시알림"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="14sp"/>
+
+                <ImageView
+                    android:id="@+id/user_agree_guide_icon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_alignBottom="@+id/user_agree_guide"
+                    android:layout_alignTop="@+id/user_agree_guide"
+                    android:layout_below="@+id/user_agree_recv_push"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_toEndOf="@+id/user_email"
+                    android:layout_toRightOf="@+id/user_email"
+                    android:src="@mipmap/img_error"/>
+
+                <TextView
+                    android:id="@+id/user_agree_guide"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_agree_recv_push"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_toEndOf="@+id/user_agree_guide_icon"
+                    android:layout_toRightOf="@+id/user_agree_guide_icon"
+                    android:text="SMS/이메일/푸시알림을 수신동의 하시면 쿠폰과 맛집정보를 받아보실 수 있습니다."
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/user_logout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/user_agree_guide"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="8dp"
+                    android:text="@string/logout_underline"
+                    android:textSize="14sp"/>
+
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

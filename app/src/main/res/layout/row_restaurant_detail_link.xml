@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical"
+              android:gravity="end|right"
+              android:paddingBottom="10dp"
+              android:paddingEnd="10dp"
+              android:paddingLeft="10dp"
+              android:paddingRight="10dp"
+              android:paddingStart="10dp">
+
+    <TextView
+        android:id="@+id/restaurant_link_naver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:drawableEnd="@mipmap/btn_arrow_right"
+        android:drawablePadding="8dp"
+        android:padding="8dp"
+        android:drawableRight="@mipmap/btn_arrow_right"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="end|right"
+        android:text="네이버 블로그 검색"
+        android:textSize="13sp"/>
+
+</LinearLayout>

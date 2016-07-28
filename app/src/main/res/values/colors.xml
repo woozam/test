@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#25c1f1</color>
+    <color name="colorPrimaryDark">#0099c8</color>
+    <color name="colorAccent">#ff717e</color>
+    <color name="textColorPrimary">#464646</color>
+    <color name="textColorHint">#b6b6b6</color>
+    <!--<color name="window_background">#00000000</color>-->
+    <color name="window_background">#FFD5D5D5</color>
+    <color name="window_background_light">#f2f2f2</color>
+    <color name="statusBarScrim">@color/black</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="blue">#ff0000ff</color>
+    <color name="gray">#888888</color>
+
+    <color name="text_button_1">#ffffff</color>
+    <color name="bg_button_1">#24c1f1</color>
+    <color name="bg_button_1_pressed">#0099c8</color>
+
+    <color name="text_button_2">#ffffff</color>
+    <color name="bg_button_2">#d5d5d5</color>
+    <color name="bg_button_2_pressed">#a8a8a8</color>
+
+    <color name="text_button_5">#ffffff</color>
+    <color name="border_button_5">#ffffff</color>
+    <color name="bg_button_5">#00000000</color>
+    <color name="bg_button_5_pressed">#a8a8a8</color>
+    <color name="bg_button_5_selected">#ff717e</color>
+
+    <color name="text_button_6">#464646</color>
+    <color name="text_button_6_selected">#ffffff</color>
+    <color name="border_button_6">#d5d5d5</color>
+    <color name="bg_button_6">#00000000</color>
+    <color name="bg_button_6_pressed">#ff717e</color>
+    <color name="bg_button_6_selected">#ff717e</color>
+    <color name="bg_button_6_disabled">#d5d5d5</color>
+
+    <color name="text_button_7">#ffffff</color>
+    <color name="bg_button_7">#ff717e</color>
+    <color name="bg_button_7_pressed">#ef616e</color>
+
+    <color name="text_button_8">#ffffff</color>
+    <color name="bg_button_8">#464646</color>
+    <color name="bg_button_8_pressed">#888888</color>
+
+</resources>

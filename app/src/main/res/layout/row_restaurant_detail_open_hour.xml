@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical"
+              android:paddingBottom="18dp"
+              android:paddingEnd="18dp"
+              android:paddingLeft="18dp"
+              android:paddingRight="18dp"
+              android:paddingStart="18dp">
+
+    <RelativeLayout
+        android:id="@+id/restaurant_detail_open_hour_top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="영업시간"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/restaurant_detail_open_hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:gravity="end|right"
+            android:text="평일 11:00~07:50\n토요일 11:00~07:50"
+            android:textSize="13sp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/restaurant_detail_open_hour_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="휴무일"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/restaurant_detail_open_hour_off_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:gravity="end|right"
+            android:text="일요일"
+            android:textSize="13sp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

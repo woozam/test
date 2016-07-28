@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_favorite"
+        android:icon="@mipmap/btn_like_off"
+        android:title="즐겨찾기"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_cart"
+        android:icon="@mipmap/btn_cart_bk"
+        android:title="장바구니"
+        app:actionLayout="@layout/badge_cart"
+        app:showAsAction="always"/>
+</menu>

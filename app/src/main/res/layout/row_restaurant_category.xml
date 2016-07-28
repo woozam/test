@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/category_root"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:background="@color/window_background_light"
+                android:foreground="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/restaurant_category_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:text="인기메뉴"
+        android:textSize="14sp"/>
+
+    <ImageView
+        android:id="@+id/restaurant_category_icon"
+        android:layout_width="16sp"
+        android:layout_height="16sp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@+id/restaurant_category_name"
+        android:layout_toRightOf="@+id/restaurant_category_name"
+        android:src="@mipmap/medal"/>
+
+    <ImageView
+        android:id="@+id/restaurant_category_arrow"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:padding="15dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/btn_arrow_bottom"/>
+
+</RelativeLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical"
+              android:paddingBottom="20dp"
+              android:paddingEnd="18dp"
+              android:paddingLeft="18dp"
+              android:paddingRight="18dp"
+              android:paddingStart="18dp">
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/restaurant_detail_logo"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"/>
+
+    <TextView
+        android:id="@+id/restaurant_detail_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ellipsize="end"
+        android:gravity="center_horizontal"
+        android:maxLines="3"
+        android:text="예쁜커피, 갖고싶은 커피 헬로모닝!\n헬로모닝은 젊은 청년 사업가들이 만든 식음료 브랜드입니다. 헬로모닝은 여러 시간대에 사람들이 느끼는 감정을 컬러와 제품의 특성을 통해 힐링 메시지를 전달하고자 합니다. 또한 커피 뿐만이 아닌 차, 디저트 등을 꾸준히 개발하여 식음료 문화의 새로운 트랜드로서 자리매김 하고싶습니다.\n헬로모닝 매장은 현재 보성녹차밭에 자리잡고 있습니다. 매장에서는 헬로모닝 제품들의 만나볼 수 있습니다."
+        android:textSize="13sp"/>
+
+    <TextView
+        android:id="@+id/restaurant_detail_message_expanded"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ellipsize="end"
+        android:gravity="center_horizontal"
+        android:text="예쁜커피, 갖고싶은 커피 헬로모닝!\n헬로모닝은 젊은 청년 사업가들이 만든 식음료 브랜드입니다. 헬로모닝은 여러 시간대에 사람들이 느끼는 감정을 컬러와 제품의 특성을 통해 힐링 메시지를 전달하고자 합니다. 또한 커피 뿐만이 아닌 차, 디저트 등을 꾸준히 개발하여 식음료 문화의 새로운 트랜드로서 자리매김 하고싶습니다.\n헬로모닝 매장은 현재 보성녹차밭에 자리잡고 있습니다. 매장에서는 헬로모닝 제품들의 만나볼 수 있습니다."
+        android:textSize="13sp"/>
+
+    <ImageView
+        android:id="@+id/restaurant_detail_message_expand"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_gravity="center_horizontal"
+        android:background="?attr/selectableItemBackground"
+        android:padding="15dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/btn_arrow_bottom"/>
+
+</LinearLayout>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp">
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/order_detail_restaurant_image"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/empty_l"/>
+
+    <ImageView
+        android:id="@+id/order_detail_restaurant_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="12dp"
+        android:background="?attr/selectableItemBackground"
+        android:padding="8dp"
+        android:src="@drawable/btn_like_selector"/>
+
+    <TextView
+        android:id="@+id/order_detail_restaurant_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="18dp"
+        android:layout_toEndOf="@+id/order_detail_restaurant_image"
+        android:layout_toLeftOf="@+id/order_detail_restaurant_favorite"
+        android:layout_toRightOf="@+id/order_detail_restaurant_image"
+        android:layout_toStartOf="@+id/order_detail_restaurant_favorite"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="헬로모닝 강남점"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/order_detail_restaurant_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/order_detail_restaurant_image"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@+id/order_detail_restaurant_image"
+        android:layout_toRightOf="@+id/order_detail_restaurant_image"
+        android:text="63,800원"
+        android:textSize="12sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/order_detail_restaurant_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/order_detail_restaurant_price"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@+id/order_detail_restaurant_image"
+        android:layout_toRightOf="@+id/order_detail_restaurant_image"
+        android:ellipsize="middle"
+        android:maxLines="1"
+        android:text="테스트메뉴 1, 테스트메뉴 2, 테스트메뉴 3, 마늘 돈코츠(총3개)"
+        android:textSize="12sp"/>
+
+</RelativeLayout>

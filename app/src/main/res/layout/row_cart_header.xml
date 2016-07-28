@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:padding="16dp">
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/cart_header_image"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:background="@drawable/empty_l"/>
+
+    <TextView
+        android:id="@+id/cart_header_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:text="헬로모닝 강남점"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+
+</LinearLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical"
+              android:paddingBottom="18dp"
+              android:paddingEnd="18dp"
+              android:paddingLeft="18dp"
+              android:paddingRight="18dp"
+              android:paddingStart="18dp">
+
+    <TextView
+        android:id="@+id/restaurant_detail_origin_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="딸기, 귤, 바나나, 소고기, 새우, 치킨, 베이컨, 햄 : 국산 블루베리 : 칠레망고 : 베트남"
+        android:textSize="13sp"/>
+
+</LinearLayout>

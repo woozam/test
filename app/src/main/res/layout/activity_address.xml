@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="@bool/fitsSystemWindows"
+    tools:context=".app.activity.setting.AddressActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextAppearance="@style/AppBarTitleTextAppearance"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/address_bottom_layout">
+
+            <fragment
+                android:id="@+id/address_map_fragment"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="kr.co.foodfly.androidapp.app.activity.setting.AddressActivity"/>
+
+            <ImageView
+                android:id="@+id/address_map_marker"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:paddingBottom="18dp"
+                android:src="@drawable/img_marker_selector"/>
+
+            <ImageView
+                android:id="@+id/address_map_my_location"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:adjustViewBounds="true"
+                android:src="@mipmap/img_my_location"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/address_bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/md_divider_black"/>
+
+            <RelativeLayout
+                android:id="@+id/address_detail_content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <ImageView
+                    android:id="@+id/address_detail_content_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/address_detail_content"
+                    android:layout_alignTop="@+id/address_detail_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
+                    android:adjustViewBounds="true"
+                    android:paddingBottom="8dp"
+                    android:src="@drawable/img_marker_small_selector"/>
+
+                <TextView
+                    android:id="@+id/address_detail_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@+id/address_detail_content_icon"
+                    android:layout_toLeftOf="@+id/address_detail_cancel"
+                    android:layout_toRightOf="@+id/address_detail_content_icon"
+                    android:layout_toStartOf="@+id/address_detail_cancel"
+                    android:paddingBottom="8dp"
+                    android:text="서울 강남구 논현동 58-7"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/address_detail_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:padding="8dp"
+                    android:text="취소"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/address_detail_search_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/address_detail_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="8dp"
+                    android:hint="상세주소 입력(선택)"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="6dp"
+                    android:text="배송지의 상세주소를 입력해주세요.\n 예) 푸플빌라 A동 201호"
+                    android:textSize="13sp"/>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/address_detail_button"
+                style="@style/Button.01"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="위 배송지로 설정"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/address_map_search_result_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/address_map_search_result_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="60dp"
+                android:text="검색 결과"
+                android:textSize="14sp"/>
+
+            <kr.co.foodfly.androidapp.app.view.recyclerView.RecyclerViewEmptySupport
+                android:id="@+id/address_map_search_result_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/address_map_search_result_guide"
+                android:layout_below="@+id/address_map_search_result_title"
+                android:layout_marginTop="8dp"
+                app:layoutManager="LinearLayoutManager"
+                tools:listitem="@layout/row_map_search_result"/>
+
+            <TextView
+                android:id="@+id/address_map_search_result_empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/address_map_search_result_guide"
+                android:layout_below="@+id/address_map_search_result_title"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="검색 결과가 없습니다."
+                android:visibility="gone"/>
+
+            <RelativeLayout
+                android:id="@+id/address_map_search_result_guide"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_alignParentBottom="true"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center_horizontal">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/md_divider_black"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="18sp"
+                        android:layout_height="18sp"
+                        android:src="@mipmap/img_marker_small"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
+                        android:text="푸드플라이 서비스 지역 보기"
+                        android:textSize="14sp"/>
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/address_map_search_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/bg_map_search">
+
+            <EditText
+                android:id="@+id/address_map_search_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/address_map_search_icon"
+                android:layout_toRightOf="@+id/address_map_search_icon"
+                android:background="@null"
+                android:hint="지번, 도로명, 건물명 검색"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:textSize="14sp"/>
+
+            <ImageView
+                android:id="@+id/address_map_search_icon"
+                android:layout_width="18sp"
+                android:layout_height="18sp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:adjustViewBounds="true"
+                android:src="@mipmap/ic_search"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

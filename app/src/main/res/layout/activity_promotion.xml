@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="@bool/fitsSystemWindows">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextAppearance="@style/AppBarTitleTextAppearance"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/promotion_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            app:errorEnabled="true">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="프로모션 코드"
+                android:inputType="text"
+                android:textSize="14sp"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/promotion_guide_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignBottom="@+id/promotion_guide"
+            android:layout_alignTop="@+id/promotion_guide"
+            android:layout_marginLeft="18dp"
+            android:layout_marginStart="18dp"
+            android:src="@mipmap/img_error"/>
+
+        <TextView
+            android:id="@+id/promotion_guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/promotion_edit_text"
+            android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="16dp"
+            android:layout_toEndOf="@+id/promotion_guide_icon"
+            android:layout_toRightOf="@+id/promotion_guide_icon"
+            android:text="주의사항"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/promotion_guide_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/promotion_guide"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:text="- 프로모션 코드는 유효기간 동안만 등록, 사용 가능합니다.\n- 한번 사용하신 프로모션 코드는 재사용이 불가능합니다."
+            android:textSize="12sp"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/promotion_button"
+            style="@style/Button.01"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_below="@+id/promotion_guide_1"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="36dp"
+            android:text="등록하기"
+            android:textSize="14sp"/>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">FoodFly</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_address">배송지 설정</string>
+    <string name="title_activity_login">로그인</string>
+    <string name="title_activity_sign_up">회원가입</string>
+    <string name="title_activity_terms">이용약관</string>
+    <string name="title_activity_privacy_policy">개인정보취급방침</string>
+    <string name="title_activity_select_address">주소록</string>
+    <string name="title_activity_user">개인정보관리</string>
+    <string name="title_activity_coupon">할인쿠폰함</string>
+    <string name="title_activity_mileage">마일리지</string>
+    <string name="title_activity_cs">고객센터</string>
+    <string name="title_activity_promotion">프로모션 코드</string>
+    <string name="title_activity_referral_code">추천코드 입력</string>
+    <string name="title_activity_theme">테마맛집</string>
+    <string name="title_activity_favorite">단골 맛집</string>
+    <string name="title_activity_recent">최근 본 맛집</string>
+    <string name="title_activity_cart">장바구니</string>
+    <string name="title_activity_order">주문하기</string>
+    <string name="title_activity_order_list">내 주문 내역</string>
+    <string name="title_activity_order_detail">주문 상세 내역</string>
+
+    <string name="logout_underline"><u>로그아웃</u></string>
+    <string name="title_activity_main2">Main2Activity</string>
+</resources>

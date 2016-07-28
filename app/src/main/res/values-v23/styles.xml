@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorTertiary">@color/textColorPrimary</item>
+        <item name="android:textColorHint">@color/textColorHint</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="android:progressBarStyle">@style/CustomProgress</item>
+        <item name="progressBarStyle">@style/CustomProgress</item>
+
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">@color/white</item>
+
+        <item name="android:dialogTheme">@style/Dialog</item>
+    </style>
+
+    <style name="Dialog" parent="@style/Theme.AppCompat.Light.Dialog">
+    </style>
+</resources>

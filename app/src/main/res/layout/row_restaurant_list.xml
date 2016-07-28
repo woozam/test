@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:foreground="?attr/selectableItemBackground">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp">
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/restaurant_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/empty_l"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:id="@+id/restaurant_close"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/restaurant_image"
+            android:layout_alignTop="@+id/restaurant_image"
+            android:background="#80000000"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="영업 준비중"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+
+        <ImageView
+            android:id="@+id/restaurant_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/restaurant_image"
+            android:background="?attr/selectableItemBackground"
+            android:padding="8dp"
+            android:src="@drawable/btn_like_selector"/>
+
+        <TextView
+            android:id="@+id/restaurant_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/restaurant_image"
+            android:layout_marginEnd="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="6dp"
+            android:layout_toLeftOf="@+id/restaurant_favorite"
+            android:layout_toStartOf="@+id/restaurant_favorite"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/restaurant_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/restaurant_minimum_order_amount"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/restaurant_tag"
+            android:layout_marginEnd="6dp"
+            android:layout_marginRight="6dp"
+            android:drawableLeft="@mipmap/ic_star"
+            android:drawablePadding="4dp"
+            android:drawableStart="@mipmap/ic_star"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/restaurant_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/restaurant_name"
+            android:layout_marginEnd="7dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="4dp"
+            android:layout_toLeftOf="@+id/restaurant_rating"
+            android:layout_toStartOf="@+id/restaurant_rating"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="10.5sp"/>
+
+        <TextView
+            android:id="@+id/restaurant_minimum_order_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/restaurant_tag"
+            android:layout_marginEnd="7dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="2dp"
+            android:layout_toLeftOf="@+id/restaurant_rating"
+            android:layout_toStartOf="@+id/restaurant_rating"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="10.5sp"/>
+
+        <TextView
+            android:id="@+id/restaurant_delivery_tip_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/restaurant_minimum_order_amount"
+            android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="배달팁:"
+            android:textSize="10.5sp"/>
+
+        <TextView
+            android:id="@+id/restaurant_delivery_original_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/restaurant_minimum_order_amount"
+            android:layout_marginLeft="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@+id/restaurant_delivery_tip_title"
+            android:layout_toRightOf="@+id/restaurant_delivery_tip_title"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="족발"
+            android:textColor="#9a9a9a"
+            android:textSize="10.5sp"/>
+
+        <TextView
+            android:id="@+id/restaurant_delivery_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/restaurant_minimum_order_amount"
+            android:layout_marginEnd="7dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@+id/restaurant_delivery_original_tip"
+            android:layout_toRightOf="@+id/restaurant_delivery_original_tip"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="족발"
+            android:textSize="10.5sp"/>
+
+        <View
+            android:id="@+id/restaurant_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/restaurant_delivery_tip"
+            android:layout_marginEnd="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/md_divider_black"/>
+
+        <ImageView
+            android:id="@+id/restaurant_distance_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/restaurant_distance"
+            android:layout_alignTop="@+id/restaurant_distance"
+            android:layout_below="@+id/restaurant_divider"
+            android:layout_marginLeft="7dp"
+            android:layout_marginStart="7dp"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/crosshair"/>
+
+        <TextView
+            android:id="@+id/restaurant_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/restaurant_divider"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="7dp"
+            android:layout_toEndOf="@+id/restaurant_distance_icon"
+            android:layout_toRightOf="@+id/restaurant_distance_icon"
+            android:text="1.6km"
+            android:textSize="10sp"/>
+
+        <ImageView
+            android:id="@+id/restaurant_delivery_type_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/restaurant_delivery_type"
+            android:layout_alignTop="@+id/restaurant_delivery_type"
+            android:layout_below="@+id/restaurant_divider"
+            android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
+            android:layout_toEndOf="@+id/restaurant_distance"
+            android:layout_toRightOf="@+id/restaurant_distance"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/cloche"/>
+
+        <TextView
+            android:id="@+id/restaurant_delivery_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/restaurant_divider"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="7dp"
+            android:layout_toEndOf="@+id/restaurant_delivery_type_icon"
+            android:layout_toRightOf="@+id/restaurant_delivery_type_icon"
+            android:text="음식점 자체배달"
+            android:textSize="10sp"/>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
