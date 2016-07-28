@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@color/window_background_light"
+        android:gravity="center_vertical"
+        android:paddingEnd="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingStart="16dp"
+        android:text="결제정보"
+        android:textSize="13sp"
+        android:textStyle="bold"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/order_detail_payment_price"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:text="주문금액"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/order_detail_payment_price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="16dp"
+            android:maxLength="50"
+            android:text="-"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/order_detail_payment_discount"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_detail_payment_price"
+            android:layout_marginLeft="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="24dp"
+            android:gravity="center_vertical"
+            android:text="할인금액"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/order_detail_payment_discount_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/order_detail_payment_price"
+            android:layout_marginEnd="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="24dp"
+            android:maxLength="50"
+            android:text="-"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/order_detail_payment_tip"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_detail_payment_discount"
+            android:layout_marginLeft="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="24dp"
+            android:gravity="center_vertical"
+            android:text="배달팁"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/order_detail_payment_tip_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/order_detail_payment_discount"
+            android:layout_marginEnd="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="24dp"
+            android:maxLength="50"
+            android:text="-"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/order_detail_payment_type"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_detail_payment_tip"
+            android:layout_marginLeft="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="24dp"
+            android:gravity="center_vertical"
+            android:text="결제방법"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/order_detail_payment_type_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/order_detail_payment_tip"
+            android:layout_marginEnd="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="24dp"
+            android:maxLength="50"
+            android:text="-"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/order_detail_payment_total_price"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_detail_payment_type"
+            android:layout_marginLeft="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="24dp"
+            android:gravity="center_vertical"
+            android:text="결제금액"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/order_detail_payment_total_price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/order_detail_payment_type"
+            android:layout_marginEnd="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="24dp"
+            android:maxLength="50"
+            android:text="-"
+            android:textSize="13sp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/textColorPrimary"
+        android:paddingEnd="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingStart="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="총 결제 금액"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/order_detail_payment_total_price_text_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="-"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
+</LinearLayout>

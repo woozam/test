@@ -119,6 +119,15 @@ public class CommonUtils {
         }
     }
 
+    public static void openMap(Context context, double lat, double lon) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:" + lat + "," + lon));
+            context.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void copyToClipboard(String content) {
         ClipData.Item item = new ClipData.Item(content);
         String[] mimeType = new String[1];

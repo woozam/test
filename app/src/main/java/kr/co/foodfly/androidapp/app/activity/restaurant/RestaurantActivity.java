@@ -513,6 +513,9 @@ public class RestaurantActivity extends BaseActivity implements OnOffsetChangedL
 
     @Override
     public void onClick(View v) {
+        if (mRestaurant == null) {
+            return;
+        }
         if (v.getId() == R.id.cart_root) {
             if (mCart != null && mCart.getCartMenus().size() > 0) {
                 CartActivity.createInstance(this);
@@ -556,7 +559,6 @@ public class RestaurantActivity extends BaseActivity implements OnOffsetChangedL
             mRecyclerView.dispatchNestedPreScroll(0, 1, null, null);
             mRecyclerView.dispatchNestedPreFling(0, mRecyclerView.getTop() * 4);
             ((LinearLayoutManager) mRecyclerView.getLayoutManager()).scrollToPositionWithOffset(1, 0);
-            //            mRecyclerView.getLayoutManager().sc(mRecyclerView, null, 4);
             mRecyclerView.stopNestedScroll();
         } else if (v == mCartButton) {
             if (mCart != null && mCart.getCartMenus().size() > 0) {

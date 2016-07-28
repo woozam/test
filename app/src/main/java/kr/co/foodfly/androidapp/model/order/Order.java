@@ -158,6 +158,18 @@ public class Order {
         return mDeliveryType;
     }
 
+    public String getDeliveryTypeString() {
+        switch (mDeliveryType) {
+            case 1:
+                return "푸드플라이 배달";
+            case 2:
+                return "매장 자체 배달";
+            case 3:
+                return "테이크아웃";
+        }
+        return "";
+    }
+
     public void setDeliveryType(int deliveryType) {
         mDeliveryType = deliveryType;
     }
@@ -176,6 +188,20 @@ public class Order {
 
     public void setPaymentType(int paymentType) {
         mPaymentType = paymentType;
+    }
+
+    public String getPaymentString() {
+        switch (mPaymentType) {
+            case 1:
+                return "온라인 카드";
+            case 2:
+                return "온라인 계좌이체";
+            case 3:
+                return "현장카드";
+            case 4:
+                return "현장현금";
+        }
+        return "";
     }
 
     public String getCouponId() {

@@ -7,50 +7,16 @@ import com.google.gson.annotations.SerializedName;
  */
 public class OrderCharge {
 
-    @SerializedName("event")
-    private int mEvent;
-    @SerializedName("coupon")
-    private int mCoupon;
-    @SerializedName("mileage")
-    private int mMileage;
-    @SerializedName("total")
-    private int mTotal;
+    @SerializedName("total_menu")
+    private int mTotalMenu;
+    @SerializedName("delivery_fee")
+    private int mDeliveryFee;
+    @SerializedName("discount")
+    private OrderChargeDiscount mDiscount;
     @SerializedName("total_amount_due")
     private int mTotalAmountDue;
 
     public OrderCharge() {
-    }
-
-    public int getEvent() {
-        return mEvent;
-    }
-
-    public void setEvent(int event) {
-        mEvent = event;
-    }
-
-    public int getCoupon() {
-        return mCoupon;
-    }
-
-    public void setCoupon(int coupon) {
-        mCoupon = coupon;
-    }
-
-    public int getMileage() {
-        return mMileage;
-    }
-
-    public void setMileage(int mileage) {
-        mMileage = mileage;
-    }
-
-    public int getTotal() {
-        return mTotal;
-    }
-
-    public void setTotal(int total) {
-        mTotal = total;
     }
 
     public int getTotalAmountDue() {
@@ -59,5 +25,29 @@ public class OrderCharge {
 
     public void setTotalAmountDue(int totalAmountDue) {
         mTotalAmountDue = totalAmountDue;
+    }
+
+    public int getTotalMenu() {
+        return mTotalMenu;
+    }
+
+    public void setTotalMenu(int totalMenu) {
+        mTotalMenu = totalMenu;
+    }
+
+    public int getDeliveryFee() {
+        return mDeliveryFee;
+    }
+
+    public void setDeliveryFee(int deliveryFee) {
+        mDeliveryFee = deliveryFee;
+    }
+
+    public OrderChargeDiscount getDiscount() {
+        return mDiscount;
+    }
+
+    public void setDiscount(OrderChargeDiscount discount) {
+        mDiscount = discount;
     }
 }

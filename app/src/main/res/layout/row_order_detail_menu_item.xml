@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:paddingEnd="18dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:paddingStart="18dp">
+
+        <TextView
+            android:id="@+id/order_detail_menu_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="-"
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/order_detail_menu_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="-"
+            android:textSize="13sp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:paddingEnd="18dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:paddingStart="18dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="가격"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/order_detail_menu_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="-"
+            android:textSize="13sp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        android:paddingBottom="8dp"
+        android:paddingEnd="18dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:paddingStart="18dp"
+        android:paddingTop="8dp">
+
+        <TextView
+            android:id="@+id/order_detail_menu_option_price_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="선택"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/order_detail_menu_option_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_detail_menu_option_price_title"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:text="-"
+            android:textSize="10.5sp"/>
+
+        <TextView
+            android:id="@+id/order_detail_menu_option_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="-"
+            android:textSize="13sp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:paddingEnd="18dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:paddingStart="18dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="메뉴가격"
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/order_detail_menu_total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="-"
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/order_detail_menu_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:background="@color/md_divider_black"/>
+
+</LinearLayout>

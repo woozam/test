@@ -30,13 +30,16 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.google.gson.JsonObject;
 
 import java.util.Locale;
+import java.util.TimeZone;
 
 import kr.co.foodfly.androidapp.R;
 import kr.co.foodfly.androidapp.app.activity.BaseActivity;
+import kr.co.foodfly.androidapp.common.TimeUtils;
 import kr.co.foodfly.androidapp.common.UnitUtils;
 import kr.co.foodfly.androidapp.data.RealmUtils;
 import kr.co.foodfly.androidapp.model.BaseResponse;
 import kr.co.foodfly.androidapp.model.order.Order;
+import kr.co.foodfly.androidapp.model.order.OrderMenu;
 import kr.co.foodfly.androidapp.model.restaurant.Restaurant;
 import kr.co.foodfly.androidapp.model.user.UserManager;
 import kr.co.foodfly.androidapp.model.user.UserResponse;
@@ -218,6 +221,14 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
                 return new OrderDetailRestaurantViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_order_detail_restaurant, parent, false));
             } else if (viewType == VIEW_ITEM_TYPE_DELIVERY_STATUS) {
                 return new OrderDetailDeliveryStatusViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_order_detail_delivery_status, parent, false));
+            } else if (viewType == VIEW_ITEM_TYPE_DELIVERY_INFO) {
+                return new OrderDetailDeliveryInfoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_order_detail_delivery_info, parent, false));
+            } else if (viewType == VIEW_ITEM_TYPE_MENU_TITLE) {
+                return new OrderDetailMenuTitleViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_order_detail_menu_title, parent, false));
+            } else if (viewType == VIEW_ITEM_TYPE_PAYMENT) {
+                return new OrderDetailPaymentViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_order_detail_payment, parent, false));
+            } else if (viewType == VIEW_ITEM_TYPE_MENU_ITEM) {
+                return new OrderDetailMenuItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_order_detail_menu_item, parent, false));
             } else {
                 return new OrderDetailDeliveryStatusViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_order_detail_delivery_status, parent, false));
             }
@@ -243,15 +254,15 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
                         loadOrder();
                     }
                 });
+            } else if (holder.getItemViewType() == VIEW_ITEM_TYPE_DELIVERY_INFO) {
+                holder.setItem(mOrder);
+            } else if (holder.getItemViewType() == VIEW_ITEM_TYPE_PAYMENT) {
+                holder.setItem(mOrder);
+            } else if (holder.getItemViewType() == VIEW_ITEM_TYPE_MENU_ITEM) {
+                holder.setItem(mOrder.getMenus().get(position - (mDisplayRestaurant ? 4 : 3)));
+                ((OrderDetailMenuItemViewHolder) holder).mDivider.setVisibility(position < mOrder.getMenus().size() - 1 + (mDisplayRestaurant ? 4 : 3) ? View.VISIBLE : View.GONE);
             } else {
                 holder.setItem(mOrder);
-                ((OrderDetailDeliveryStatusViewHolder) holder).mRefresh.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showProgressDialog();
-                        loadOrder();
-                    }
-                });
             }
         }
 
@@ -373,6 +384,124 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
                     mDot4.setSelected(true);
                     mRefresh.setVisibility(View.GONE);
                 }
+            }
+        }
+    }
+
+    public static class OrderDetailDeliveryInfoViewHolder extends OrderDetailViewHolder {
+
+        private TextView mRecipient;
+        private TextView mPhone;
+        private TextView mAddress;
+        private TextView mAddressDetail;
+        private TextView mDeliveryType;
+        private TextView mDeliveryTime;
+
+        public OrderDetailDeliveryInfoViewHolder(View itemView) {
+            super(itemView);
+            mRecipient = (TextView) itemView.findViewById(R.id.order_detail_delivery_info_recipient_text);
+            mPhone = (TextView) itemView.findViewById(R.id.order_detail_delivery_info_phone_text);
+            mAddress = (TextView) itemView.findViewById(R.id.order_detail_delivery_info_address_text);
+            mAddressDetail = (TextView) itemView.findViewById(R.id.order_detail_delivery_info_address_detail_text);
+            mDeliveryType = (TextView) itemView.findViewById(R.id.order_detail_delivery_info_type_text);
+            mDeliveryTime = (TextView) itemView.findViewById(R.id.order_detail_delivery_info_time_text);
+        }
+
+        @Override
+        public void setItem(Object object) {
+            if (object != null) {
+                Order order = (Order) object;
+                mRecipient.setText(order.getRecipientName());
+                mPhone.setText(order.getRecipientPhone());
+                mAddress.setText(order.getAddress().getFormattedAddress());
+                mAddressDetail.setText(order.getAddress().getDetailAddress());
+                mDeliveryType.setText(order.getDeliveryTypeString());
+                if (order.getReservationTime() == null || order.getReservationTime().getTime() == 0) {
+                    mDeliveryTime.setText("바로주문");
+                } else {
+                    mDeliveryTime.setText(TimeUtils.getFullTimeString(order.getReservationTime().getTime() + +TimeZone.getDefault().getRawOffset()));
+                }
+            }
+        }
+    }
+
+    public static class OrderDetailMenuTitleViewHolder extends OrderDetailViewHolder {
+
+        public OrderDetailMenuTitleViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        public void setItem(Object object) {
+        }
+    }
+
+    public static class OrderDetailPaymentViewHolder extends OrderDetailViewHolder {
+
+        private TextView mPrice;
+        private TextView mDiscount;
+        private TextView mTip;
+        private TextView mType;
+        private TextView mTotal;
+        private TextView mTotal2;
+
+        public OrderDetailPaymentViewHolder(View itemView) {
+            super(itemView);
+            mPrice = (TextView) itemView.findViewById(R.id.order_detail_payment_price_text);
+            mDiscount = (TextView) itemView.findViewById(R.id.order_detail_payment_discount_text);
+            mTip = (TextView) itemView.findViewById(R.id.order_detail_payment_tip_text);
+            mType = (TextView) itemView.findViewById(R.id.order_detail_payment_type_text);
+            mTotal = (TextView) itemView.findViewById(R.id.order_detail_payment_total_price_text);
+            mTotal2 = (TextView) itemView.findViewById(R.id.order_detail_payment_total_price_text_2);
+        }
+
+        @Override
+        public void setItem(Object object) {
+            if (object != null) {
+                Order order = (Order) object;
+                mPrice.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(order.getCharge().getTotalMenu())));
+                mDiscount.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(order.getCharge().getDiscount().getTotal())));
+                mTip.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(order.getCharge().getDeliveryFee())));
+                mType.setText(order.getPaymentString());
+                mTotal.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(order.getCharge().getTotalAmountDue())));
+                mTotal2.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(order.getCharge().getTotalAmountDue())));
+            }
+        }
+    }
+
+    public static class OrderDetailMenuItemViewHolder extends OrderDetailViewHolder {
+
+        private TextView mName;
+        private TextView mQuantity;
+        private TextView mPrice;
+        private TextView mOptionPrice;
+        private TextView mOptionList;
+        private TextView mTotalPrice;
+        private View mDivider;
+
+        public OrderDetailMenuItemViewHolder(View itemView) {
+            super(itemView);
+            mName = (TextView) itemView.findViewById(R.id.order_detail_menu_name);
+            mQuantity = (TextView) itemView.findViewById(R.id.order_detail_menu_quantity);
+            mPrice = (TextView) itemView.findViewById(R.id.order_detail_menu_price);
+            mOptionPrice = (TextView) itemView.findViewById(R.id.order_detail_menu_option_price);
+            mOptionList = (TextView) itemView.findViewById(R.id.order_detail_menu_option_list);
+            mTotalPrice = (TextView) itemView.findViewById(R.id.order_detail_menu_total_price);
+            mDivider = itemView.findViewById(R.id.order_detail_menu_divider);
+        }
+
+        @Override
+        public void setItem(Object object) {
+            if (object != null) {
+                OrderMenu orderMenu = (OrderMenu) object;
+                mName.setText(orderMenu.getName());
+                mQuantity.setText(String.format(Locale.getDefault(), "%d개", orderMenu.getQuantity()));
+                mPrice.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(orderMenu.getPrice())));
+                mOptionPrice.setText(String.format(Locale.getDefault(), "+%s원", UnitUtils.priceFormat(orderMenu.getOptionPrice())));
+                mOptionList.setText(orderMenu.getOptionString());
+                mOptionList.setVisibility(mOptionList.length() == 0 ? View.GONE : View.VISIBLE);
+                mTotalPrice.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(orderMenu.getCharge())));
+
             }
         }
     }

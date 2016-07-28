@@ -102,4 +102,23 @@ public class OrderMenu {
     public void setComment(String comment) {
         mComment = comment;
     }
+
+    public int getOptionPrice() {
+        int total = 0;
+        for (OrderMenuOption menuOption : mOptions) {
+            total += menuOption.getCharge();
+        }
+        return total;
+    }
+
+    public String getOptionString() {
+        String option = "";
+        for (OrderMenuOption menuOption : mOptions) {
+            for (OrderMenuOptionItem item : menuOption.getItems()) {
+                if (option.length() > 0) option += ", ";
+                option += item.getName();
+            }
+        }
+        return option;
+    }
 }

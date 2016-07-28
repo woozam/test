@@ -20,9 +20,12 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
@@ -535,7 +538,7 @@ public class RestaurantAdapter extends AbstractExpandableItemAdapter<RestaurantG
         private double mLat;
         private double mLon;
 
-        public RestaurantDetailContactViewHolder(View itemView, MapView mapView) {
+        public RestaurantDetailContactViewHolder(final View itemView, MapView mapView) {
             super(itemView);
             mAddress = (TextView) itemView.findViewById(R.id.restaurant_detail_contact_address);
             mMapPlaceHolder = itemView.findViewById(R.id.restaurant_detail_contact_map_place_holder);
@@ -555,6 +558,19 @@ public class RestaurantAdapter extends AbstractExpandableItemAdapter<RestaurantG
                     googleMap.getUiSettings().setAllGesturesEnabled(false);
                     googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                     googleMap.addMarker(new MarkerOptions().position(defaultLatLng));
+                    googleMap.setOnMapClickListener(new OnMapClickListener() {
+                        @Override
+                        public void onMapClick(LatLng latLng) {
+                            CommonUtils.openMap(itemView.getContext(), mLat, mLon);
+                        }
+                    });
+                    googleMap.setOnMarkerClickListener(new OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(Marker marker) {
+                            CommonUtils.openMap(itemView.getContext(), mLat, mLon);
+                            return true;
+                        }
+                    });
                 }
             });
         }

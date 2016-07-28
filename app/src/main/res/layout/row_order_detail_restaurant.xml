@@ -39,7 +39,7 @@
         android:layout_toStartOf="@+id/order_detail_restaurant_favorite"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="헬로모닝 강남점"
+        android:text="-"
         android:textSize="14sp"
         android:textStyle="bold"/>
 
@@ -53,7 +53,7 @@
         android:layout_marginStart="12dp"
         android:layout_toEndOf="@+id/order_detail_restaurant_image"
         android:layout_toRightOf="@+id/order_detail_restaurant_image"
-        android:text="63,800원"
+        android:text="-"
         android:textSize="12sp"
         android:textStyle="bold"/>
 
@@ -70,7 +70,7 @@
         android:layout_toRightOf="@+id/order_detail_restaurant_image"
         android:ellipsize="middle"
         android:maxLines="1"
-        android:text="테스트메뉴 1, 테스트메뉴 2, 테스트메뉴 3, 마늘 돈코츠(총3개)"
+        android:text="-"
         android:textSize="12sp"/>
 
 </RelativeLayout>
