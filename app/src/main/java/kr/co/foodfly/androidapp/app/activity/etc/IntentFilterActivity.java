@@ -14,6 +14,7 @@ import kr.co.foodfly.androidapp.app.activity.BaseActivity;
 import kr.co.foodfly.androidapp.app.activity.kickOff.LoginActivity;
 import kr.co.foodfly.androidapp.app.activity.kickOff.SignUpActivity;
 import kr.co.foodfly.androidapp.app.activity.main.MainActivity;
+import kr.co.foodfly.androidapp.app.activity.main.SearchActivity;
 import kr.co.foodfly.androidapp.app.activity.order.CartActivity;
 import kr.co.foodfly.androidapp.app.activity.order.OrderDetailActivity;
 import kr.co.foodfly.androidapp.app.activity.order.OrderListActivity;
@@ -118,10 +119,13 @@ public class IntentFilterActivity extends BaseActivity {
             } else if (TextUtils.equals(host, "recent")) {
                 RecentRestaurantListActivity.createInstance(this);
             } else if (TextUtils.equals(host, "search")) {
+                String keyword = uri.getQueryParameter("keyword");
+                SearchActivity.createInstance(this, keyword);
             } else if (TextUtils.equals(host, "restaurant")) {
                 String id = uri.getQueryParameter("id");
                 RestaurantActivity.createInstance(this, id);
             } else if (TextUtils.equals(host, "order")) {
+                // no use
             } else if (TextUtils.equals(host, "safari")) {
                 String url = uri.getQueryParameter("url");
                 CommonUtils.openBrowser(this, url);

@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="@bool/fitsSystemWindows">
@@ -19,28 +20,39 @@
             app:titleTextAppearance="@style/AppBarTitleTextAppearance"/>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/order_detail_swipe_refresh_layout"
+    <FrameLayout
+        android:id="@+id/search_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/order_detail_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+    </FrameLayout>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-    <TextView
-        android:id="@+id/order_detail_canceled"
+    <RelativeLayout
+        android:id="@+id/search_recommend_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#80000000"
-        android:gravity="center"
-        android:text="취소된 주문입니다."
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <TextView
+            android:id="@+id/search_recommend_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="최근검색어"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+        <kr.co.foodfly.androidapp.app.view.recyclerView.RecyclerViewEmptySupport
+            android:id="@+id/search_recommend_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/search_recommend_title"
+            android:layout_marginTop="16dp"
+            tools:listitem="@layout/row_search_recommend"/>
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

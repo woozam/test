@@ -262,7 +262,9 @@ public class CouponActivity extends BaseActivity implements OnClickListener {
                 public void onClick(View v) {
                     if (mSelect) {
                         Coupon coupon = mCouponList.get(holder.getAdapterPosition());
-                        if (!coupon.isExpired() && coupon.isCouponValid() && !coupon.isUsed()) {
+                        if (!coupon.isCouponValid()) {
+                            new MaterialDialog.Builder(v.getContext()).content(String.format(Locale.getDefault(), coupon.getStatusMessage(), coupon.getRestaurant().getName())).positiveText("확인").show();
+                        } else if (!coupon.isExpired() && !coupon.isUsed()) {
                             if (!TextUtils.isEmpty(mRestaurantId) && TextUtils.equals(mRestaurantId, coupon.getRestaurant().getId())) {
                                 new MaterialDialog.Builder(v.getContext()).content(String.format(Locale.getDefault(), "이 쿠폰은 %s에서만 사용하실 수 있습니다.", coupon.getRestaurant().getName())).positiveText("확인").show();
                             } else {
@@ -321,7 +323,10 @@ public class CouponActivity extends BaseActivity implements OnClickListener {
             }
             mDate.setText(String.format(Locale.getDefault(), "%s ~ %s", TimeUtils.getYearMonthDateTimeString(coupon.getStartDate().getTime() + TimeZone.getDefault().getRawOffset()), TimeUtils.getYearMonthDateTimeString(coupon.getEndDate().getTime() + TimeZone.getDefault().getRawOffset())));
             int expire = (int) Math.ceil((coupon.getEndDate().getTime() - System.currentTimeMillis()) / (float) (1000 * 3600 * 24));
-            if (coupon.isUsed()) {
+            if (!coupon.isCouponValid()) {
+                mExpire.setText(coupon.getStatusMessage());
+                mExpire.setBackgroundColor(ResourcesCompat.getColor(mExpire.getResources(), R.color.textColorHint, null));
+            } else if (coupon.isUsed()) {
                 mExpire.setText("사용 완료");
                 mExpire.setBackgroundColor(ResourcesCompat.getColor(mExpire.getResources(), R.color.textColorHint, null));
             } else if (expire < 0 || coupon.isExpired()) {
@@ -329,10 +334,10 @@ public class CouponActivity extends BaseActivity implements OnClickListener {
                 mExpire.setBackgroundColor(ResourcesCompat.getColor(mExpire.getResources(), R.color.textColorHint, null));
             } else if (expire == 0) {
                 mExpire.setText("오늘까지");
-                mExpire.setBackgroundColor(ResourcesCompat.getColor(mExpire.getResources(), coupon.isCouponValid() ? R.color.colorPrimary : R.color.textColorHint, null));
+                mExpire.setBackgroundColor(ResourcesCompat.getColor(mExpire.getResources(), R.color.colorPrimary, null));
             } else {
                 mExpire.setText(String.format(Locale.getDefault(), "%d일 남음", expire));
-                mExpire.setBackgroundColor(ResourcesCompat.getColor(mExpire.getResources(), coupon.isCouponValid() ? R.color.colorPrimary : R.color.textColorHint, null));
+                mExpire.setBackgroundColor(ResourcesCompat.getColor(mExpire.getResources(), R.color.colorPrimary, null));
             }
         }
     }

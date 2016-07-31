@@ -54,7 +54,7 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
 
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_TITLE = "extra_title";
-    public static final String EXTRA_DISPLAY_RESTAURANT = "extra_title";
+    public static final String EXTRA_DISPLAY_RESTAURANT = "extra_display_restaurant";
 
     private static Order mParamOrder;
 
@@ -78,6 +78,7 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private OrderDetailAdapter mAdapter;
     private RecyclerView mRecyclerView;
+    private View mCanceled;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,10 +109,18 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
         mRecyclerView = (RecyclerView) findViewById(R.id.order_detail_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
+        mCanceled = findViewById(R.id.order_detail_canceled);
+        mCanceled.setVisibility(View.GONE);
 
         if (mOrder == null) {
             showProgressDialog();
             loadOrder();
+        } else {
+            if (mOrder.getStatus() == 3) {
+                mCanceled.setVisibility(View.VISIBLE);
+            } else {
+                mCanceled.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -133,6 +142,11 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
                     }
                     mOrder = response;
                     mAdapter.notifyDataSetChanged();
+                    if (response.getStatus() == 3) {
+                        mCanceled.setVisibility(View.VISIBLE);
+                    } else {
+                        mCanceled.setVisibility(View.GONE);
+                    }
                 }
             }, new ErrorListener() {
                 @Override
@@ -307,6 +321,7 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
         private NetworkImageView mImage;
         private TextView mName;
         private ImageView mFavorite;
+        private TextView mDate;
         private TextView mMenu;
         private TextView mPrice;
 
@@ -315,6 +330,7 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
             mImage = (NetworkImageView) itemView.findViewById(R.id.order_detail_restaurant_image);
             mName = (TextView) itemView.findViewById(R.id.order_detail_restaurant_name);
             mFavorite = (ImageView) itemView.findViewById(R.id.order_detail_restaurant_favorite);
+            mDate = (TextView) itemView.findViewById(R.id.order_detail_restaurant_date);
             mMenu = (TextView) itemView.findViewById(R.id.order_detail_restaurant_menu);
             mPrice = (TextView) itemView.findViewById(R.id.order_detail_restaurant_price);
         }
@@ -326,6 +342,8 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
                 mImage.setImageUrl(order.getRestaurant().getThumbnail(), VolleySingleton.getInstance(mImage.getContext()).getImageLoader());
                 mName.setText(order.getRestaurant().getName());
                 mFavorite.setSelected(order.getRestaurant().isFavorite());
+                mDate.setText(TimeUtils.getYearMonthDateTimeString(order.getOrderTime().getTime() + TimeZone.getDefault().getRawOffset()));
+                mDate.setVisibility(order.getOrderTime().getTime() == 0 ? View.INVISIBLE : View.VISIBLE);
                 mMenu.setText(order.getMenuString());
                 mPrice.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(order.getCharge().getTotalAmountDue())));
             }
@@ -334,10 +352,22 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
 
     public static class OrderDetailDeliveryStatusViewHolder extends OrderDetailViewHolder {
 
-        private View mIcon1;
-        private View mIcon2;
-        private View mIcon3;
-        private View mIcon4;
+        private NetworkImageView mIcon1;
+        private NetworkImageView mIcon2;
+        private NetworkImageView mIcon3;
+        private NetworkImageView mIcon4;
+        private TextView mRiderName1;
+        private TextView mRiderName2;
+        private TextView mRiderName3;
+        private TextView mRiderName4;
+        private TextView mStatus1;
+        private TextView mStatus2;
+        private TextView mStatus3;
+        private TextView mStatus4;
+        private TextView mTime1;
+        private TextView mTime2;
+        private TextView mTime3;
+        private TextView mTime4;
         private View mDot1;
         private View mDot2;
         private View mDot3;
@@ -346,10 +376,22 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
 
         public OrderDetailDeliveryStatusViewHolder(View itemView) {
             super(itemView);
-            mIcon1 = itemView.findViewById(R.id.order_detail_delivery_status_icon_1);
-            mIcon2 = itemView.findViewById(R.id.order_detail_delivery_status_icon_2);
-            mIcon3 = itemView.findViewById(R.id.order_detail_delivery_status_icon_3);
-            mIcon4 = itemView.findViewById(R.id.order_detail_delivery_status_icon_4);
+            mIcon1 = (NetworkImageView) itemView.findViewById(R.id.order_detail_delivery_status_icon_1);
+            mIcon2 = (NetworkImageView) itemView.findViewById(R.id.order_detail_delivery_status_icon_2);
+            mIcon3 = (NetworkImageView) itemView.findViewById(R.id.order_detail_delivery_status_icon_3);
+            mIcon4 = (NetworkImageView) itemView.findViewById(R.id.order_detail_delivery_status_icon_4);
+            mRiderName1 = (TextView) itemView.findViewById(R.id.order_detail_delivery_status_rider_name_1);
+            mRiderName2 = (TextView) itemView.findViewById(R.id.order_detail_delivery_status_rider_name_2);
+            mRiderName3 = (TextView) itemView.findViewById(R.id.order_detail_delivery_status_rider_name_3);
+            mRiderName4 = (TextView) itemView.findViewById(R.id.order_detail_delivery_status_rider_name_4);
+            mStatus1 = (TextView) itemView.findViewById(R.id.order_detail_delivery_status_text_1);
+            mStatus2 = (TextView) itemView.findViewById(R.id.order_detail_delivery_status_text_2);
+            mStatus3 = (TextView) itemView.findViewById(R.id.order_detail_delivery_status_text_3);
+            mStatus4 = (TextView) itemView.findViewById(R.id.order_detail_delivery_status_text_4);
+            mTime1 = (TextView) itemView.findViewById(R.id.order_detail_delivery_status_time_1);
+            mTime2 = (TextView) itemView.findViewById(R.id.order_detail_delivery_status_time_2);
+            mTime3 = (TextView) itemView.findViewById(R.id.order_detail_delivery_status_time_3);
+            mTime4 = (TextView) itemView.findViewById(R.id.order_detail_delivery_status_time_4);
             mDot1 = itemView.findViewById(R.id.order_detail_delivery_status_dot_1);
             mDot2 = itemView.findViewById(R.id.order_detail_delivery_status_dot_2);
             mDot3 = itemView.findViewById(R.id.order_detail_delivery_status_dot_3);
@@ -361,10 +403,20 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
         public void setItem(Object object) {
             if (object != null) {
                 Order order = (Order) object;
+                NetworkImageView icon;
+                TextView name;
                 mIcon1.setSelected(false);
                 mIcon2.setSelected(false);
                 mIcon3.setSelected(false);
                 mIcon4.setSelected(false);
+                mIcon1.setImageBitmap(null);
+                mIcon2.setImageBitmap(null);
+                mIcon3.setImageBitmap(null);
+                mIcon4.setImageBitmap(null);
+                mRiderName1.setText(null);
+                mRiderName2.setText(null);
+                mRiderName3.setText(null);
+                mRiderName4.setText(null);
                 mDot1.setSelected(false);
                 mDot2.setSelected(false);
                 mDot3.setSelected(false);
@@ -373,17 +425,39 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
                 if (order.getDeliveryStatus() < 3) {
                     mIcon1.setSelected(true);
                     mDot1.setSelected(true);
+                    icon = mIcon1;
+                    name = mRiderName1;
                 } else if (order.getDeliveryStatus() < 4) {
                     mIcon2.setSelected(true);
                     mDot2.setSelected(true);
+                    icon = mIcon2;
+                    name = mRiderName2;
                 } else if (order.getDeliveryStatus() < 5) {
                     mIcon3.setSelected(true);
                     mDot3.setSelected(true);
+                    icon = mIcon3;
+                    name = mRiderName3;
                 } else {
                     mIcon4.setSelected(true);
                     mDot4.setSelected(true);
+                    icon = mIcon4;
+                    name = mRiderName4;
                     mRefresh.setVisibility(View.GONE);
                 }
+                icon.setImageUrl(order.getRider().getPhoto(), VolleySingleton.getInstance(icon.getContext()).getImageLoader());
+                name.setText(order.getRider().getName());
+                mStatus1.setText(order.getTimestamps().get(0).getTag());
+                mStatus2.setText(order.getTimestamps().get(1).getTag());
+                mStatus3.setText(order.getTimestamps().get(2).getTag());
+                mStatus4.setText(order.getTimestamps().get(3).getTag());
+                mTime1.setText(TimeUtils.getHourMinuteTimeString(order.getTimestamps().get(0).getTimestamp().getTime() + TimeZone.getDefault().getRawOffset()));
+                mTime2.setText(TimeUtils.getHourMinuteTimeString(order.getTimestamps().get(1).getTimestamp().getTime() + TimeZone.getDefault().getRawOffset()));
+                mTime3.setText(TimeUtils.getHourMinuteTimeString(order.getTimestamps().get(2).getTimestamp().getTime() + TimeZone.getDefault().getRawOffset()));
+                mTime4.setText(TimeUtils.getHourMinuteTimeString(order.getTimestamps().get(3).getTimestamp().getTime() + TimeZone.getDefault().getRawOffset()));
+                mTime1.setVisibility(order.getTimestamps().get(0).getTimestamp().getTime() == 0 ? View.INVISIBLE : View.VISIBLE);
+                mTime2.setVisibility(order.getTimestamps().get(1).getTimestamp().getTime() == 0 ? View.INVISIBLE : View.VISIBLE);
+                mTime3.setVisibility(order.getTimestamps().get(2).getTimestamp().getTime() == 0 ? View.INVISIBLE : View.VISIBLE);
+                mTime4.setVisibility(order.getTimestamps().get(3).getTimestamp().getTime() == 0 ? View.INVISIBLE : View.VISIBLE);
             }
         }
     }
@@ -419,7 +493,7 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
                 if (order.getReservationTime() == null || order.getReservationTime().getTime() == 0) {
                     mDeliveryTime.setText("바로주문");
                 } else {
-                    mDeliveryTime.setText(TimeUtils.getFullTimeString(order.getReservationTime().getTime() + +TimeZone.getDefault().getRawOffset()));
+                    mDeliveryTime.setText(TimeUtils.getFullTimeString(order.getReservationTime().getTime()));
                 }
             }
         }

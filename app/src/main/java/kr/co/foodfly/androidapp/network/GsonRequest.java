@@ -18,22 +18,23 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.Map;
 
+import kr.co.foodfly.androidapp.BuildConfig;
 import kr.co.foodfly.androidapp.model.user.UserResponse;
 
 public class GsonRequest<T> extends Request<T> {
 
     private static final Gson gson = new GsonBuilder()
-//            .setExclusionStrategies(new ExclusionStrategy() {
-//        @Override
-//        public boolean shouldSkipField(FieldAttributes f) {
-//            return f.getDeclaringClass().equals(RealmObject.class) || f.getDeclaringClass().equals(Drawable.class);
-//        }
-//
-//        @Override
-//        public boolean shouldSkipClass(Class<?> clazz) {
-//            return false;
-//        }
-//    })
+            //            .setExclusionStrategies(new ExclusionStrategy() {
+            //        @Override
+            //        public boolean shouldSkipField(FieldAttributes f) {
+            //            return f.getDeclaringClass().equals(RealmObject.class) || f.getDeclaringClass().equals(Drawable.class);
+            //        }
+            //
+            //        @Override
+            //        public boolean shouldSkipClass(Class<?> clazz) {
+            //            return false;
+            //        }
+            //    })
             .create();
 
     private final Type type;
@@ -107,7 +108,18 @@ public class GsonRequest<T> extends Request<T> {
             if (type == UserResponse.class) {
                 json = json.replace("\"address\":[],", "");
             }
-            Log.v("parseNetworkResponse", json);
+            if (BuildConfig.DEBUG) {
+                String log = json;
+                while (log.length() > 0) {
+                    if (log.length() > 4000) {
+                        Log.v("parseNetworkResponse", log.substring(0, 4000));
+                        log = log.substring(4000);
+                    } else {
+                        Log.i("parseNetworkResponse", log);
+                        break;
+                    }
+                }
+            }
             return (Response<T>) Response.success(mParsonGson.fromJson(json, type), HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));

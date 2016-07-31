@@ -81,7 +81,7 @@ public class Restaurant extends RealmObject {
     @SerializedName("delivery_available_distance")
     private float mDeliveryAvailableDistance;
     @SerializedName("discount_type")
-    private int mDiscountType;
+    private int mDiscountType; // type => 0:없음, 1:배달팁할인(%), 2:배달팁할인(원), 3:총액할인(원)
     @SerializedName("discount_amount")
     private int mDiscountAmount;
     @SerializedName("reservation_offset")
@@ -297,6 +297,17 @@ public class Restaurant extends RealmObject {
 
     public void setDiscountType(int discountType) {
         mDiscountType = discountType;
+    }
+
+    public String getDiscountTypeString() {
+        if (getDiscountType() != 0) {
+            if (getDiscountType() == 1 || getDiscountType() == 2) {
+                return "배달팁할인";
+            } else {
+                return "총액할인";
+            }
+        }
+        return null;
     }
 
     public int getDiscountAmount() {

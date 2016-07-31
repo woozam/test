@@ -1,0 +1,61 @@
+{
+  "project_info": {
+    "project_number": "31389571601",
+    "project_id": "foodfly-4abd5"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31389571601:android:28a00c0ff3274ff7",
+        "android_client_info": {
+          "package_name": "com.foodfly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6vl_WI3C0YTvfE-bwC0FjJXEbrBlMviU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31389571601:android:a686bfcc89a8a14f",
+        "android_client_info": {
+          "package_name": "kr.co.foodfly.androidapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6vl_WI3C0YTvfE-bwC0FjJXEbrBlMviU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

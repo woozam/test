@@ -73,4 +73,20 @@
         android:text="-"
         android:textSize="12sp"/>
 
+    <TextView
+        android:id="@+id/order_detail_restaurant_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/order_detail_restaurant_menu"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@+id/order_detail_restaurant_image"
+        android:layout_toRightOf="@+id/order_detail_restaurant_image"
+        android:ellipsize="middle"
+        android:maxLines="1"
+        android:text="-"
+        android:textSize="12sp"/>
+
 </RelativeLayout>

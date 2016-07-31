@@ -2,10 +2,12 @@ package kr.co.foodfly.androidapp.model.order;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by woozam on 2016-07-28.
  */
-public class Payment {
+public class Payment implements Serializable {
 
     @SerializedName("method")
     private String mMethod;

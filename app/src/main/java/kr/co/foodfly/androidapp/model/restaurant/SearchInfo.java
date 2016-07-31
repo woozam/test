@@ -3,6 +3,7 @@ package kr.co.foodfly.androidapp.model.restaurant;
 import java.util.Date;
 
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -14,12 +15,15 @@ public class SearchInfo extends RealmObject {
     private String mQuery;
     private Date mDate;
 
+    @Ignore
+    private boolean mDeletable = true;
+
     public SearchInfo() {
     }
 
     public SearchInfo(String query, Date date) {
         mQuery = query;
-        date = mDate;
+        mDate = date;
     }
 
     public String getQuery() {
@@ -36,5 +40,13 @@ public class SearchInfo extends RealmObject {
 
     public void setDate(Date date) {
         mDate = date;
+    }
+
+    public boolean isDeletable() {
+        return mDeletable;
+    }
+
+    public void setDeletable(boolean deletable) {
+        mDeletable = deletable;
     }
 }

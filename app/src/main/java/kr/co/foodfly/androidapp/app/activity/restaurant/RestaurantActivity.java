@@ -633,6 +633,7 @@ public class RestaurantActivity extends BaseActivity implements OnOffsetChangedL
                     CartActivity.createInstance(RestaurantActivity.this);
                 }
             }).show();
+            return;
         }
 
         // 메뉴 적음

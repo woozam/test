@@ -30,10 +30,14 @@ public class CustomSearchView extends SearchView {
 
     private void initialize() {
         mSearchTextView = (AutoCompleteTextView) findViewById(R.id.search_src_text);
-        mSearchTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        mSearchTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
     }
 
     public void setSearchTextSize(int unit, float size) {
         mSearchTextView.setTextSize(unit, size);
+    }
+
+    public TextView getSearchTextView() {
+        return mSearchTextView;
     }
 }

@@ -171,6 +171,19 @@
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/menu_original_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_toLeftOf="@+id/menu_total"
+                    android:layout_toStartOf="@+id/menu_total"
+                    android:text="12,900원"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"/>
             </RelativeLayout>
 
         </LinearLayout>

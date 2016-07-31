@@ -2,6 +2,7 @@ package kr.co.foodfly.androidapp.app.activity.restaurant;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -12,21 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
@@ -67,29 +57,22 @@ public class RestaurantAdapter extends AbstractExpandableItemAdapter<RestaurantG
     private OnClickListener mOnClickListener;
     private int mMode = MODE_MENU;
     private boolean mDetailMessageExpanded = false;
-    private MapView mMapView;
 
     public RestaurantAdapter(Context context, OnClickListener onClickListener) {
         setHasStableIds(true);
         mOnClickListener = onClickListener;
-        mMapView = new MapView(context);
-        mMapView.onCreate(null);
     }
 
     public void resume() {
-        mMapView.onResume();
     }
 
     public void pause() {
-        mMapView.onPause();
     }
 
     public void lowMemory() {
-        mMapView.onLowMemory();
     }
 
     public void destroy() {
-        mMapView.onDestroy();
     }
 
     public void setRestaurant(Restaurant restaurant) {
@@ -236,7 +219,7 @@ public class RestaurantAdapter extends AbstractExpandableItemAdapter<RestaurantG
         } else if (viewType == VIEW_TYPE_DETAIL_OPEN_HOUR) {
             return new RestaurantDetailOpenHourViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_restaurant_detail_open_hour, parent, false));
         } else if (viewType == VIEW_TYPE_DETAIL_CONTACT) {
-            return new RestaurantDetailContactViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_restaurant_detail_contact, parent, false), mMapView);
+            return new RestaurantDetailContactViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_restaurant_detail_contact, parent, false));
         } else if (viewType == VIEW_TYPE_DETAIL_ORIGIN) {
             return new RestaurantDetailOriginViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_restaurant_detail_origin, parent, false));
         } else {
@@ -414,12 +397,15 @@ public class RestaurantAdapter extends AbstractExpandableItemAdapter<RestaurantG
 
         private TextView mName;
         private NetworkImageView mImage;
+        private TextView mOriginalPrice;
         private TextView mPrice;
 
         public RestaurantMenuViewHolder(View itemView) {
             super(itemView);
             mName = (TextView) itemView.findViewById(R.id.restaurant_menu_name);
             mImage = (NetworkImageView) itemView.findViewById(R.id.restaurant_menu_image);
+            mOriginalPrice = (TextView) itemView.findViewById(R.id.restaurant_menu_original_price);
+            mOriginalPrice.setPaintFlags(mOriginalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             mPrice = (TextView) itemView.findViewById(R.id.restaurant_menu_price);
         }
 
@@ -432,7 +418,14 @@ public class RestaurantAdapter extends AbstractExpandableItemAdapter<RestaurantG
                 off.setBounds(0, 0, CommonUtils.convertSpToPx(mName.getContext(), 28), CommonUtils.convertSpToPx(mName.getContext(), 14));
                 mName.setCompoundDrawables(null, null, ((Menu) item).isSoldOut() ? off : null, null);
                 mImage.setImageUrl(menu.getThumbnail(), VolleySingleton.getInstance(mImage.getContext()).getImageLoader());
-                mPrice.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(((Menu) item).getPrice())));
+                if (menu.getDiscountType() != 0) {
+                    mOriginalPrice.setVisibility(View.VISIBLE);
+                    mOriginalPrice.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(menu.getPrice())));
+                    mPrice.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(menu.getDiscountedPrice())));
+                } else {
+                    mOriginalPrice.setVisibility(View.GONE);
+                    mPrice.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(menu.getPrice())));
+                }
             }
         }
     }
@@ -532,47 +525,15 @@ public class RestaurantAdapter extends AbstractExpandableItemAdapter<RestaurantG
 
     public static class RestaurantDetailContactViewHolder extends RestaurantChildViewHolder {
 
-        private TextView mAddress;
-        private GoogleMap mGoogleMap;
-        private View mMapPlaceHolder;
-        private double mLat;
-        private double mLon;
+        private static String NAVER_MAP_URL = "http://openapi.naver.com/map/getStaticMap?version=1.0&crs=EPSG:4326&center=%f,%f&level=13&w=%d&h=%d&maptype=default&markers=%f,%f&key=%s&uri=%s";
 
-        public RestaurantDetailContactViewHolder(final View itemView, MapView mapView) {
+        private TextView mAddress;
+        private NetworkImageView mMapImage;
+
+        public RestaurantDetailContactViewHolder(final View itemView) {
             super(itemView);
             mAddress = (TextView) itemView.findViewById(R.id.restaurant_detail_contact_address);
-            mMapPlaceHolder = itemView.findViewById(R.id.restaurant_detail_contact_map_place_holder);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, CommonUtils.convertDipToPx(mapView.getContext(), 108));
-            params.topMargin = CommonUtils.convertDipToPx(mapView.getContext(), 16);
-            if (mapView.getParent() != null) {
-                ((ViewGroup) mapView.getParent()).removeView(mapView);
-            }
-            ((LinearLayout) RestaurantDetailContactViewHolder.this.itemView).addView(mapView, params);
-            mMapPlaceHolder.setVisibility(View.GONE);
-            mapView.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap googleMap) {
-                    mGoogleMap = googleMap;
-                    LatLng defaultLatLng = new LatLng(mLat, mLon);
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 15));
-                    googleMap.getUiSettings().setAllGesturesEnabled(false);
-                    googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                    googleMap.addMarker(new MarkerOptions().position(defaultLatLng));
-                    googleMap.setOnMapClickListener(new OnMapClickListener() {
-                        @Override
-                        public void onMapClick(LatLng latLng) {
-                            CommonUtils.openMap(itemView.getContext(), mLat, mLon);
-                        }
-                    });
-                    googleMap.setOnMarkerClickListener(new OnMarkerClickListener() {
-                        @Override
-                        public boolean onMarkerClick(Marker marker) {
-                            CommonUtils.openMap(itemView.getContext(), mLat, mLon);
-                            return true;
-                        }
-                    });
-                }
-            });
+            mMapImage = (NetworkImageView) itemView.findViewById(R.id.restaurant_detail_contact_map_image);
         }
 
         @Override
@@ -584,15 +545,20 @@ public class RestaurantAdapter extends AbstractExpandableItemAdapter<RestaurantG
                     mAddress.append("\n");
                     mAddress.append(restaurant.getInfo().getTel());
                 }
-                mLat = restaurant.getAddress().getLat();
-                mLon = restaurant.getAddress().getLon();
-                if (mGoogleMap != null) {
-                    LatLng defaultLatLng = new LatLng(mLat, mLon);
-                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 15));
-                    mGoogleMap.getUiSettings().setAllGesturesEnabled(false);
-                    mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                    mGoogleMap.addMarker(new MarkerOptions().position(defaultLatLng));
-                }
+                final double lon = restaurant.getAddress().getLon();
+                final double lat = restaurant.getAddress().getLat();
+                mMapImage.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMapImage.setImageUrl(String.format(Locale.getDefault(), NAVER_MAP_URL, lon, lat, mMapImage.getMeasuredWidth(), mMapImage.getMeasuredHeight(), lon, lat, mMapImage.getResources().getString(R.string.api_key_naver), mMapImage.getResources().getString(R.string.api_uri_naver)), VolleySingleton.getInstance(mMapImage.getContext()).getImageLoader());
+                        mMapImage.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CommonUtils.openMap(v.getContext(), lat, lon);
+                            }
+                        });
+                    }
+                });
             }
         }
     }

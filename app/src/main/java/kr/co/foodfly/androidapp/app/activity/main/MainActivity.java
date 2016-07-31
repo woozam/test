@@ -16,8 +16,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.SearchView.OnCloseListener;
-import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -33,8 +31,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.MaterialDialog.ListCallback;
 import com.afollestad.materialdialogs.MaterialDialog.SingleButtonCallback;
 import com.astuetz.PagerSlidingTabStrip;
-
-import java.util.Date;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -54,39 +50,39 @@ import kr.co.foodfly.androidapp.app.activity.setting.AddressActivity;
 import kr.co.foodfly.androidapp.app.activity.theme.ThemeActivity;
 import kr.co.foodfly.androidapp.app.activity.user.CouponActivity;
 import kr.co.foodfly.androidapp.app.activity.user.MileageActivity;
+import kr.co.foodfly.androidapp.app.activity.user.MyReferralCodeActivity;
 import kr.co.foodfly.androidapp.app.activity.user.PromotionActivity;
 import kr.co.foodfly.androidapp.app.activity.user.ReferralCodeActivity;
 import kr.co.foodfly.androidapp.app.activity.user.SelectAddressActivity;
 import kr.co.foodfly.androidapp.app.activity.user.UserActivity;
 import kr.co.foodfly.androidapp.app.dialog.RestaurantFilter;
-import kr.co.foodfly.androidapp.app.view.CustomSearchView;
 import kr.co.foodfly.androidapp.common.CommonUtils;
 import kr.co.foodfly.androidapp.common.PreferenceUtils;
-import kr.co.foodfly.androidapp.common.ViewSupportUtils;
 import kr.co.foodfly.androidapp.data.RealmUtils;
 import kr.co.foodfly.androidapp.model.Chefly;
 import kr.co.foodfly.androidapp.model.connect.Connect;
 import kr.co.foodfly.androidapp.model.restaurant.CartMenu;
-import kr.co.foodfly.androidapp.model.restaurant.SearchInfo;
 import kr.co.foodfly.androidapp.model.user.MapAddress;
 import kr.co.foodfly.androidapp.model.user.UserManager;
 import kr.co.foodfly.androidapp.model.user.UserResponse;
 
-public class MainActivity extends BaseActivity implements OnClickListener, RealmChangeListener<RealmResults<MapAddress>>, OnQueryTextListener, OnCloseListener, OnMainNavigationMenuListener, DrawerListener {
+public class MainActivity extends BaseActivity implements OnClickListener, RealmChangeListener<RealmResults<MapAddress>>, OnMainNavigationMenuListener, DrawerListener {
 
-    public static final String ACTION_MAIN_SEARCH = "action_main_search";
-    public static final String EXTRA_QUERY = "extra_query";
     public static final String EXTRA_CATEGORY_ID = "extra_category_id";
 
     public static void createInstance(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        context.startActivity(intent);
+    }
+
+    public static void clearAndcreateInstance(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
     public static void createInstance(Context context, String categoryId) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         intent.putExtra(EXTRA_CATEGORY_ID, categoryId);
         context.startActivity(intent);
     }
@@ -103,10 +99,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
     private RealmResults<MapAddress> mAddressResults;
     private MapAddress mAddress;
     private View mFilter;
-    private CustomSearchView mSearchView;
     private DrawerLayout mDrawerLayout;
     private MainNavigationView mMainNavigationView;
-    private String mLastQuery;
     private ImageView mChefly;
 
     private Realm mUserRealm;
@@ -215,8 +209,6 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else if (!mSearchView.isIconified()) {
-            mSearchView.setIconified(true);
         } else {
             super.onBackPressed();
         }
@@ -225,21 +217,16 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        if (searchItem != null) {
-            mSearchView = (CustomSearchView) searchItem.getActionView();
-        }
-        if (mSearchView != null) {
-            mSearchView.setQueryHint("음식명, 레스토랑명 검색");
-            mSearchView.setOnQueryTextListener(this);
-            mSearchView.setOnCloseListener(this);
-        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        if (id == R.id.action_search) {
+            SearchActivity.createInstance(this, null);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -397,39 +384,6 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query) {
-        Intent intent = new Intent(ACTION_MAIN_SEARCH);
-        intent.putExtra(EXTRA_QUERY, query);
-        sendBroadcast(intent);
-        ViewSupportUtils.hideSoftInput(mSearchView);
-        if (!TextUtils.isEmpty(query) && !TextUtils.equals(query, mLastQuery)) {
-            mLastQuery = query;
-            SearchInfo searchInfo = new SearchInfo(query, new Date());
-            Realm realm = Realm.getInstance(RealmUtils.CONFIG_SEARCH_INFO);
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(searchInfo);
-            realm.commitTransaction();
-            realm.close();
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        return false;
-    }
-
-    @Override
-    public boolean onClose() {
-        if (!TextUtils.isEmpty(mLastQuery)) {
-            mLastQuery = null;
-            Intent intent = new Intent(ACTION_MAIN_SEARCH);
-            sendBroadcast(intent);
-        }
-        return false;
-    }
-
-    @Override
     public void onMenu(int id) {
         switch (id) {
             case R.id.main_navigation_login_1:
@@ -446,7 +400,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 break;
             case R.id.main_navigation_user_referral_code:
-                CommonUtils.copyToClipboard((String) findViewById(id).getTag());
+                MyReferralCodeActivity.createInstance(this);
+                mDrawerLayout.closeDrawer(GravityCompat.START);
                 break;
             case R.id.main_navigation_user_coupon:
                 CouponActivity.createInstance(this);
@@ -577,7 +532,6 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
             Bundle args = new Bundle();
             args.putInt(RestaurantListFragment.EXTRA_COLUMN_COUNT, 2);
             args.putString(RestaurantListFragment.EXTRA_CATEGORY, mConnect.getCategories().get(position).getId());
-            args.putString(EXTRA_QUERY, mLastQuery);
             if (position == 0) {
                 args.putBoolean(RestaurantListFragment.EXTRA_USE_BANNER, true);
             }

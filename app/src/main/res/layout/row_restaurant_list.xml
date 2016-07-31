@@ -186,6 +186,7 @@
             android:layout_toEndOf="@+id/restaurant_distance_icon"
             android:layout_toRightOf="@+id/restaurant_distance_icon"
             android:text="1.6km"
+            android:textScaleX="0.95"
             android:textSize="10sp"/>
 
         <ImageView
@@ -213,6 +214,32 @@
             android:layout_toEndOf="@+id/restaurant_delivery_type_icon"
             android:layout_toRightOf="@+id/restaurant_delivery_type_icon"
             android:text="음식점 자체배달"
+            android:textScaleX="0.95"
+            android:textSize="10sp"/>
+
+        <ImageView
+            android:id="@+id/restaurant_delivery_type_icon_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/restaurant_delivery_type_2"
+            android:layout_alignTop="@+id/restaurant_delivery_type_2"
+            android:layout_marginLeft="7dp"
+            android:layout_marginStart="7dp"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/discount_p"/>
+
+        <TextView
+            android:id="@+id/restaurant_delivery_type_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/restaurant_delivery_type"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="7dp"
+            android:layout_toEndOf="@+id/restaurant_delivery_type_icon_2"
+            android:layout_toRightOf="@+id/restaurant_delivery_type_icon_2"
+            android:text="음식점 자체배달"
+            android:textScaleX="0.95"
             android:textSize="10sp"/>
 
     </RelativeLayout>

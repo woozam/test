@@ -1,6 +1,7 @@
 package kr.co.foodfly.androidapp.app.view;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -48,6 +49,7 @@ public class MenuView extends RelativeLayout implements OnClickListener {
     private View mQuantitySub;
     private View mCancel;
     private View mAddToCart;
+    private TextView mOriginalTotal;
     private TextView mTotal;
 
     private ArrayList<IMenuOptionView> mMenuOptionViews;
@@ -81,6 +83,8 @@ public class MenuView extends RelativeLayout implements OnClickListener {
         mQuantity = (TextView) findViewById(R.id.menu_quantity);
         mQuantityAdd = findViewById(R.id.menu_quantity_add);
         mQuantitySub = findViewById(R.id.menu_quantity_sub);
+        mOriginalTotal = (TextView) findViewById(R.id.menu_original_total);
+        mOriginalTotal.setPaintFlags(mOriginalTotal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         mTotal = (TextView) findViewById(R.id.menu_total);
         mCancel = findViewById(R.id.menu_cancel);
         mAddToCart = findViewById(R.id.menu_add_to_cart);
@@ -194,19 +198,26 @@ public class MenuView extends RelativeLayout implements OnClickListener {
         if (mCartMenu != null) {
             mQuantity.setText(String.valueOf(mCartMenu.getQuantity()));
             mTotal.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(mCartMenu.getTotalPrice())));
+            mOriginalTotal.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(mCartMenu.getOriginalTotalPrice())));
+            mOriginalTotal.setVisibility(mCartMenu.getMenu().getDiscountType() != 0 ? VISIBLE : GONE);
         }
     }
 
     public interface IMenuOptionView {
         void setOption(MenuOption menuOption);
+
         MenuOption getMenuOption();
+
         void setOnOptionChangedListener(OnOptionChangedListener l);
+
         List<MenuOptionItem> getCheckedItemList();
     }
 
     public interface IMenuOptionItemView {
         void setMenuOptionItem(MenuOptionItem menuOptionItem);
+
         MenuOptionItem getMenuOptionItem();
+
         boolean isChecked();
     }
 
@@ -216,6 +227,7 @@ public class MenuView extends RelativeLayout implements OnClickListener {
 
     public interface OnButtonListener {
         void onCancel();
+
         void onAddToCart(CartMenu cartMenu);
     }
 }

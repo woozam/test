@@ -217,7 +217,7 @@
                 <LinearLayout
                     android:id="@+id/order_delivery_type_button_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="48dp"
                     android:layout_marginEnd="18dp"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="18dp"
@@ -232,7 +232,7 @@
                         android:id="@+id/order_delivery_type_foodfly"
                         style="@style/Button.Small.06"
                         android:layout_width="0dp"
-                        android:layout_height="42dp"
+                        android:layout_height="40dp"
                         android:layout_marginEnd="4dp"
                         android:layout_marginRight="4dp"
                         android:layout_weight="1"
@@ -242,7 +242,7 @@
                         android:id="@+id/order_delivery_type_takeout"
                         style="@style/Button.Small.06"
                         android:layout_width="0dp"
-                        android:layout_height="42dp"
+                        android:layout_height="40dp"
                         android:layout_marginLeft="4dp"
                         android:layout_marginStart="4dp"
                         android:layout_weight="1"
@@ -272,7 +272,7 @@
                 <LinearLayout
                     android:id="@+id/order_delivery_time_button_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="48dp"
                     android:layout_marginEnd="18dp"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="18dp"
@@ -286,7 +286,7 @@
                         android:id="@+id/order_delivery_time_now"
                         style="@style/Button.Small.06"
                         android:layout_width="0dp"
-                        android:layout_height="42dp"
+                        android:layout_height="40dp"
                         android:layout_marginEnd="4dp"
                         android:layout_marginRight="4dp"
                         android:layout_weight="1"
@@ -296,14 +296,27 @@
                         android:id="@+id/order_delivery_time_reserve"
                         style="@style/Button.Small.06"
                         android:layout_width="0dp"
-                        android:layout_height="42dp"
+                        android:layout_height="40dp"
                         android:layout_marginLeft="4dp"
                         android:layout_marginStart="4dp"
                         android:layout_weight="1"
                         android:text="예약주문"/>
 
-
                 </LinearLayout>
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/order_delivery_reserved_time"
+                    style="@style/Button.Small.06"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_alignLeft="@+id/order_delivery_time_button_layout"
+                    android:layout_alignStart="@+id/order_delivery_time_button_layout"
+                    android:layout_below="@+id/order_delivery_time_button_layout"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginRight="18dp"
+                    android:text="2016-07-30 23:20"
+                    android:visibility="gone"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -645,7 +658,7 @@
                 <LinearLayout
                     android:id="@+id/order_payment_type_button_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="48dp"
                     android:layout_marginEnd="18dp"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="18dp"
@@ -660,7 +673,7 @@
                         android:id="@+id/order_payment_type_offline_card"
                         style="@style/Button.Small.06"
                         android:layout_width="0dp"
-                        android:layout_height="42dp"
+                        android:layout_height="40dp"
                         android:layout_marginEnd="4dp"
                         android:layout_marginRight="4dp"
                         android:layout_weight="1"
@@ -670,7 +683,7 @@
                         android:id="@+id/order_payment_type_offline_cash"
                         style="@style/Button.Small.06"
                         android:layout_width="0dp"
-                        android:layout_height="42dp"
+                        android:layout_height="40dp"
                         android:layout_marginLeft="4dp"
                         android:layout_marginStart="4dp"
                         android:layout_weight="1"
@@ -699,7 +712,7 @@
                 <LinearLayout
                     android:id="@+id/order_payment_type_online_button_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="48dp"
                     android:layout_marginEnd="18dp"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="18dp"
@@ -713,7 +726,7 @@
                         android:id="@+id/order_payment_type_online_credit_card"
                         style="@style/Button.Small.06"
                         android:layout_width="0dp"
-                        android:layout_height="42dp"
+                        android:layout_height="40dp"
                         android:layout_marginEnd="4dp"
                         android:layout_marginRight="4dp"
                         android:layout_weight="1"
@@ -723,7 +736,7 @@
                         android:id="@+id/order_payment_type_online_transfer"
                         style="@style/Button.Small.06"
                         android:layout_width="0dp"
-                        android:layout_height="42dp"
+                        android:layout_height="40dp"
                         android:layout_marginLeft="4dp"
                         android:layout_marginStart="4dp"
                         android:layout_weight="1"

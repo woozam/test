@@ -63,8 +63,9 @@ public class Cart extends RealmObject {
     public CartMenu getSameMenu(CartMenu cartMenu) {
         for (CartMenu each : mCartMenus) {
             if (cartMenu.getMenu().getId().equals(each.getMenu().getId())) {
-                boolean same = true;
+                boolean same = false;
                 if (cartMenu.getMenuOptionItems().size() == each.getMenuOptionItems().size()) {
+                    same = true;
                     for (int i = 0; i < cartMenu.getMenuOptionItems().size(); i++) {
                         if (!cartMenu.getMenuOptionItems().get(i).getId().equals(each.getMenuOptionItems().get(i).getId())) {
                             same = false;

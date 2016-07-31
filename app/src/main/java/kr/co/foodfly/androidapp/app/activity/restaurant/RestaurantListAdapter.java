@@ -265,8 +265,10 @@ public class RestaurantListAdapter extends LazyAdapter {
         private TextView mMinimumOrderAmount;
         private TextView mClose;
         private TextView mDistance;
-        private View mDeliveryTypeIcon;
+        private ImageView mDeliveryTypeIcon;
         private TextView mDeliveryType;
+        private ImageView mDeliveryTypeIcon2;
+        private TextView mDeliveryType2;
         private TextView mRating;
 
         public RestaurantListViewHolder(View itemView, int imageHeight) {
@@ -282,8 +284,10 @@ public class RestaurantListAdapter extends LazyAdapter {
             mMinimumOrderAmount = (TextView) itemView.findViewById(R.id.restaurant_minimum_order_amount);
             mClose = (TextView) itemView.findViewById(R.id.restaurant_close);
             mDistance = (TextView) itemView.findViewById(R.id.restaurant_distance);
-            mDeliveryTypeIcon = itemView.findViewById(R.id.restaurant_delivery_type_icon);
+            mDeliveryTypeIcon = (ImageView) itemView.findViewById(R.id.restaurant_delivery_type_icon);
             mDeliveryType = (TextView) itemView.findViewById(R.id.restaurant_delivery_type);
+            mDeliveryTypeIcon2 = (ImageView) itemView.findViewById(R.id.restaurant_delivery_type_icon_2);
+            mDeliveryType2 = (TextView) itemView.findViewById(R.id.restaurant_delivery_type_2);
             mRating = (TextView) itemView.findViewById(R.id.restaurant_rating);
         }
 
@@ -303,9 +307,37 @@ public class RestaurantListAdapter extends LazyAdapter {
                 mClose.setText(restaurant.getAvailableTitle());
             }
             mDistance.setText(UnitUtils.distanceFormat(restaurant.getDistance()));
-            mDeliveryType.setText(restaurant.getDeliveryTypeString());
-            mDeliveryType.setVisibility(mDeliveryType.length() > 0 ? View.VISIBLE : View.GONE);
-            mDeliveryTypeIcon.setVisibility(mDeliveryType.length() > 0 ? View.VISIBLE : View.GONE);
+
+            String deliveryTypeString = restaurant.getDeliveryTypeString();
+            String discountTypeString = restaurant.getDiscountTypeString();
+            if (!TextUtils.isEmpty(deliveryTypeString)) {
+                mDeliveryType.setText(deliveryTypeString);
+                mDeliveryType.setVisibility(View.VISIBLE);
+                mDeliveryTypeIcon.setVisibility(View.VISIBLE);
+                mDeliveryTypeIcon.setImageResource(R.mipmap.cloche);
+                if (!TextUtils.isEmpty(discountTypeString)) {
+                    mDeliveryType2.setText(discountTypeString);
+                    mDeliveryType2.setVisibility(View.VISIBLE);
+                    mDeliveryTypeIcon2.setVisibility(View.VISIBLE);
+                    mDeliveryTypeIcon2.setImageResource(restaurant.getDiscountType() == 1 ? R.mipmap.discount_p : R.mipmap.discount_w);
+                } else {
+                    mDeliveryType2.setVisibility(View.GONE);
+                    mDeliveryTypeIcon2.setVisibility(View.GONE);
+                }
+            } else {
+                mDeliveryType2.setVisibility(View.GONE);
+                mDeliveryTypeIcon2.setVisibility(View.GONE);
+                if (!TextUtils.isEmpty(discountTypeString)) {
+                    mDeliveryType.setText(discountTypeString);
+                    mDeliveryType.setVisibility(View.VISIBLE);
+                    mDeliveryTypeIcon.setVisibility(View.VISIBLE);
+                    mDeliveryTypeIcon.setImageResource(restaurant.getDiscountType() == 1 ? R.mipmap.discount_p : R.mipmap.discount_w);
+                } else {
+                    mDeliveryType.setVisibility(View.GONE);
+                    mDeliveryTypeIcon.setVisibility(View.GONE);
+                }
+            }
+
             if (restaurant.getRateCount() >= 5) {
                 mRating.setVisibility(View.VISIBLE);
                 mRating.setText(UnitUtils.ratingFormat(restaurant.getRateAvg()));

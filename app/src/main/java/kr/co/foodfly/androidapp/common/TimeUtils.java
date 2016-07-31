@@ -20,12 +20,14 @@ public class TimeUtils {
 
     private static SimpleDateFormat utctimeformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     private static SimpleDateFormat yearMonthDayTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private static SimpleDateFormat fullTimeFormat = new SimpleDateFormat("yyyy-MM-dd aa H:mm");
+    private static SimpleDateFormat fullTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static SimpleDateFormat hourMinuteTimeFormat = new SimpleDateFormat("HH:mm");
 
     static {
         utctimeformat.setTimeZone(TimeZone.getTimeZone("UTC"));
         yearMonthDayTimeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         fullTimeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        hourMinuteTimeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     public static void start() {
@@ -82,5 +84,17 @@ public class TimeUtils {
 
     public static DateFormat getFullTimeDateFormat() {
         return fullTimeFormat;
+    }
+
+    public synchronized static String getHourMinuteTimeString(long time) {
+        return getHourMinuteTimeDateFormat().format(new Date(time));
+    }
+
+    public synchronized static Date parseFullHourMinuteTime(String utcTime) throws ParseException {
+        return getHourMinuteTimeDateFormat().parse(utcTime);
+    }
+
+    public static DateFormat getHourMinuteTimeDateFormat() {
+        return hourMinuteTimeFormat;
     }
 }

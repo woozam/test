@@ -2,6 +2,9 @@
     <string name="app_name">FoodFly</string>
     <string name="title_activity_main">MainActivity</string>
 
+    <string name="api_key_naver">b97613062c5ca7a0766611fa08c48718</string>
+    <string name="api_uri_naver">m.foodfly.co.kr</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -25,6 +28,8 @@
     <string name="title_activity_order">주문하기</string>
     <string name="title_activity_order_list">내 주문 내역</string>
     <string name="title_activity_order_detail">주문 상세 내역</string>
+    <string name="title_activity_my_referral_code">내 추천 코드</string>
+    <string name="title_activity_pay">결제</string>
 
     <string name="logout_underline"><u>로그아웃</u></string>
     <string name="title_activity_main2">Main2Activity</string>

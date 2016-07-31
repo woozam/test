@@ -38,6 +38,7 @@ import io.realm.RealmChangeListener;
 import kr.co.foodfly.androidapp.R;
 import kr.co.foodfly.androidapp.app.activity.BaseActivity;
 import kr.co.foodfly.androidapp.app.activity.main.MainActivity;
+import kr.co.foodfly.androidapp.app.activity.main.SearchActivity;
 import kr.co.foodfly.androidapp.app.dialog.RestaurantFilter;
 import kr.co.foodfly.androidapp.app.view.recyclerView.GridSpacingItemDecoration;
 import kr.co.foodfly.androidapp.app.view.recyclerView.LazyAdapter;
@@ -68,6 +69,8 @@ public class RestaurantListFragment extends Fragment implements OnRefreshListene
     public static final String EXTRA_SPACING = "extra_spacing";
     public static final String EXTRA_FAVORITE = "extra_favorite";
     public static final String EXTRA_USE_BANNER = "extra_banner";
+    public static final String EXTRA_USE_SEARCH = "extra_use_search";
+    public static final String EXTRA_QUERY = "extra_query";
 
     private static final int LIMIT = 30;
 
@@ -76,11 +79,14 @@ public class RestaurantListFragment extends Fragment implements OnRefreshListene
     private RestaurantListAdapter mAdapter;
     private RecyclerViewEmptySupport mRecyclerView;
     private View mEmptyView;
+    private View mEmptySearchView;
+    private View mEmptySearchButton;
     private String mCategory;
     private boolean mLoadCompleted = false;
     private boolean mRequesting = false;
     private MapAddress mAddress;
     private Object mLoadTag = new Object();
+    private boolean mUseSearch = false;
     private String mSearchQuery;
 
     private Realm mUserRealm;
@@ -100,7 +106,7 @@ public class RestaurantListFragment extends Fragment implements OnRefreshListene
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         IntentFilter intentFilter = new IntentFilter(RestaurantFilter.ACTION_RESTAURANT_FILTER_CHANGE);
-        intentFilter.addAction(MainActivity.ACTION_MAIN_SEARCH);
+        intentFilter.addAction(SearchActivity.ACTION_SEARCH);
         getContext().registerReceiver(mRestaurantFilterChangeReceiver, intentFilter);
         mUserRealm = Realm.getInstance(RealmUtils.CONFIG_USER);
         mUserRealm.addChangeListener(mUserChangeListener);
@@ -134,8 +140,9 @@ public class RestaurantListFragment extends Fragment implements OnRefreshListene
                 mRowLayoutResId = args.getInt(EXTRA_ROW_LAYOUT_RES_ID, R.layout.row_restaurant_list);
                 mSpacing = args.getInt(EXTRA_SPACING, 8);
                 mFavorite = args.getBoolean(EXTRA_FAVORITE, false);
-                mSearchQuery = args.getString(MainActivity.EXTRA_QUERY);
+                mSearchQuery = args.getString(EXTRA_QUERY);
                 mUseBanner = args.getBoolean(EXTRA_USE_BANNER, false);
+                mUseSearch = args.getBoolean(EXTRA_USE_SEARCH, false);
             }
             String detailImageUrl = mTheme != null && !TextUtils.isEmpty(mTheme.getDetailImage()) ? mTheme.getDetailImage() : null;
             mRoot = (SwipeRefreshLayout) inflater.inflate(R.layout.fragment_restaurant_list, container, false);
@@ -144,6 +151,10 @@ public class RestaurantListFragment extends Fragment implements OnRefreshListene
             Connect connect = mConnectRealm.where(Connect.class).findFirst();
             mAdapter = new RestaurantListAdapter(mRestaurantList, (int) ((CommonUtils.getScreenWidth() - CommonUtils.convertDipToPx(getContext(), mSpacing * (mColumnCount + 1))) / mColumnCount * 330f / 272f), mRowLayoutResId, detailImageUrl, mFavorite, this, (mUseBanner && connect != null) ? connect.getBanners() : null);
             mEmptyView = mRoot.findViewById(R.id.restaurant_list_empty_view);
+            mEmptySearchView = mRoot.findViewById(R.id.restaurant_list_empty_search_view);
+            mEmptySearchView.setVisibility(mUseSearch ? View.VISIBLE : View.GONE);
+            mEmptySearchButton = mRoot.findViewById(R.id.restaurant_list_empty_search_button);
+            mEmptySearchButton.setOnClickListener(this);
             mRecyclerView = (RecyclerViewEmptySupport) mRoot.findViewById(R.id.restaurant_list_recycler_view);
             GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), mColumnCount) {
                 @Override
@@ -269,17 +280,27 @@ public class RestaurantListFragment extends Fragment implements OnRefreshListene
                     onRefresh();
                     mRoot.setRefreshing(true);
                 }
-            } else if (intent.getAction().equals(MainActivity.ACTION_MAIN_SEARCH)) {
-                mSearchQuery = intent.getStringExtra(MainActivity.EXTRA_QUERY);
+            } else if (mUseSearch && intent.getAction().equals(SearchActivity.ACTION_SEARCH)) {
+                mSearchQuery = intent.getStringExtra(EXTRA_QUERY);
                 if (isAdded() && mTheme == null && !mFavorite) {
-                    onRefresh();
-                    mRoot.setRefreshing(true);
+                    if (TextUtils.isEmpty(mSearchQuery)) {
+                        mRestaurantList.clear();
+                        mRecyclerView.setEmptyView(null);
+                        mRoot.setRefreshing(false);
+                        mAdapter.notifyDataSetChanged();
+                    } else {
+                        onRefresh();
+                        mRoot.setRefreshing(true);
+                    }
                 }
             }
         }
     };
 
     private void getRestaurantList(int offset) {
+        if (mUseSearch && TextUtils.isEmpty(mSearchQuery)) {
+            return;
+        }
         if (!mRequesting) {
             mRequesting = true;
             double lat = mAddress.getLat();
@@ -384,6 +405,9 @@ public class RestaurantListFragment extends Fragment implements OnRefreshListene
     public void onClick(View v) {
         if (v.getId() == R.id.restaurant_favorite) {
             toggleFavorite((Integer) v.getTag());
+        } else if (v.getId() == R.id.restaurant_list_empty_search_button) {
+            MainActivity.createInstance(getContext(), "0");
+            getActivity().finish();
         }
     }
 

@@ -46,6 +46,8 @@ public class Coupon extends RealmObject {
     private boolean mUsed;
     @SerializedName("min_amount")
     private int mMinAmount;
+    @SerializedName("status_message")
+    private String mStatusMessage;
 
     public Coupon() {
     }
@@ -152,5 +154,13 @@ public class Coupon extends RealmObject {
 
     public void setMinAmount(int minAmount) {
         mMinAmount = minAmount;
+    }
+
+    public String getStatusMessage() {
+        return mStatusMessage;
+    }
+
+    public void setStatusMessage(String statusMessage) {
+        mStatusMessage = statusMessage;
     }
 }

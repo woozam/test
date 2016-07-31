@@ -72,6 +72,18 @@ public class CartMenu extends RealmObject {
 
     public int getTotalPrice() {
         int total = 0;
+        if (mMenu.getDiscountType() != 0) {
+            total += mMenu.getDiscountedPrice();
+        } else {
+            total += mMenu.getPrice();
+        }
+        total += getOptionPrice();
+        total *= mQuantity;
+        return total;
+    }
+
+    public int getOriginalTotalPrice() {
+        int total = 0;
         total += mMenu.getPrice();
         total += getOptionPrice();
         total *= mQuantity;

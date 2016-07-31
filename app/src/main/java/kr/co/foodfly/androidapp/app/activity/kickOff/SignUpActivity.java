@@ -81,6 +81,7 @@ public class SignUpActivity extends BaseActivity implements OnClickListener, Tex
     private View mSendAuthCode;
     private EditText mAuthCode;
     private View mAuth;
+    private EditText mReferralCodeText;
     private EditText mJoinChannel;
     private CheckBox mTerm;
     private CheckBox mAge;
@@ -123,6 +124,8 @@ public class SignUpActivity extends BaseActivity implements OnClickListener, Tex
         mSendAuthCode = findViewById(R.id.sign_up_send_auth_code);
         mAuthCode = (EditText) findViewById(R.id.sign_up_auth_code);
         mAuth = findViewById(R.id.sign_up_auth);
+        mReferralCodeText = (EditText) findViewById(R.id.sign_up_referral_code);
+        mReferralCodeText.setText(mReferralCode);
         mJoinChannel = (EditText) findViewById(R.id.sign_up_join_channel);
         mTerm = (CheckBox) findViewById(R.id.sign_up_term);
         mAge = (CheckBox) findViewById(R.id.sign_up_age);
@@ -406,7 +409,7 @@ public class SignUpActivity extends BaseActivity implements OnClickListener, Tex
         boolean agreeRecvEmail = mMarketingEmail.isChecked();
         boolean agreeRecvSMS = mMarketingSMS.isChecked();
         boolean agreeRecvPush = mMarketingPush.isChecked();
-        String referralCode = mReferralCode;
+        String referralCode = mReferralCodeText.getText().toString();
 
         JsonObject user = new JsonObject();
         user.addProperty("username", userName);

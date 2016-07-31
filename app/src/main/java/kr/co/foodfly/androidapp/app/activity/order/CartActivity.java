@@ -2,6 +2,7 @@ package kr.co.foodfly.androidapp.app.activity.order;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -155,10 +156,6 @@ public class CartActivity extends BaseActivity implements RealmChangeListener<Re
     public void onClick(final View v) {
         if (v == mAdd) {
             RestaurantActivity.createInstance(this, mCart.getRestaurant().getId());
-            Intent intent = new Intent();
-            intent.putExtra("add", true);
-            setResult(RESULT_OK, intent);
-            finish();
         } else if (v == mOrder) {
             order();
         } else if (v.getId() == R.id.cart_menu_quantity_add) {
@@ -349,11 +346,7 @@ public class CartActivity extends BaseActivity implements RealmChangeListener<Re
         @Override
         public void setItem(Object object) {
             Restaurant restaurant = (Restaurant) object;
-            if (restaurant.getImages() != null && restaurant.getImages().size() > 0) {
-                mImage.setImageUrl(restaurant.getImages().get(0).getValue(), VolleySingleton.getInstance(mImage.getContext()).getImageLoader());
-            } else {
-                mImage.setImageBitmap(null);
-            }
+            mImage.setImageUrl(restaurant.getThumbnail(), VolleySingleton.getInstance(mImage.getContext()).getImageLoader());
             mName.setText(restaurant.getName());
         }
     }
@@ -367,6 +360,7 @@ public class CartActivity extends BaseActivity implements RealmChangeListener<Re
         private TextView mPrice;
         private TextView mOptionPrice;
         private TextView mOptionList;
+        private TextView mOriginalTotalPrice;
         private TextView mTotalPrice;
 
         public CartMenuViewHolder(View itemView) {
@@ -378,6 +372,8 @@ public class CartActivity extends BaseActivity implements RealmChangeListener<Re
             mPrice = (TextView) itemView.findViewById(R.id.cart_menu_price);
             mOptionPrice = (TextView) itemView.findViewById(R.id.cart_menu_option_price);
             mOptionList = (TextView) itemView.findViewById(R.id.cart_menu_option_list);
+            mOriginalTotalPrice = (TextView) itemView.findViewById(R.id.cart_menu_original_price);
+            mOriginalTotalPrice.setPaintFlags(mOriginalTotalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             mTotalPrice = (TextView) itemView.findViewById(R.id.cart_menu_total_price);
         }
 
@@ -391,6 +387,8 @@ public class CartActivity extends BaseActivity implements RealmChangeListener<Re
             mOptionList.setText(cartMenu.getOptionString());
             mOptionList.setVisibility(mOptionList.length() == 0 ? View.GONE : View.VISIBLE);
             mTotalPrice.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(cartMenu.getTotalPrice())));
+            mOriginalTotalPrice.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(cartMenu.getOriginalTotalPrice())));
+            mOriginalTotalPrice.setVisibility(cartMenu.getMenu().getDiscountType() != 0 ? View.VISIBLE : View.GONE);
         }
     }
 }

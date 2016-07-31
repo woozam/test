@@ -30,13 +30,11 @@ import com.google.gson.JsonObject;
 
 import java.util.Locale;
 
-import io.realm.Realm;
 import kr.co.foodfly.androidapp.R;
 import kr.co.foodfly.androidapp.app.activity.BaseActivity;
 import kr.co.foodfly.androidapp.common.ViewSupportUtils;
 import kr.co.foodfly.androidapp.data.RealmUtils;
 import kr.co.foodfly.androidapp.model.BaseResponse;
-import kr.co.foodfly.androidapp.model.connect.Connect;
 import kr.co.foodfly.androidapp.model.user.User;
 import kr.co.foodfly.androidapp.model.user.UserManager;
 import kr.co.foodfly.androidapp.model.user.UserResponse;
@@ -263,13 +261,7 @@ public class UserActivity extends BaseActivity implements OnClickListener, TextW
                 GsonRequest<String> request = new GsonRequest<>(Method.GET, url, String.class, APIs.createHeadersWithToken(), new Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Realm realm = Realm.getInstance(RealmUtils.CONFIG_ADDRESS);
-                        realm.beginTransaction();
-                        realm.deleteAll();
-                        realm.commitTransaction();
-                        realm.close();
-                        UserManager.deleteUser();
-                        Connect.updateArea();
+                        UserManager.onLogout();
                         finish();
                     }
                 }, new ErrorListener() {

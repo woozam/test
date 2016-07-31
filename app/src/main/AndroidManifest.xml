@@ -229,6 +229,29 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
         </activity>
+        <activity
+            android:name=".app.activity.main.SearchActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan|stateVisible">
+        </activity>
+        <activity
+            android:name=".app.activity.user.MyReferralCodeActivity"
+            android:label="@string/title_activity_my_referral_code"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
+        </activity>
+        <activity
+            android:name=".app.activity.order.PayActivity"
+            android:label="@string/title_activity_pay"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan|stateHidden">
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

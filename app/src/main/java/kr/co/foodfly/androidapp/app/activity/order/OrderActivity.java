@@ -1,5 +1,8 @@
 package kr.co.foodfly.androidapp.app.activity.order;
 
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
@@ -13,8 +16,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -26,16 +32,21 @@ import com.android.volley.VolleyError;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.TimeZone;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import kr.co.foodfly.androidapp.R;
 import kr.co.foodfly.androidapp.app.activity.BaseActivity;
 import kr.co.foodfly.androidapp.app.activity.user.CouponActivity;
+import kr.co.foodfly.androidapp.app.dialog.BoundTimePickerDialog;
+import kr.co.foodfly.androidapp.common.TimeUtils;
 import kr.co.foodfly.androidapp.common.UnitUtils;
 import kr.co.foodfly.androidapp.common.ViewSupportUtils;
 import kr.co.foodfly.androidapp.data.RealmUtils;
@@ -75,6 +86,7 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
     private View mDeliveryTypeTakeout;
     private View mDeliveryTimeNow;
     private View mDeliveryTimeReserve;
+    private Button mDeliveryReservedTime;
     private EditText mDeliveryMessage;
     private TextView mPrice;
     private TextView mPriceTip;
@@ -109,6 +121,8 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
     private Coupon mCoupon;
     private int mMileage;
 
+    private Calendar mReservedCalendar;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +138,7 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
         mDeliveryTypeTakeout = findViewById(R.id.order_delivery_type_takeout);
         mDeliveryTimeNow = findViewById(R.id.order_delivery_time_now);
         mDeliveryTimeReserve = findViewById(R.id.order_delivery_time_reserve);
+        mDeliveryReservedTime = (Button) findViewById(R.id.order_delivery_reserved_time);
         mDeliveryMessage = (EditText) findViewById(R.id.order_delivery_message_text);
         mPrice = (TextView) findViewById(R.id.order_price_text);
         mPriceTip = (TextView) findViewById(R.id.order_tip_text);
@@ -149,6 +164,7 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
         mDeliveryTypeTakeout.setOnClickListener(this);
         mDeliveryTimeNow.setOnClickListener(this);
         mDeliveryTimeReserve.setOnClickListener(this);
+        mDeliveryReservedTime.setOnClickListener(this);
         mCouponButton.setOnClickListener(this);
         mMileageButton.setOnClickListener(this);
         mCouponMileageDisable.setOnClickListener(this);
@@ -211,6 +227,9 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
     };
 
     private void loadRestaurant() {
+        if (mCart == null || !mCart.isValid()) {
+            return;
+        }
         MapAddress mapAddress = MapAddress.getAddress();
         Uri.Builder builder = APIs.getRestaurantPath().appendPath(mCart.getRestaurant().getId()).appendQueryParameter(APIs.PARAM_LAT, String.valueOf(mapAddress.getLat())).appendQueryParameter(APIs.PARAM_LON, String.valueOf(mapAddress.getLon())).appendQueryParameter(APIs.PARAM_AREA_CODE, String.valueOf(mapAddress.getAreaCode()));
         String url = builder.toString();
@@ -341,27 +360,24 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
             finish();
             return;
         }
-        if (mRestaurant.getDeliveryStatus() == 0) {
-            mDeliveryTypeFoodfly.setEnabled(true);
-            mDeliveryTypeTakeout.setEnabled(true);
-            mDeliveryTypeFoodfly.setSelected(true);
-            mDeliveryTypeTakeout.setSelected(false);
-        } else if (mRestaurant.getDeliveryStatus() == 1) {
+
+        mDeliveryTypeFoodfly.setEnabled(true);
+        mDeliveryTypeTakeout.setEnabled(true);
+        mDeliveryTypeFoodfly.setSelected(true);
+        mDeliveryTypeTakeout.setSelected(false);
+        if (mRestaurant.getDeliveryStatus() == 1) { // 테이크아웃은 가능은 플로우 진행
             mDeliveryTypeFoodfly.setEnabled(false);
             mDeliveryTypeTakeout.setEnabled(true);
             mDeliveryTypeFoodfly.setSelected(false);
             mDeliveryTypeTakeout.setSelected(true);
-        } else if (mRestaurant.getDeliveryStatus() == 2) {
+        }
+        if (!mRestaurant.isTakeoutAvailable()) {   // 테이크아웃 불가능 업장
             mDeliveryTypeFoodfly.setEnabled(true);
             mDeliveryTypeTakeout.setEnabled(false);
             mDeliveryTypeFoodfly.setSelected(true);
             mDeliveryTypeTakeout.setSelected(false);
-        } else if (mRestaurant.getDeliveryStatus() == 3) {
-            mDeliveryTypeFoodfly.setEnabled(false);
-            mDeliveryTypeTakeout.setEnabled(false);
-            mDeliveryTypeFoodfly.setSelected(false);
-            mDeliveryTypeTakeout.setSelected(false);
         }
+
         mDeliveryTimeNow.setSelected(true);
         mDeliveryTimeReserve.setSelected(false);
         mPriceMileageAmount.setHint(String.valueOf(user.getUser().getMileage()));
@@ -387,8 +403,20 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
         if (mRestaurant == null) {
             return;
         }
+        if (mCart == null || !mCart.isValid()) {
+            return;
+        }
         mMenuTotal = mCart.getTotal();
         mDeliveryTip = mDeliveryTypeTakeout.isSelected() ? 0 : mRestaurant.getDeliveryTip(mCart.getTotal());
+
+//        if (mRestaurant.extra_delivery_fee_rule.additional_fee_percent > 0 || mRestaurant.extra_delivery_fee_rule.menu_sum_thr > 0) {
+//            UILabel* tipDescLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(tipTitleLabel.frame), CGRectGetMaxY(priceTitleLabel.frame), LEFT_WIDTH*2, CELL_HEIGHT)];
+//            [tipDescLabel setH3DefaultWithText:[NSString stringWithFormat:@"(본 음식점은 메뉴가의 %lu%%가 배달팁에 추가됩니다)", (unsigned long)[[[[CartManager sharedInstance] restaurant] extra_delivery_fee_rule] additional_fee_percent]]];
+//            [self.baseView addSubview:tipDescLabel];
+//            float fee = mRestaurant.extra_delivery_fee_rule.additional_fee_percent;
+//            mDeliveryTip += Math.round((fee * ((float) mMenuTotal)) / 10000) * 100;
+//        }
+
         int discountType = mRestaurant.getDiscountType();
         int discountAmount = mRestaurant.getDiscountAmount();
 
@@ -470,9 +498,74 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
         } else if (v == mDeliveryTimeNow) {
             mDeliveryTimeNow.setSelected(true);
             mDeliveryTimeReserve.setSelected(false);
+            mDeliveryReservedTime.setVisibility(View.GONE);
         } else if (v == mDeliveryTimeReserve) {
-            mDeliveryTimeNow.setSelected(false);
-            mDeliveryTimeReserve.setSelected(true);
+            if (mReservedCalendar == null) {
+                mReservedCalendar = GregorianCalendar.getInstance();
+            }
+            mReservedCalendar.setTimeInMillis(System.currentTimeMillis());
+            final int year = mReservedCalendar.get(Calendar.YEAR);
+            final int month = mReservedCalendar.get(Calendar.MONTH);
+            final int day = mReservedCalendar.get(Calendar.DAY_OF_MONTH);
+            final int hour = mReservedCalendar.get(Calendar.HOUR_OF_DAY);
+            final int minute = mReservedCalendar.get(Calendar.MINUTE);
+            DatePickerDialog dialog = new DatePickerDialog(this, new OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int _year, int _monthOfYear, int _dayOfMonth) {
+                    mReservedCalendar.set(Calendar.YEAR, _year);
+                    mReservedCalendar.set(Calendar.MONTH, _monthOfYear);
+                    mReservedCalendar.set(Calendar.DATE, _dayOfMonth);
+                    BoundTimePickerDialog dialog = new BoundTimePickerDialog(OrderActivity.this, new OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            mReservedCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            mReservedCalendar.set(Calendar.MINUTE, minute);
+                            mDeliveryTimeNow.setSelected(false);
+                            mDeliveryTimeReserve.setSelected(true);
+                            mDeliveryReservedTime.setVisibility(View.VISIBLE);
+                            mDeliveryReservedTime.setText(TimeUtils.getFullTimeString(mReservedCalendar.getTimeInMillis() + TimeZone.getDefault().getRawOffset()));
+                        }
+                    }, hour, minute, true);
+                    int _a = _year * 384 + _monthOfYear * 32 + _dayOfMonth;
+                    int a = year * 384 + month * 32 + day;
+                    if (_a <= a) {
+                        dialog.setMin(hour, minute);
+                    }
+                    dialog.show();
+                }
+            }, year, month, day);
+            dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            dialog.show();
+        } else if (v == mDeliveryReservedTime) {
+            final int year = mReservedCalendar.get(Calendar.YEAR);
+            final int month = mReservedCalendar.get(Calendar.MONTH);
+            final int day = mReservedCalendar.get(Calendar.DAY_OF_MONTH);
+            final int hour = mReservedCalendar.get(Calendar.HOUR_OF_DAY);
+            final int minute = mReservedCalendar.get(Calendar.MINUTE);
+            DatePickerDialog dialog = new DatePickerDialog(this, new OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int _year, int _monthOfYear, int _dayOfMonth) {
+                    mReservedCalendar.set(Calendar.YEAR, _year);
+                    mReservedCalendar.set(Calendar.MONTH, _monthOfYear);
+                    mReservedCalendar.set(Calendar.DATE, _dayOfMonth);
+                    BoundTimePickerDialog dialog = new BoundTimePickerDialog(OrderActivity.this, new OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            mReservedCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            mReservedCalendar.set(Calendar.MINUTE, minute);
+                            mDeliveryReservedTime.setText(TimeUtils.getFullTimeString(mReservedCalendar.getTimeInMillis() + TimeZone.getDefault().getRawOffset()));
+                        }
+                    }, hour, minute, true);
+                    int _a = _year * 384 + _monthOfYear * 32 + _dayOfMonth;
+                    int a = year * 384 + month * 32 + day;
+                    if (_a <= a) {
+                        dialog.setMin(hour, minute);
+                    }
+                    dialog.show();
+                }
+            }, year, month, day);
+            dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            dialog.show();
         } else if (v == mCouponButton) {
             if (mRestaurant == null) {
                 return;
@@ -522,6 +615,9 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
                 deliveryTime.setText("바로주문");
             } else if (mDeliveryTimeReserve.isSelected()) {
                 deliveryTime.setText("예약주문");
+                deliveryTime.append("(");
+                deliveryTime.append(mDeliveryReservedTime.getText());
+                deliveryTime.append(")");
             }
             new MaterialDialog.Builder(this).customView(view, true).positiveText("확인").negativeText("취소").onPositive(new SingleButtonCallback() {
                 @Override
@@ -558,6 +654,9 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
 
     private void done() {
         if (mRestaurant == null) {
+            return;
+        }
+        if (mCart == null || !mCart.isValid()) {
             return;
         }
         UserResponse user = UserManager.fetchUser();
@@ -623,6 +722,9 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
             deliveryType = 2;
         }
         json.addProperty("delivery_type", deliveryType);
+        if (mDeliveryTimeReserve.isSelected()) {
+            json.addProperty("reservation_time", mReservedCalendar.getTimeInMillis() / 1000 + TimeZone.getDefault().getRawOffset() / 1000);
+        }
         if (mDeliveryMessage.length() > 0) {
             json.addProperty("memo", mDeliveryMessage.getText().toString());
         }
@@ -637,6 +739,8 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
                     mCartRealm.commitTransaction();
                     OrderDetailActivity.createInstance(OrderActivity.this, response.order, "주문 완료", false);
                     finish();
+                } else {
+                    PayActivity.createInstance(OrderActivity.this, response.payment);
                 }
             }
         }, new ErrorListener() {

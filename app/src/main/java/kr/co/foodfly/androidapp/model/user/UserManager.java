@@ -12,6 +12,7 @@ import io.realm.Realm;
 import kr.co.foodfly.androidapp.Application;
 import kr.co.foodfly.androidapp.data.RealmUtils;
 import kr.co.foodfly.androidapp.model.BaseResponse;
+import kr.co.foodfly.androidapp.model.connect.Connect;
 import kr.co.foodfly.androidapp.network.APIs;
 import kr.co.foodfly.androidapp.network.GsonRequest;
 import kr.co.foodfly.androidapp.network.VolleySingleton;
@@ -127,5 +128,20 @@ public class UserManager {
             }
         }, RealmUtils.REALM_GSON);
         VolleySingleton.getInstance(Application.getContext()).addToRequestQueue(request);
+    }
+
+    public static void onLogout() {
+        Realm realm = Realm.getInstance(RealmUtils.CONFIG_ADDRESS);
+        realm.beginTransaction();
+        realm.deleteAll();
+        realm.commitTransaction();
+        realm.close();
+        realm = Realm.getInstance(RealmUtils.CONFIG_CART);
+        realm.beginTransaction();
+        realm.deleteAll();
+        realm.commitTransaction();
+        realm.close();
+        UserManager.deleteUser();
+        Connect.updateArea();
     }
 }

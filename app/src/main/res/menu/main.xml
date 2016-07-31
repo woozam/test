@@ -3,7 +3,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_search"
+        android:icon="@drawable/places_ic_search"
         android:title="검색"
-        app:actionViewClass="kr.co.foodfly.androidapp.app.view.CustomSearchView"
         app:showAsAction="always"/>
 </menu>

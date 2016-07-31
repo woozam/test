@@ -2,6 +2,7 @@ package kr.co.foodfly.androidapp.app.activity.etc;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import kr.co.foodfly.androidapp.R;
@@ -12,6 +13,7 @@ import kr.co.foodfly.androidapp.app.activity.BaseActivity;
  */
 public abstract class AbsWebViewActivity extends BaseActivity {
 
+    protected ViewGroup mContainer;
     protected WebView mWebView;
 
     @Override
@@ -20,6 +22,7 @@ public abstract class AbsWebViewActivity extends BaseActivity {
         setContentView(R.layout.activity_web_view);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mContainer = (ViewGroup) findViewById(R.id.web_view_layout);
         mWebView = (WebView) findViewById(R.id.web_view);
         mWebView.getSettings().setJavaScriptEnabled(true);
     }
