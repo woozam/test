@@ -433,6 +433,17 @@
                     android:textSize="13sp"/>
 
                 <TextView
+                    android:id="@+id/order_tip_extra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/order_tip"
+                    android:layout_marginLeft="26dp"
+                    android:layout_marginStart="26dp"
+                    android:gravity="center_vertical"
+                    android:textSize="10.5sp"
+                    android:visibility="gone"/>
+
+                <TextView
                     android:id="@+id/order_tip_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -586,6 +597,12 @@
                     android:layout_height="0dp"
                     android:layout_alignBottom="@+id/order_mileage_button"
                     android:layout_alignTop="@+id/order_coupon_button"
+                    android:layout_marginBottom="-4dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="-4dp"
                     android:background="#80000000"
                     android:gravity="center"
                     android:text="쿠폰/마일리지 사용 불가"

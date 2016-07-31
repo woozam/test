@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 import io.realm.Realm;
 import kr.co.foodfly.androidapp.Application;
 import kr.co.foodfly.androidapp.data.RealmUtils;
+import kr.co.foodfly.androidapp.gcm.GcmUtils;
 import kr.co.foodfly.androidapp.model.BaseResponse;
 import kr.co.foodfly.androidapp.model.connect.Connect;
 import kr.co.foodfly.androidapp.network.APIs;

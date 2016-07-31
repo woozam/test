@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FoodFly</string>
+    <string name="app_name">푸드플라이</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="api_key_naver">b97613062c5ca7a0766611fa08c48718</string>

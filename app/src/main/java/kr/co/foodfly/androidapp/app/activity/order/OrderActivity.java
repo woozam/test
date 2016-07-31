@@ -90,6 +90,7 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
     private EditText mDeliveryMessage;
     private TextView mPrice;
     private TextView mPriceTip;
+    private TextView mPriceTipExtra;
     private TextView mPriceEvent;
     private TextView mPriceCoupon;
     private TextView mPriceMileage;
@@ -142,6 +143,7 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
         mDeliveryMessage = (EditText) findViewById(R.id.order_delivery_message_text);
         mPrice = (TextView) findViewById(R.id.order_price_text);
         mPriceTip = (TextView) findViewById(R.id.order_tip_text);
+        mPriceTipExtra = (TextView) findViewById(R.id.order_tip_extra);
         mPriceEvent = (TextView) findViewById(R.id.order_event_text);
         mPriceCoupon = (TextView) findViewById(R.id.order_coupon_text);
         mPriceMileage = (TextView) findViewById(R.id.order_mileage_text);
@@ -216,7 +218,42 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
                 String couponId = data.getStringExtra(CouponActivity.EXTRA_COUPON_ID);
                 loadCoupon(couponId);
             }
+        } else if (requestCode == PayActivity.REQ_CODE_PAY) {
+            if (resultCode == RESULT_OK) {
+                Uri uri = data.getData();
+                String id = uri.getQueryParameter("id");
+                boolean success = uri.getBooleanQueryParameter("success", false);
+                if (success) {
+                    orderComplete(mOrderResponse);
+                } else {
+                    cancelPayment(id);
+                }
+            } else {
+                cancelPayment(mOrderResponse.order.getId());
+            }
         }
+    }
+
+    private void cancelPayment(String orderId) {
+        UserResponse user = UserManager.fetchUser();
+        String url = APIs.getPaymentPath().appendPath(APIs.PAYMENT_CANCEL).appendQueryParameter("status", "3").appendQueryParameter("user_id", user.getId()).appendQueryParameter("order_id", orderId).toString();
+        GsonRequest<BaseResponse> request = new GsonRequest<>(Method.GET, url, BaseResponse.class, APIs.createHeadersWithToken(), new Listener<BaseResponse>() {
+            @Override
+            public void onResponse(BaseResponse response) {
+                dismissProgressDialog();
+            }
+        }, new ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dismissProgressDialog();
+                BaseResponse response = BaseResponse.parseError(BaseResponse.class, error);
+                if (response != null && response.getError() != null && !TextUtils.isEmpty(response.getError().message)) {
+                    new MaterialDialog.Builder(OrderActivity.this).content(response.getError().message).positiveText("확인").show();
+                }
+            }
+        }, RealmUtils.REALM_GSON);
+        VolleySingleton.getInstance(this).addToRequestQueue(request);
+        showProgressDialog();
     }
 
     private RealmChangeListener mCartChangeListener = new RealmChangeListener() {
@@ -407,15 +444,19 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
             return;
         }
         mMenuTotal = mCart.getTotal();
-        mDeliveryTip = mDeliveryTypeTakeout.isSelected() ? 0 : mRestaurant.getDeliveryTip(mCart.getTotal());
-
-//        if (mRestaurant.extra_delivery_fee_rule.additional_fee_percent > 0 || mRestaurant.extra_delivery_fee_rule.menu_sum_thr > 0) {
-//            UILabel* tipDescLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(tipTitleLabel.frame), CGRectGetMaxY(priceTitleLabel.frame), LEFT_WIDTH*2, CELL_HEIGHT)];
-//            [tipDescLabel setH3DefaultWithText:[NSString stringWithFormat:@"(본 음식점은 메뉴가의 %lu%%가 배달팁에 추가됩니다)", (unsigned long)[[[[CartManager sharedInstance] restaurant] extra_delivery_fee_rule] additional_fee_percent]]];
-//            [self.baseView addSubview:tipDescLabel];
-//            float fee = mRestaurant.extra_delivery_fee_rule.additional_fee_percent;
-//            mDeliveryTip += Math.round((fee * ((float) mMenuTotal)) / 10000) * 100;
-//        }
+        if (mDeliveryTypeTakeout.isSelected()) {
+            mDeliveryTip = 0;
+        } else {
+            mDeliveryTip = mRestaurant.getDeliveryTip(mCart.getTotal());
+            if (mRestaurant.getExtraDeliveryFeeRule().getAdditionalFeePercent() > 0 || mRestaurant.getExtraDeliveryFeeRule().getMenuSumThr() > 0) {
+                mPriceTipExtra.setVisibility(View.VISIBLE);
+                mPriceTipExtra.setText(String.format(Locale.getDefault(), "(본 음식점은 메뉴가의 %d%%가 배달팁에 추가됩니다)", mRestaurant.getExtraDeliveryFeeRule().getAdditionalFeePercent()));
+                float fee = mRestaurant.getExtraDeliveryFeeRule().getAdditionalFeePercent();
+                mDeliveryTip += Math.round((fee * ((float) mMenuTotal)) / 10000) * 100;
+            } else {
+                mPriceTipExtra.setVisibility(View.GONE);
+            }
+        }
 
         int discountType = mRestaurant.getDiscountType();
         int discountAmount = mRestaurant.getDiscountAmount();
@@ -733,13 +774,11 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
             @Override
             public void onResponse(OrderResponse response) {
                 dismissProgressDialog();
+                mOrderResponse = response;
                 if (response.payment == null) {
-                    mCartRealm.beginTransaction();
-                    mCartRealm.deleteAll();
-                    mCartRealm.commitTransaction();
-                    OrderDetailActivity.createInstance(OrderActivity.this, response.order, "주문 완료", false);
-                    finish();
+                    orderComplete(response);
                 } else {
+                    mOrderResponse = response;
                     PayActivity.createInstance(OrderActivity.this, response.payment);
                 }
             }
@@ -756,6 +795,16 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
         VolleySingleton.getInstance(this).addToRequestQueue(request);
         showProgressDialog();
     }
+
+    private void orderComplete(OrderResponse orderResponse) {
+        mCartRealm.beginTransaction();
+        mCartRealm.deleteAll();
+        mCartRealm.commitTransaction();
+        OrderDetailActivity.createInstance(OrderActivity.this, orderResponse.order, "주문 완료", false);
+        finish();
+    }
+
+    private OrderResponse mOrderResponse;
 
     private class OrderResponse extends BaseResponse {
         Order order;

@@ -413,10 +413,14 @@ public class RestaurantAdapter extends AbstractExpandableItemAdapter<RestaurantG
         protected void setItem(Object item) {
             if (item != null) {
                 Menu menu = (Menu) item;
-                mName.setText(menu.getName());
+                String name = menu.getName();
+                if (!TextUtils.isEmpty(name)) {
+                    name = name.replace("\t", "");
+                }
+                mName.setText(name);
                 Drawable off = ResourcesCompat.getDrawable(mName.getResources(), R.mipmap.off, null);
                 off.setBounds(0, 0, CommonUtils.convertSpToPx(mName.getContext(), 28), CommonUtils.convertSpToPx(mName.getContext(), 14));
-                mName.setCompoundDrawables(null, null, ((Menu) item).isSoldOut() ? off : null, null);
+                mName.setCompoundDrawables(null, null, menu.isSoldOut() ? off : null, null);
                 mImage.setImageUrl(menu.getThumbnail(), VolleySingleton.getInstance(mImage.getContext()).getImageLoader());
                 if (menu.getDiscountType() != 0) {
                     mOriginalPrice.setVisibility(View.VISIBLE);

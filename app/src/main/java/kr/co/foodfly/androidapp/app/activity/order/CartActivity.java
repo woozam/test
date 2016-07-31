@@ -380,7 +380,11 @@ public class CartActivity extends BaseActivity implements RealmChangeListener<Re
         @Override
         public void setItem(Object object) {
             CartMenu cartMenu = (CartMenu) object;
-            mName.setText(cartMenu.getMenu().getName());
+            String name = cartMenu.getMenu().getName();
+            if (!TextUtils.isEmpty(name)) {
+                name = name.replace("\t", "");
+            }
+            mName.setText(name);
             mQuantity.setText(String.valueOf(cartMenu.getQuantity()));
             mPrice.setText(String.format(Locale.getDefault(), "%s원", UnitUtils.priceFormat(cartMenu.getMenu().getPrice())));
             mOptionPrice.setText(String.format(Locale.getDefault(), "+%s원", UnitUtils.priceFormat(cartMenu.getOptionPrice())));

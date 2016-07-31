@@ -41,6 +41,7 @@ import kr.co.foodfly.androidapp.R;
 import kr.co.foodfly.androidapp.app.activity.BaseActivity;
 import kr.co.foodfly.androidapp.common.ViewSupportUtils;
 import kr.co.foodfly.androidapp.data.RealmUtils;
+import kr.co.foodfly.androidapp.gcm.GcmUtils;
 import kr.co.foodfly.androidapp.model.BaseResponse;
 import kr.co.foodfly.androidapp.model.connect.Connect;
 import kr.co.foodfly.androidapp.model.user.UserManager;
@@ -435,6 +436,7 @@ public class SignUpActivity extends BaseActivity implements OnClickListener, Tex
                 response.getUser().setReferralCode(null);
                 response.setId(response.getUser().getId());
                 UserManager.setUser(response);
+                GcmUtils.register(SignUpActivity.this);
                 setResult(RESULT_OK);
                 finish();
             }

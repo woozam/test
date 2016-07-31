@@ -106,6 +106,8 @@ public class Restaurant extends RealmObject {
     private boolean mFavorite;
     @SerializedName("opening_hour")
     private OpeningHour mOpeningHour;
+    @SerializedName("extra_delivery_fee_rule")
+    private ExtraDeliveryFeeRule mExtraDeliveryFeeRule;
 
     @Index
     private Date mLastVisitTime;
@@ -204,7 +206,7 @@ public class Restaurant extends RealmObject {
         int tip = 0;
         for (int i = 0; i < mDeliveryTips.size(); i++) {
             FeeInfo feeInfo = mDeliveryTips.get(i);
-            if (feeInfo.getMinimumOrderAmount() < price) {
+            if (feeInfo.getMinimumOrderAmount() <= price) {
                 tip = feeInfo.getFee();
             }
         }
@@ -454,6 +456,14 @@ public class Restaurant extends RealmObject {
 
     public void setOpeningHour(OpeningHour openingHour) {
         mOpeningHour = openingHour;
+    }
+
+    public ExtraDeliveryFeeRule getExtraDeliveryFeeRule() {
+        return mExtraDeliveryFeeRule;
+    }
+
+    public void setExtraDeliveryFeeRule(ExtraDeliveryFeeRule extraDeliveryFeeRule) {
+        mExtraDeliveryFeeRule = extraDeliveryFeeRule;
     }
 
     public Date getLastVisitTime() {

@@ -111,7 +111,11 @@ public class MenuView extends RelativeLayout implements OnClickListener {
             }
         }, CommonUtils.getScreenWidth(), CommonUtils.getScreenHeight(), ScaleType.CENTER_CROP);
         mImage.setVisibility(TextUtils.isEmpty(menu.getImage()) ? GONE : VISIBLE);
-        mName.setText(menu.getName());
+        String name = menu.getName();
+        if (!TextUtils.isEmpty(name)) {
+            name = name.replace("\t", "");
+        }
+        mName.setText(name);
         mDescription.setText(Html.fromHtml(menu.getDescription().replace("\n", "<br>")));
         mScrollView.scrollTo(0, 0);
         mMenuOptionView.removeAllViews();

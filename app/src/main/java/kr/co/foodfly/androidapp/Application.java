@@ -5,6 +5,7 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
+import kr.co.foodfly.androidapp.gcm.GcmUtils;
 import kr.co.foodfly.androidapp.model.connect.Connect;
 import kr.co.foodfly.androidapp.model.user.UserManager;
 
@@ -36,5 +37,6 @@ public class Application extends MultiDexApplication {
         sContext = this;
         UserManager.refreshToken();
         Connect.updateConnect();
+        GcmUtils.register(this);
     }
 }

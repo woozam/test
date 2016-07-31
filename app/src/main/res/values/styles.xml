@@ -43,6 +43,7 @@
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/white</item>
         <item name="android:actionBarSize">48dp</item>
+        <item name="actionBarSize">48dp</item>
     </style>
 
     <style name="AppBarTitleTextAppearance" parent="@style/Base.TextAppearance.AppCompat.Title">

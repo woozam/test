@@ -152,6 +152,14 @@ public class MainNavigationView extends RelativeLayout implements OnClickListene
         setUser();
         setConnect();
         setVersion();
+
+        post(new Runnable() {
+            @Override
+            public void run() {
+                mChefly.getLayoutParams().height = (int) (getMeasuredWidth() * 159f / 639f);
+                mChefly.requestLayout();
+            }
+        });
     }
 
     @Override
@@ -194,6 +202,13 @@ public class MainNavigationView extends RelativeLayout implements OnClickListene
         }
         MapAddress address = MapAddress.getAddress();
         mChefly.setVisibility(TextUtils.equals(address.getCheflyAvailable(), "1") ? VISIBLE : GONE);
+        mChefly.post(new Runnable() {
+            @Override
+            public void run() {
+                mChefly.getLayoutParams().height = (int) (mChefly.getMeasuredWidth() * 159f / 639f);
+                mChefly.requestLayout();
+            }
+        });
     }
 
     private void setConnect() {

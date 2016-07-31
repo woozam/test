@@ -25,6 +25,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -107,6 +108,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
     private Realm mConnectRealm;
     private Connect mConnect;
     private String mCategoryId;
+    private long mBackPressedTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,8 +212,20 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - mBackPressedTime > 3000) {
+                mBackPressedTime = currentTime;
+                Toast.makeText(this, "뒤로 버튼을 한번 더 누르시면 종료 됩니다.", Toast.LENGTH_SHORT).show();
+            } else {
+                super.onBackPressed();
+            }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mBackPressedTime = 0;
     }
 
     @Override

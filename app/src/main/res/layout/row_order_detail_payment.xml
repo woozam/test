@@ -73,7 +73,7 @@
 
         <TextView
             android:id="@+id/order_detail_payment_tip"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/order_detail_payment_discount"
             android:layout_marginLeft="18dp"

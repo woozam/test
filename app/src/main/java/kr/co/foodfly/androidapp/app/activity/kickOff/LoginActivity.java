@@ -28,6 +28,7 @@ import kr.co.foodfly.androidapp.R;
 import kr.co.foodfly.androidapp.app.activity.BaseActivity;
 import kr.co.foodfly.androidapp.common.CommonUtils;
 import kr.co.foodfly.androidapp.data.RealmUtils;
+import kr.co.foodfly.androidapp.gcm.GcmUtils;
 import kr.co.foodfly.androidapp.model.BaseResponse;
 import kr.co.foodfly.androidapp.model.connect.Connect;
 import kr.co.foodfly.androidapp.model.user.MapAddress;
@@ -196,6 +197,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                 user.getUser().setAddress(response);
                 UserManager.setUser(user);
                 Connect.updateArea();
+                GcmUtils.register(LoginActivity.this);
                 setResult(RESULT_OK);
                 finish();
             }

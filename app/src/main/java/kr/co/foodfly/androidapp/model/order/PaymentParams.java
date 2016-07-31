@@ -20,6 +20,8 @@ public class PaymentParams implements Serializable {
     public String P_EMAIL;
     public String P_CHARSET;
     public String P_NEXT_URL;
+    public String P_NOTI_URL;
+    public String P_RETURN_URL;
 
     public PaymentParams() {
     }

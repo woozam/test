@@ -62,6 +62,11 @@ public class WebViewActivity extends AbsWebViewActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        if (url.contains("chefly.foodfly.co.kr")) {
+            getSupportActionBar().hide();
+            mCloseLayout.setVisibility(View.VISIBLE);
+        }
+
         mProgressBar = (ContentLoadingProgressBar) findViewById(R.id.web_view_progress_bar);
         mWebView.setWebChromeClient(new myWebChromeClient());
         mWebView.getSettings().setSaveFormData(true);
