@@ -660,6 +660,10 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
             minuteList = minuteWheel.getItemList();
         }
         final long[] reservationTimes = mRestaurant.getAvailableDeliveryHour();
+        if (reservationTimes == null) {
+            new MaterialDialog.Builder(this).content("지금은 예약주문이 불가능합니다.").positiveText("확인").show();
+            return;
+        }
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTimeInMillis(reservationTimes[0]);
         final int startDate = calendar.get(Calendar.DATE);
@@ -767,7 +771,11 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
     private void setReservationDate(List<String> dateList, int startDate, int endDate) {
         dateList.clear();
         if (startDate == endDate) {
-            dateList.add("오늘");
+            if (mReservedCalendar.get(Calendar.HOUR_OF_DAY) + mRestaurant.getReservationOffset() >= 24) {
+                dateList.add("내일");
+            } else {
+                dateList.add("오늘");
+            }
         } else {
             dateList.add("오늘");
             dateList.add("내일");
@@ -821,7 +829,7 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
                         hourList.add(String.valueOf(i));
                     }
                 } else {
-                    for (int i = startHour; i <= 23; i++) {
+                    for (int i = Math.max(12, startHour); i <= 23; i++) {
                         hourList.add(String.valueOf(i % 12));
                     }
                 }

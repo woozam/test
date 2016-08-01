@@ -375,12 +375,16 @@ public class Restaurant extends RealmObject {
         start = calendar.getTimeInMillis();
 
         long end = start;
+        String[] starts = mOpeningHour.getStart().split(":");
         String[] ends = mOpeningHour.getEnd().split(":");
         if (ends.length >= 2) {
             int endTimeH = Integer.parseInt(ends[0]);
             int endTimeM = Integer.parseInt(ends[1]);
             int endTime = endTimeH * 60 + endTimeM;
             if (endTime < startTime) {
+                if (startTime < Integer.parseInt(starts[0]) * 60 + Integer.parseInt(starts[1])) {
+                    return null;
+                }
                 endTime += 24 * 60;
             }
             int addTime = endTime - startTime;

@@ -62,7 +62,7 @@ public class WebViewActivity extends AbsWebViewActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        if (url.contains("chefly.foodfly.co.kr")) {
+        if (url.contains("chefly.foodfly.co.kr") || url.equals("http://goo.gl/Ad6Bhq")) {
             getSupportActionBar().hide();
             mCloseLayout.setVisibility(View.VISIBLE);
         }
@@ -98,6 +98,10 @@ public class WebViewActivity extends AbsWebViewActivity {
     class MyView extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if (url.contains("chefly.foodfly.co.kr")) {
+                getSupportActionBar().hide();
+                mCloseLayout.setVisibility(View.VISIBLE);
+            }
             Uri uri = Uri.parse(url);
             String scheme = uri.getScheme();
             if (!TextUtils.isEmpty(scheme) && (scheme.equals("foodflyios") || scheme.equals("foodfly"))) {
