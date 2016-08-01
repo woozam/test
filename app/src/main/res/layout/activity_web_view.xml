@@ -41,23 +41,25 @@
             android:progress="50"
             android:visibility="gone"/>
 
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/web_view_close_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
+            <ImageView
                 android:id="@+id/web_view_close"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginLeft="300dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="52dp"
                 android:gravity="center"
+                android:src="@mipmap/chefly_close"
                 android:text="닫기"
                 android:textSize="13sp"/>
 
-        </FrameLayout>
+        </RelativeLayout>
 
     </RelativeLayout>
 

@@ -36,6 +36,14 @@ public abstract class AbsWebViewActivity extends BaseActivity implements OnClick
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mWebView != null) {
+            mWebView.destroy();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         if (v == mClose) {
             finish();

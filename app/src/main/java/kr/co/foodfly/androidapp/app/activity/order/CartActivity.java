@@ -175,6 +175,9 @@ public class CartActivity extends BaseActivity implements RealmChangeListener<Re
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         mCartRealm.beginTransaction();
                         mCart.getCartMenus().remove(cartMenu);
+                        if (mCart.getCartMenus().size() == 0) {
+                            mCartRealm.deleteAll();
+                        }
                         mCartRealm.commitTransaction();
                     }
                 }).show();

@@ -5,7 +5,9 @@ import android.text.TextUtils;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -358,6 +360,34 @@ public class Restaurant extends RealmObject {
 
     public void setOpenHours(RealmList<OpenHour> openHours) {
         mOpenHours = openHours;
+    }
+
+    public long[] getAvailableDeliveryHour() {
+        Calendar calendar = GregorianCalendar.getInstance();
+        long start = System.currentTimeMillis();
+        start += (getReservationOffset() == 0 ? 2 * 3600000 : getReservationOffset() * 3600000);
+        calendar.setTimeInMillis(start);
+        int minute = calendar.get(Calendar.MINUTE);
+        calendar.add(Calendar.MINUTE, 10 - minute % 10);
+        int startTimeH = calendar.get(Calendar.HOUR_OF_DAY);
+        int startTimeM = calendar.get(Calendar.MINUTE);
+        int startTime = startTimeH * 60 + startTimeM;
+        start = calendar.getTimeInMillis();
+
+        long end = start;
+        String[] ends = mOpeningHour.getEnd().split(":");
+        if (ends.length >= 2) {
+            int endTimeH = Integer.parseInt(ends[0]);
+            int endTimeM = Integer.parseInt(ends[1]);
+            int endTime = endTimeH * 60 + endTimeM;
+            if (endTime < startTime) {
+                endTime += 24 * 60;
+            }
+            int addTime = endTime - startTime;
+            calendar.add(Calendar.MINUTE, addTime);
+            end = calendar.getTimeInMillis();
+        }
+        return new long[]{start, end};
     }
 
     public String[] getOpenHoursString() {

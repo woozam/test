@@ -179,12 +179,13 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
 
         updateAddress();
         updateTabPadding();
-        if (mAddress == null) {
-            AddressActivity.createInstance(this);
-        }
         showPopupIfExist();
         updateChefly();
         showCategory();
+
+        if (mAddress == null) {
+            AddressActivity.createInstance(this);
+        }
 
         UserManager.fetchUserFromServer();
     }

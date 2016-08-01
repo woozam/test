@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:weightSum="3">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/reservation_2_hour"
+            style="@style/Button.Small.06"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:text="2시간"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/reservation_3_hour"
+            style="@style/Button.Small.06"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:text="3시간"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/reservation_4_hour"
+            style="@style/Button.Small.06"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:text="4시간"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <kr.co.foodfly.androidapp.app.view.WheelView
+            android:id="@+id/reservation_date"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"/>
+
+        <kr.co.foodfly.androidapp.app.view.WheelView
+            android:id="@+id/reservation_a"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"/>
+
+        <kr.co.foodfly.androidapp.app.view.WheelView
+            android:id="@+id/reservation_hour"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"/>
+
+        <kr.co.foodfly.androidapp.app.view.WheelView
+            android:id="@+id/reservation_minute"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</LinearLayout>

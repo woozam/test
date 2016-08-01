@@ -1,8 +1,5 @@
 package kr.co.foodfly.androidapp.app.activity.order;
 
-import android.app.DatePickerDialog;
-import android.app.DatePickerDialog.OnDateSetListener;
-import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
@@ -12,15 +9,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -32,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -45,7 +42,8 @@ import io.realm.RealmChangeListener;
 import kr.co.foodfly.androidapp.R;
 import kr.co.foodfly.androidapp.app.activity.BaseActivity;
 import kr.co.foodfly.androidapp.app.activity.user.CouponActivity;
-import kr.co.foodfly.androidapp.app.dialog.BoundTimePickerDialog;
+import kr.co.foodfly.androidapp.app.view.WheelView;
+import kr.co.foodfly.androidapp.app.view.WheelView.OnWheelViewListener;
 import kr.co.foodfly.androidapp.common.TimeUtils;
 import kr.co.foodfly.androidapp.common.UnitUtils;
 import kr.co.foodfly.androidapp.common.ViewSupportUtils;
@@ -123,6 +121,7 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
     private int mMileage;
 
     private Calendar mReservedCalendar;
+    private View mReservationView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -541,72 +540,9 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
             mDeliveryTimeReserve.setSelected(false);
             mDeliveryReservedTime.setVisibility(View.GONE);
         } else if (v == mDeliveryTimeReserve) {
-            if (mReservedCalendar == null) {
-                mReservedCalendar = GregorianCalendar.getInstance();
-            }
-            mReservedCalendar.setTimeInMillis(System.currentTimeMillis());
-            final int year = mReservedCalendar.get(Calendar.YEAR);
-            final int month = mReservedCalendar.get(Calendar.MONTH);
-            final int day = mReservedCalendar.get(Calendar.DAY_OF_MONTH);
-            final int hour = mReservedCalendar.get(Calendar.HOUR_OF_DAY);
-            final int minute = mReservedCalendar.get(Calendar.MINUTE);
-            DatePickerDialog dialog = new DatePickerDialog(this, new OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int _year, int _monthOfYear, int _dayOfMonth) {
-                    mReservedCalendar.set(Calendar.YEAR, _year);
-                    mReservedCalendar.set(Calendar.MONTH, _monthOfYear);
-                    mReservedCalendar.set(Calendar.DATE, _dayOfMonth);
-                    BoundTimePickerDialog dialog = new BoundTimePickerDialog(OrderActivity.this, new OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            mReservedCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                            mReservedCalendar.set(Calendar.MINUTE, minute);
-                            mDeliveryTimeNow.setSelected(false);
-                            mDeliveryTimeReserve.setSelected(true);
-                            mDeliveryReservedTime.setVisibility(View.VISIBLE);
-                            mDeliveryReservedTime.setText(TimeUtils.getFullTimeString(mReservedCalendar.getTimeInMillis() + TimeZone.getDefault().getRawOffset()));
-                        }
-                    }, hour, minute, true);
-                    int _a = _year * 384 + _monthOfYear * 32 + _dayOfMonth;
-                    int a = year * 384 + month * 32 + day;
-                    if (_a <= a) {
-                        dialog.setMin(hour, minute);
-                    }
-                    dialog.show();
-                }
-            }, year, month, day);
-            dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-            dialog.show();
+            showReservationDialog();
         } else if (v == mDeliveryReservedTime) {
-            final int year = mReservedCalendar.get(Calendar.YEAR);
-            final int month = mReservedCalendar.get(Calendar.MONTH);
-            final int day = mReservedCalendar.get(Calendar.DAY_OF_MONTH);
-            final int hour = mReservedCalendar.get(Calendar.HOUR_OF_DAY);
-            final int minute = mReservedCalendar.get(Calendar.MINUTE);
-            DatePickerDialog dialog = new DatePickerDialog(this, new OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int _year, int _monthOfYear, int _dayOfMonth) {
-                    mReservedCalendar.set(Calendar.YEAR, _year);
-                    mReservedCalendar.set(Calendar.MONTH, _monthOfYear);
-                    mReservedCalendar.set(Calendar.DATE, _dayOfMonth);
-                    BoundTimePickerDialog dialog = new BoundTimePickerDialog(OrderActivity.this, new OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            mReservedCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                            mReservedCalendar.set(Calendar.MINUTE, minute);
-                            mDeliveryReservedTime.setText(TimeUtils.getFullTimeString(mReservedCalendar.getTimeInMillis() + TimeZone.getDefault().getRawOffset()));
-                        }
-                    }, hour, minute, true);
-                    int _a = _year * 384 + _monthOfYear * 32 + _dayOfMonth;
-                    int a = year * 384 + month * 32 + day;
-                    if (_a <= a) {
-                        dialog.setMin(hour, minute);
-                    }
-                    dialog.show();
-                }
-            }, year, month, day);
-            dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-            dialog.show();
+            showReservationDialog();
         } else if (v == mCouponButton) {
             if (mRestaurant == null) {
                 return;
@@ -639,6 +575,9 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
             TextView address = (TextView) view.findViewById(R.id.order_confirm_address);
             TextView deliveryType = (TextView) view.findViewById(R.id.order_confirm_delivery_type);
             TextView deliveryTime = (TextView) view.findViewById(R.id.order_confirm_delivery_time);
+            View distanceLayout = view.findViewById(R.id.order_confirm_distance_layout);
+            TextView distance = (TextView) view.findViewById(R.id.order_confirm_distance);
+            TextView distanceGuide = (TextView) view.findViewById(R.id.order_confirm_distance_guide);
             address.setText(mAddress.getText());
             address.append(" " + mDetailAddress.getText());
             if (mDeliveryTypeFoodfly.isSelected()) {
@@ -660,12 +599,261 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
                 deliveryTime.append(mDeliveryReservedTime.getText());
                 deliveryTime.append(")");
             }
+            if (mRestaurant.getDistance() > 2) {
+                distanceLayout.setVisibility(View.VISIBLE);
+                distance.setText(String.format(Locale.getDefault(), "%.2fKm", mRestaurant.getDistance()));
+                distanceGuide.setText(Html.fromHtml("※ 음식상태 및 배송시간을 고려한 <font color='#ff717e'>적정배송거리는 2Km이내</font> 입니다."));
+            } else {
+                distanceLayout.setVisibility(View.GONE);
+            }
             new MaterialDialog.Builder(this).customView(view, true).positiveText("확인").negativeText("취소").onPositive(new SingleButtonCallback() {
                 @Override
                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                     done();
                 }
             }).show();
+        }
+    }
+
+    private void showReservationDialog() {
+        if (mReservedCalendar == null) {
+            mReservedCalendar = GregorianCalendar.getInstance();
+        }
+        mReservedCalendar.setTimeInMillis(System.currentTimeMillis());
+        boolean first = false;
+        final List<String> dateList;
+        final List<String> aList;
+        final List<String> hourList;
+        final List<String> minuteList;
+        final WheelView dateWheel;
+        final WheelView aWheel;
+        final WheelView hourWheel;
+        final WheelView minuteWheel;
+        final View hour2;
+        final View hour3;
+        final View hour4;
+        if (mReservationView == null) {
+            mReservationView = LayoutInflater.from(this).inflate(R.layout.dialog_reservation, null);
+            dateWheel = (WheelView) mReservationView.findViewById(R.id.reservation_date);
+            aWheel = (WheelView) mReservationView.findViewById(R.id.reservation_a);
+            hourWheel = (WheelView) mReservationView.findViewById(R.id.reservation_hour);
+            minuteWheel = (WheelView) mReservationView.findViewById(R.id.reservation_minute);
+            hour2 = mReservationView.findViewById(R.id.reservation_2_hour);
+            hour3 = mReservationView.findViewById(R.id.reservation_3_hour);
+            hour4 = mReservationView.findViewById(R.id.reservation_4_hour);
+            dateList = new ArrayList<>();
+            aList = new ArrayList<>();
+            hourList = new ArrayList<>();
+            minuteList = new ArrayList<>();
+            first = true;
+        } else {
+            dateWheel = (WheelView) mReservationView.findViewById(R.id.reservation_date);
+            aWheel = (WheelView) mReservationView.findViewById(R.id.reservation_a);
+            hourWheel = (WheelView) mReservationView.findViewById(R.id.reservation_hour);
+            minuteWheel = (WheelView) mReservationView.findViewById(R.id.reservation_minute);
+            hour2 = mReservationView.findViewById(R.id.reservation_2_hour);
+            hour3 = mReservationView.findViewById(R.id.reservation_3_hour);
+            hour4 = mReservationView.findViewById(R.id.reservation_4_hour);
+            dateList = dateWheel.getItemList();
+            aList = aWheel.getItemList();
+            hourList = hourWheel.getItemList();
+            minuteList = minuteWheel.getItemList();
+        }
+        final long[] reservationTimes = mRestaurant.getAvailableDeliveryHour();
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTimeInMillis(reservationTimes[0]);
+        final int startDate = calendar.get(Calendar.DATE);
+        final int startHour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int startMinute = calendar.get(Calendar.MINUTE);
+        calendar.setTimeInMillis(reservationTimes[1]);
+        final int endDate = calendar.get(Calendar.DATE);
+        final int endHour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int endMinute = calendar.get(Calendar.MINUTE);
+        if (first) {
+            setReservationDate(dateList, startDate, endDate);
+            setReservationA(aList, 0, startDate, endDate, startHour, endHour);
+            setReservationHour(hourList, 0, aList.get(0), startDate, endDate, startHour, endHour);
+            setReservationMinute(minuteList, true, false, startMinute, endMinute);
+            dateWheel.setItems(dateList);
+            aWheel.setItems(aList);
+            hourWheel.setItems(hourList);
+            minuteWheel.setItems(minuteList);
+        }
+        dateWheel.setOnWheelViewListener(new OnWheelViewListener() {
+            @Override
+            public void onSelected(int selectedIndex, String item) {
+                super.onSelected(selectedIndex, item);
+                setReservationA(aList, selectedIndex, startDate, endDate, startHour, endHour);
+                aWheel.setItems(aList);
+                aWheel.setSeletion(0);
+
+                setReservationHour(hourList, selectedIndex, aList.get(0), startDate, endDate, startHour, endHour);
+                hourWheel.setItems(hourList);
+                hourWheel.setSeletion(0);
+
+                setReservationMinute(minuteList, selectedIndex == 0, false, startMinute, endMinute);
+                minuteWheel.setItems(minuteList);
+                minuteWheel.setSeletion(0);
+            }
+        });
+        aWheel.setOnWheelViewListener(new OnWheelViewListener() {
+            @Override
+            public void onSelected(int selectedIndex, String item) {
+                super.onSelected(selectedIndex, item);
+                setReservationHour(hourList, dateWheel.getSeletedIndex(), item, startDate, endDate, startHour, endHour);
+                hourWheel.setItems(hourList);
+                hourWheel.setSeletion(0);
+
+                setReservationMinute(minuteList, dateWheel.getSeletedIndex() == 0 && selectedIndex == 0, dateWheel.getSeletedIndex() == dateList.size() - 1 && selectedIndex == aList.size() - 1, startMinute, endMinute);
+                minuteWheel.setItems(minuteList);
+                minuteWheel.setSeletion(0);
+            }
+        });
+        hourWheel.setOnWheelViewListener(new OnWheelViewListener() {
+            @Override
+            public void onSelected(int selectedIndex, String item) {
+                super.onSelected(selectedIndex, item);
+                int minutePosition = minuteWheel.getSeletedIndex();
+                setReservationMinute(minuteList, dateWheel.getSeletedIndex() == 0 && aWheel.getSeletedIndex() == 0 && selectedIndex == 0, dateWheel.getSeletedIndex() == dateList.size() - 1 && aWheel.getSeletedIndex() == aList.size() - 1 && selectedIndex == hourList.size() - 1, startMinute, endMinute);
+                minuteWheel.setItems(minuteList);
+                minuteWheel.setSeletion(Math.min(minutePosition, minuteList.size() - 1));
+            }
+        });
+        hour2.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setReservationDate(dateList, startDate, endDate);
+                setReservationA(aList, 0, startDate, endDate, startHour, endHour);
+                setReservationHour(hourList, 0, aList.get(0), startDate, endDate, startHour, endHour);
+                setReservationMinute(minuteList, true, false, startMinute, endMinute);
+                dateWheel.setItems(dateList);
+                aWheel.setItems(aList);
+                hourWheel.setItems(hourList);
+                minuteWheel.setItems(minuteList);
+                dateWheel.setSeletion(0);
+                aWheel.setSeletion(0);
+                hourWheel.setSeletion(0);
+                minuteWheel.setSeletion(0);
+            }
+        });
+        hour3.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        hour4.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        new MaterialDialog.Builder(this).title("예약 시간 선택").customView(mReservationView, false).positiveText("선택").negativeText("취소").onPositive(new SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                if (dateWheel.getSeletedItem().equals("내일"))
+                    mReservedCalendar.add(Calendar.DATE, 1);
+                mReservedCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hourWheel.getSeletedItem()));
+                if (aWheel.getSeletedItem().equals("오후")) mReservedCalendar.add(Calendar.HOUR, 12);
+                mReservedCalendar.set(Calendar.MINUTE, Integer.parseInt(minuteWheel.getSeletedItem()));
+                mDeliveryTimeNow.setSelected(false);
+                mDeliveryTimeReserve.setSelected(true);
+                mDeliveryReservedTime.setVisibility(View.VISIBLE);
+                mDeliveryReservedTime.setText(TimeUtils.getFullTimeString(mReservedCalendar.getTimeInMillis() + TimeZone.getDefault().getRawOffset()));
+            }
+        }).show();
+    }
+
+    private void setReservationDate(List<String> dateList, int startDate, int endDate) {
+        dateList.clear();
+        if (startDate == endDate) {
+            dateList.add("오늘");
+        } else {
+            dateList.add("오늘");
+            dateList.add("내일");
+        }
+    }
+
+    private void setReservationA(List<String> aList, int selectedDate, int startDate, int endDate, int startHour, int endHour) {
+        aList.clear();
+        if (selectedDate == 0) {
+            if (startDate == endDate) {
+                if (startHour < 12) {
+                    aList.add("오전");
+                }
+                if (endHour >= 12) {
+                    aList.add("오후");
+                }
+            } else {
+                if (startHour < 12) {
+                    aList.add("오전");
+                    aList.add("오후");
+                } else {
+                    aList.add("오후");
+                }
+            }
+        } else {
+            if (endHour < 12) {
+                aList.add("오전");
+            } else {
+                aList.add("오전");
+                aList.add("오후");
+            }
+        }
+    }
+
+    private void setReservationHour(List<String> hourList, int selectedDate, String selectedA, int startDate, int endDate, int startHour, int endHour) {
+        hourList.clear();
+        if (selectedDate == 0) {
+            if (startDate == endDate) {
+                if (selectedA.equals("오전")) {
+                    for (int i = startHour; i < 12 && i <= endHour; i++) {
+                        hourList.add(String.valueOf(i));
+                    }
+                } else {
+                    for (int i = Math.max(12, startHour); i <= endHour; i++) {
+                        hourList.add(String.valueOf(i % 12));
+                    }
+                }
+            } else {
+                if (selectedA.equals("오전")) {
+                    for (int i = startHour; i < 12; i++) {
+                        hourList.add(String.valueOf(i));
+                    }
+                } else {
+                    for (int i = startHour; i <= 23; i++) {
+                        hourList.add(String.valueOf(i % 12));
+                    }
+                }
+            }
+        } else {
+            if (selectedA.equals("오전")) {
+                for (int i = 0; i <= endHour && i < 12; i++) {
+                    hourList.add(String.valueOf(i));
+                }
+            } else {
+                for (int i = 12; i <= endHour; i++) {
+                    hourList.add(String.valueOf(i % 12));
+                }
+            }
+        }
+    }
+
+    private void setReservationMinute(List<String> minuteList, boolean isFirst, boolean isLast, int startMinute, int endMinute) {
+        minuteList.clear();
+        if (isFirst) {
+            for (int i = startMinute; i <= 50; i += 10) {
+                minuteList.add(String.format(Locale.getDefault(), "%02d", i));
+            }
+        } else if (isLast) {
+            endMinute -= endMinute % 10;
+            for (int i = 0; i <= endMinute; i += 10) {
+                minuteList.add(String.format(Locale.getDefault(), "%02d", i));
+            }
+        } else {
+            for (int i = 0; i <= 50; i += 10) {
+                minuteList.add(String.format(Locale.getDefault(), "%02d", i));
+            }
         }
     }
 
