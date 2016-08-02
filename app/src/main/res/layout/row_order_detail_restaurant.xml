@@ -11,7 +11,8 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/empty_l"/>
+        android:background="@drawable/empty_l"
+        android:scaleType="centerCrop"/>
 
     <ImageView
         android:id="@+id/order_detail_restaurant_favorite"

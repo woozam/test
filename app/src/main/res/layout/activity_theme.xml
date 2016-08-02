@@ -26,7 +26,7 @@
         android:background="@color/window_background_light"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <kr.co.foodfly.androidapp.app.view.recyclerView.RecyclerViewEmptySupport
+        <com.foodfly.gcm.app.view.recyclerView.RecyclerViewEmptySupport
             android:id="@+id/theme_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

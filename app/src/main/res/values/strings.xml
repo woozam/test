@@ -32,5 +32,4 @@
     <string name="title_activity_pay">결제</string>
 
     <string name="logout_underline"><u>로그아웃</u></string>
-    <string name="title_activity_main2">Main2Activity</string>
 </resources>

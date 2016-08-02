@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="kr.co.foodfly.androidapp"
+<manifest package="com.foodfly.gcm"
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools">
 
@@ -18,11 +18,11 @@
         android:required="true"/>
 
     <permission
-        android:name="kr.co.foodfly.androidapp.locationapi.maps.permission.MAPS_RECEIVE"
+        android:name="com.foodfly.gcm.locationapi.maps.permission.MAPS_RECEIVE"
         android:protectionLevel="signature"/>
 
     <permission
-        android:name="kr.co.foodfly.androidapp.permission.C2D_MESSAGE"
+        android:name="com.foodfly.gcm.permission.C2D_MESSAGE"
         android:protectionLevel="signature"/>
 
     <application
@@ -269,17 +269,17 @@
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <category android:name="kr.co.foodfly.androidapp"/>
+                <category android:name="com.foodfly.gcm"/>
             </intent-filter>
             <!-- For backward compatibility with devices without play services -->
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
-                <category android:name="kr.co.foodfly.androidapp"/>
+                <category android:name="com.foodfly.gcm"/>
             </intent-filter>
         </receiver>
 
         <service
-            android:name="kr.co.foodfly.androidapp.gcm.MyGcmListenerService"
+            android:name="com.foodfly.gcm.gcm.MyGcmListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
@@ -287,12 +287,12 @@
         </service>
 
         <service
-            android:name="kr.co.foodfly.androidapp.gcm.RegistrationIntentService"
+            android:name="com.foodfly.gcm.gcm.RegistrationIntentService"
             android:exported="false">
         </service>
 
         <service
-            android:name="kr.co.foodfly.androidapp.gcm.MyInstanceIDListenerService"
+            android:name="com.foodfly.gcm.gcm.MyInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID"/>

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <kr.co.foodfly.androidapp.app.view.CustomNetworkImageView
+    <com.foodfly.gcm.app.view.CustomNetworkImageView
         android:id="@+id/restaurant_detail_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,5 +12,5 @@
         android:src="@drawable/empty_drawable"
         android:scaleType="centerCrop">
 
-    </kr.co.foodfly.androidapp.app.view.CustomNetworkImageView>
+    </com.foodfly.gcm.app.view.CustomNetworkImageView>
 </FrameLayout>

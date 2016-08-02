@@ -67,7 +67,7 @@
             android:textSize="14sp"
             android:textStyle="bold"/>
 
-        <kr.co.foodfly.androidapp.app.view.DeliveryTipView
+        <com.foodfly.gcm.app.view.DeliveryTipView
             android:id="@+id/restaurant_info_delivery_tip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

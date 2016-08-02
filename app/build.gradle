@@ -6,7 +6,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "kr.co.foodfly.androidapp"
+        applicationId "com.foodfly.gcm"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
@@ -23,7 +23,7 @@ android {
             minifyEnabled false
             debuggable true
             versionNameSuffix 'debug'
-            buildConfigField "String", "APISERVER", "\"https://api.foodfly.co.kr\""
+            buildConfigField "String", "APISERVER", "\"https://apidev.foodfly.co.kr\""
         }
     }
     dexOptions {

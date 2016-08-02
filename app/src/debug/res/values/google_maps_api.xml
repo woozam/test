@@ -4,10 +4,10 @@
 
     To get one, follow this link, follow the directions and press "Create" at the end:
 
-    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=4A:60:BA:FE:30:E8:D3:A7:B5:B2:B9:DB:ED:25:65:2F:A1:9C:E6:B6%3Bkr.co.foodfly.androidapp.app.activity.setting
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=4A:60:BA:FE:30:E8:D3:A7:B5:B2:B9:DB:ED:25:65:2F:A1:9C:E6:B6%3Bcom.foodfly.gcm.app.activity.setting
 
     You can also add your credentials to an existing key, using this line:
-    4A:60:BA:FE:30:E8:D3:A7:B5:B2:B9:DB:ED:25:65:2F:A1:9C:E6:B6;kr.co.foodfly.androidapp.app.activity.setting
+    4A:60:BA:FE:30:E8:D3:A7:B5:B2:B9:DB:ED:25:65:2F:A1:9C:E6:B6;com.foodfly.gcm.app.activity.setting
 
     Alternatively, follow the directions here:
     https://developers.google.com/maps/documentation/android/start#get-key
@@ -16,6 +16,6 @@
     string in this file.
     -->
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
-        AIzaSyDvWohrhs5SgfY39hOfJ5LTIO_AjOw9UjQ
+        AIzaSyBe4rP7E49JxyaZ6QF1VYbaOjV4MvJAYmU
     </string>
 </resources>

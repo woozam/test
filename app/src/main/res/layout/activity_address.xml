@@ -27,7 +27,8 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <RelativeLayout
+        <com.foodfly.gcm.app.view.MapWrapper
+            android:id="@+id/address_map_wrapper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/address_bottom_layout">
@@ -37,7 +38,7 @@
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="kr.co.foodfly.androidapp.app.activity.setting.AddressActivity"/>
+                tools:context="com.foodfly.gcm.app.activity.setting.AddressActivity"/>
 
             <ImageView
                 android:id="@+id/address_map_marker"
@@ -60,7 +61,7 @@
                 android:layout_marginRight="16dp"
                 android:adjustViewBounds="true"
                 android:src="@mipmap/img_my_location"/>
-        </RelativeLayout>
+        </com.foodfly.gcm.app.view.MapWrapper>
 
         <LinearLayout
             android:id="@+id/address_bottom_layout"
@@ -182,7 +183,7 @@
                 android:text="검색 결과"
                 android:textSize="14sp"/>
 
-            <kr.co.foodfly.androidapp.app.view.recyclerView.RecyclerViewEmptySupport
+            <com.foodfly.gcm.app.view.recyclerView.RecyclerViewEmptySupport
                 android:id="@+id/address_map_search_result_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <kr.co.foodfly.androidapp.app.view.recyclerView.RecyclerViewEmptySupport
+        <com.foodfly.gcm.app.view.recyclerView.RecyclerViewEmptySupport
             android:id="@+id/restaurant_list_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

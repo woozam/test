@@ -280,6 +280,18 @@
                     android:maxLength="50"
                     android:textSize="14sp"/>
 
+                <TextView
+                    android:id="@+id/user_agree"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/user_agree_recv_sms"
+                    android:layout_alignTop="@+id/user_agree_recv_sms"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:gravity="center_vertical"
+                    android:text="수신동의"
+                    android:textSize="14sp"/>
+
                 <android.support.v7.widget.SwitchCompat
                     android:id="@+id/user_agree_recv_sms"
                     android:layout_width="172dp"

@@ -95,8 +95,8 @@
 
         <ImageView
             android:id="@+id/main_chefly"
-            android:layout_width="72dp"
-            android:layout_height="45.5dp"
+            android:layout_width="68dp"
+            android:layout_height="43dp"
             android:layout_above="@+id/main_address_layout"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
@@ -122,7 +122,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true">
 
-        <kr.co.foodfly.androidapp.app.activity.main.MainNavigationView
+        <com.foodfly.gcm.app.activity.main.MainNavigationView
             android:id="@+id/main_navigation_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>

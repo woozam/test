@@ -30,7 +30,7 @@
 
     </LinearLayout>
 
-    <kr.co.foodfly.androidapp.app.view.CustomScrollView
+    <com.foodfly.gcm.app.view.CustomScrollView
         android:id="@+id/menu_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -189,6 +189,6 @@
         </LinearLayout>
 
 
-    </kr.co.foodfly.androidapp.app.view.CustomScrollView>
+    </com.foodfly.gcm.app.view.CustomScrollView>
 
 </RelativeLayout>

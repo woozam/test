@@ -10,7 +10,8 @@
         android:id="@+id/cart_header_image"
         android:layout_width="84dp"
         android:layout_height="84dp"
-        android:background="@drawable/empty_l"/>
+        android:background="@drawable/empty_l"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/cart_header_name"

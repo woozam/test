@@ -60,7 +60,7 @@
 
     </RelativeLayout>
 
-    <kr.co.foodfly.androidapp.app.view.CircularImageView
+    <com.foodfly.gcm.app.view.CircularImageView
         android:id="@+id/restaurant_menu_image"
         android:layout_width="24sp"
         android:layout_height="24sp"

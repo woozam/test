@@ -137,7 +137,7 @@
             android:text="- 모바일에서는 최근 6개월간 마일리지 사용 내역만 조회 가능합니다."
             android:textSize="11sp"/>
 
-        <kr.co.foodfly.androidapp.app.view.recyclerView.RecyclerViewEmptySupport
+        <com.foodfly.gcm.app.view.recyclerView.RecyclerViewEmptySupport
             android:id="@+id/mileage_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

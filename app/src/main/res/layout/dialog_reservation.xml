@@ -43,22 +43,22 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <kr.co.foodfly.androidapp.app.view.WheelView
+        <com.foodfly.gcm.app.view.WheelView
             android:id="@+id/reservation_date"
             android:layout_width="60dp"
             android:layout_height="wrap_content"/>
 
-        <kr.co.foodfly.androidapp.app.view.WheelView
+        <com.foodfly.gcm.app.view.WheelView
             android:id="@+id/reservation_a"
             android:layout_width="60dp"
             android:layout_height="wrap_content"/>
 
-        <kr.co.foodfly.androidapp.app.view.WheelView
+        <com.foodfly.gcm.app.view.WheelView
             android:id="@+id/reservation_hour"
             android:layout_width="60dp"
             android:layout_height="wrap_content"/>
 
-        <kr.co.foodfly.androidapp.app.view.WheelView
+        <com.foodfly.gcm.app.view.WheelView
             android:id="@+id/reservation_minute"
             android:layout_width="60dp"
             android:layout_height="wrap_content"/>

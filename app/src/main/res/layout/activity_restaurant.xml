@@ -13,7 +13,7 @@
         android:layout_height="240dp"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay"
-        app:layout_behavior="kr.co.foodfly.androidapp.app.view.FlingBehavior">
+        app:layout_behavior="com.foodfly.gcm.app.view.FlingBehavior">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
@@ -33,13 +33,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="?attr/actionBarSize"
-                android:background="@color/window_background_light"
+                android:background="@drawable/empty_l"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax">
 
             </android.support.v4.view.ViewPager>
 
-            <kr.co.foodfly.androidapp.app.view.CircleViewPagerIndicator
+            <com.foodfly.gcm.app.view.CircleViewPagerIndicator
                 android:id="@+id/restaurant_image_view_pager_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <kr.co.foodfly.androidapp.app.view.MenuView
+        <com.foodfly.gcm.app.view.MenuView
             android:id="@+id/restaurant_menu_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
