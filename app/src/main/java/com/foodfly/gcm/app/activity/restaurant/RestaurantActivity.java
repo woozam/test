@@ -358,6 +358,11 @@ public class RestaurantActivity extends BaseActivity implements OnOffsetChangedL
             @Override
             public void onResponse(Restaurant response) {
                 dismissProgressDialog();
+                response.setLastVisitTime(new Date());
+                Realm realm = Realm.getInstance(RealmUtils.CONFIG_RESTAURANT);
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(response);
+                realm.commitTransaction();
                 if (response.getDistance() > response.getAvailableDistance()) {
                     new MaterialDialog.Builder(RestaurantActivity.this).content("고객님의 배송지에서는 배달이 불가능합니다.").positiveText("확인").dismissListener(new OnDismissListener() {
                         @Override
@@ -367,11 +372,6 @@ public class RestaurantActivity extends BaseActivity implements OnOffsetChangedL
                     }).show();
                 } else {
                     setRestaurant(response);
-                    response.setLastVisitTime(new Date());
-                    Realm realm = Realm.getInstance(RealmUtils.CONFIG_RESTAURANT);
-                    realm.beginTransaction();
-                    realm.copyToRealmOrUpdate(response);
-                    realm.commitTransaction();
                 }
             }
         }, new ErrorListener() {

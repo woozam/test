@@ -109,6 +109,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
     private Connect mConnect;
     private String mCategoryId;
     private long mBackPressedTime = 0;
+    private boolean mCheckPopup = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,12 +180,14 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
 
         updateAddress();
         updateTabPadding();
-        showPopupIfExist();
         updateChefly();
         showCategory();
 
         if (mAddress == null) {
             AddressActivity.createInstance(this);
+            mCheckPopup = true;
+        } else {
+            showPopupIfExist();
         }
 
         UserManager.fetchUserFromServer();
@@ -206,6 +209,19 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
         mUserRealm.close();
         mConnectRealm.removeChangeListener(mConnectChangeListener);
         mConnectRealm.close();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AddressActivity.REQ_CODE_ADDRESS) {
+            if (mCheckPopup) {
+                mCheckPopup = false;
+                if (resultCode != RESULT_OK) {
+                    showPopupIfExist();
+                }
+            }
+        }
     }
 
     @Override

@@ -382,6 +382,7 @@ public class AddressActivity extends BaseActivity implements OnMapReadyCallback,
             realm.commitTransaction();
             realm.close();
             Connect.updateConnect();
+            setResult(RESULT_OK);
             finish();
         } else {
             JsonObject address = new JsonObject();

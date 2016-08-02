@@ -367,6 +367,7 @@ public class RestaurantListFragment extends Fragment implements OnRefreshListene
                     Collections.addAll(mRestaurantList, response);
                     if (start == 0) {
                         mAdapter.notifyDataSetChanged();
+                        mRecyclerView.getLayoutManager().scrollToPosition(0);
                     } else {
                         mAdapter.notifyItemRangeInserted(start, response.length);
                     }

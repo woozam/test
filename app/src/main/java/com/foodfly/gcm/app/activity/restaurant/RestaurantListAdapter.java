@@ -161,7 +161,11 @@ public class RestaurantListAdapter extends LazyAdapter {
                 public void onClick(final View v) {
                     final Restaurant restaurant = getItem(holder.getAdapterPosition());
                     if (!restaurant.isAvailable()) {
-                        new MaterialDialog.Builder(v.getContext()).content(restaurant.getAvailableMessage()).positiveText("확인").onPositive(new SingleButtonCallback() {
+                        String message = restaurant.getAvailableMessage();
+                        if (!restaurant.isAreaOpen() && restaurant.isServiceArea()) {
+                            message += "\n" + String.format(Locale.getDefault(), "서비스 운영 시간은 %s 입니다.", restaurant.getConnectAreaOpenHour());
+                        }
+                        new MaterialDialog.Builder(v.getContext()).content(message).positiveText("확인").onPositive(new SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 RestaurantActivity.createInstance(v.getContext(), restaurant.getId());
@@ -353,11 +357,6 @@ public class RestaurantListAdapter extends LazyAdapter {
             } else {
                 mClose.setVisibility(View.VISIBLE);
                 mClose.setText(restaurant.getAvailableTitle());
-                if (!restaurant.isAreaOpen() && restaurant.isServiceArea()) {
-                    mClose.append("\n");
-                    mClose.append(restaurant.getConnectAreaOpenHour());
-                    //TODO
-                }
             }
             mDistance.setText(UnitUtils.distanceFormat(restaurant.getDistance()));
 

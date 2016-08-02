@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout.LayoutParams;
 
 import com.android.volley.toolbox.NetworkImageView;
-
 import com.foodfly.gcm.R;
 import com.foodfly.gcm.app.activity.BaseActivity;
 import com.foodfly.gcm.network.VolleySingleton;
