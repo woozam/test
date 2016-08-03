@@ -15,9 +15,6 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
-
-import java.util.Locale;
-
 import com.foodfly.gcm.R;
 import com.foodfly.gcm.app.activity.BaseActivity;
 import com.foodfly.gcm.common.CommonUtils;
@@ -28,6 +25,8 @@ import com.foodfly.gcm.model.user.UserResponse;
 import com.foodfly.gcm.network.APIs;
 import com.foodfly.gcm.network.GsonRequest;
 import com.foodfly.gcm.network.VolleySingleton;
+
+import java.util.Locale;
 
 /**
  * Created by woozam on 2016-07-31.
@@ -59,12 +58,14 @@ public class MyReferralCodeActivity extends BaseActivity implements OnClickListe
             return;
         }
 
-        mReferralCode.setText(user.getUser().getReferralCode().toUpperCase());
-        mReferralCode.setTag(user.getUser().getReferralCode().toUpperCase());
-        mReferralLink.setText(String.format(Locale.getDefault(), "http://m.foodfly.co.kr/referral/v2/%s", user.getUser().getReferralCode().toUpperCase()));
-        mReferralLink.setTag(String.format(Locale.getDefault(), "http://m.foodfly.co.kr/referral/v2/%s", user.getUser().getReferralCode().toUpperCase()));
-        mReferralCode.setOnClickListener(this);
-        mReferralLink.setOnClickListener(this);
+        if (!TextUtils.isEmpty(user.getUser().getReferralCode())) {
+            mReferralCode.setText(user.getUser().getReferralCode().toUpperCase());
+            mReferralCode.setTag(user.getUser().getReferralCode().toUpperCase());
+            mReferralLink.setText(String.format(Locale.getDefault(), "http://m.foodfly.co.kr/referral/v2/%s", user.getUser().getReferralCode().toUpperCase()));
+            mReferralLink.setTag(String.format(Locale.getDefault(), "http://m.foodfly.co.kr/referral/v2/%s", user.getUser().getReferralCode().toUpperCase()));
+            mReferralCode.setOnClickListener(this);
+            mReferralLink.setOnClickListener(this);
+        }
 
         loadReferral();
     }

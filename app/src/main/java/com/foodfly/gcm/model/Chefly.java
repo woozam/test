@@ -10,7 +10,8 @@ import android.net.Uri;
 public class Chefly {
 
     public static void createCheflyInstance(Context context) {
-        Uri uri = Uri.parse("foodflyios://web?url=http://chefly.foodfly.co.kr?channel=android");
+//        Uri uri = Uri.parse("foodflyios://web?url=http://chefly.foodfly.co.kr?channel=android");
+        Uri uri = Uri.parse("foodflyios://web?url=http://mbob.foodfly.co.kr?channel=android");
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(uri);
         context.startActivity(intent);

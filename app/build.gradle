@@ -23,7 +23,7 @@ android {
             minifyEnabled false
             debuggable true
             versionNameSuffix 'debug'
-            buildConfigField "String", "APISERVER", "\"https://apidev.foodfly.co.kr\""
+            buildConfigField "String", "APISERVER", "\"https://api.foodfly.co.kr\""
         }
     }
     dexOptions {
@@ -59,4 +59,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:9.0.0'
     compile 'com.google.android.gms:play-services-auth:9.0.0'
     compile project(path: ':volley')
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 }

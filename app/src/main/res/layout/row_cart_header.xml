@@ -6,7 +6,7 @@
               android:orientation="horizontal"
               android:padding="16dp">
 
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:id="@+id/cart_header_image"
         android:layout_width="84dp"
         android:layout_height="84dp"

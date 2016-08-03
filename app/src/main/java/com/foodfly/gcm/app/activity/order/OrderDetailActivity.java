@@ -27,25 +27,26 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
+import com.foodfly.gcm.R;
 import com.foodfly.gcm.app.activity.BaseActivity;
+import com.foodfly.gcm.app.view.CircularImageView;
+import com.foodfly.gcm.common.TimeUtils;
 import com.foodfly.gcm.common.UnitUtils;
+import com.foodfly.gcm.data.RealmUtils;
+import com.foodfly.gcm.model.BaseResponse;
 import com.foodfly.gcm.model.order.Order;
+import com.foodfly.gcm.model.order.OrderMenu;
 import com.foodfly.gcm.model.restaurant.Restaurant;
+import com.foodfly.gcm.model.user.UserManager;
 import com.foodfly.gcm.model.user.UserResponse;
+import com.foodfly.gcm.network.APIs;
+import com.foodfly.gcm.network.GsonRequest;
 import com.foodfly.gcm.network.VolleySingleton;
 import com.google.gson.JsonObject;
 
 import java.util.Locale;
 import java.util.TimeZone;
-
-import com.foodfly.gcm.R;
-import com.foodfly.gcm.common.TimeUtils;
-import com.foodfly.gcm.data.RealmUtils;
-import com.foodfly.gcm.model.BaseResponse;
-import com.foodfly.gcm.model.order.OrderMenu;
-import com.foodfly.gcm.model.user.UserManager;
-import com.foodfly.gcm.network.APIs;
-import com.foodfly.gcm.network.GsonRequest;
 
 /**
  * Created by woozam on 2016-07-29.
@@ -318,7 +319,7 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
 
     public static class OrderDetailRestaurantViewHolder extends OrderDetailViewHolder {
 
-        private NetworkImageView mImage;
+        private ImageView mImage;
         private TextView mName;
         private ImageView mFavorite;
         private TextView mDate;
@@ -327,7 +328,7 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
 
         public OrderDetailRestaurantViewHolder(View itemView) {
             super(itemView);
-            mImage = (NetworkImageView) itemView.findViewById(R.id.order_detail_restaurant_image);
+            mImage = (ImageView) itemView.findViewById(R.id.order_detail_restaurant_image);
             mName = (TextView) itemView.findViewById(R.id.order_detail_restaurant_name);
             mFavorite = (ImageView) itemView.findViewById(R.id.order_detail_restaurant_favorite);
             mDate = (TextView) itemView.findViewById(R.id.order_detail_restaurant_date);
@@ -339,7 +340,7 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
         public void setItem(Object object) {
             if (object != null) {
                 Order order = (Order) object;
-                mImage.setImageUrl(order.getRestaurant().getThumbnail(), VolleySingleton.getInstance(mImage.getContext()).getImageLoader());
+                Glide.with(mImage.getContext()).load(order.getRestaurant().getThumbnail()).placeholder(R.drawable.placeholder).crossFade().into(mImage);
                 mName.setText(order.getRestaurant().getName());
                 mFavorite.setSelected(order.getRestaurant().isFavorite());
                 mDate.setText(TimeUtils.getYearMonthDateTimeString(order.getOrderTime().getTime() + TimeZone.getDefault().getRawOffset()));
@@ -352,10 +353,10 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
 
     public static class OrderDetailDeliveryStatusViewHolder extends OrderDetailViewHolder {
 
-        private NetworkImageView mIcon1;
-        private NetworkImageView mIcon2;
-        private NetworkImageView mIcon3;
-        private NetworkImageView mIcon4;
+        private CircularImageView mIcon1;
+        private CircularImageView mIcon2;
+        private CircularImageView mIcon3;
+        private CircularImageView mIcon4;
         private TextView mRiderName1;
         private TextView mRiderName2;
         private TextView mRiderName3;
@@ -376,10 +377,10 @@ public class OrderDetailActivity extends BaseActivity implements OnRefreshListen
 
         public OrderDetailDeliveryStatusViewHolder(View itemView) {
             super(itemView);
-            mIcon1 = (NetworkImageView) itemView.findViewById(R.id.order_detail_delivery_status_icon_1);
-            mIcon2 = (NetworkImageView) itemView.findViewById(R.id.order_detail_delivery_status_icon_2);
-            mIcon3 = (NetworkImageView) itemView.findViewById(R.id.order_detail_delivery_status_icon_3);
-            mIcon4 = (NetworkImageView) itemView.findViewById(R.id.order_detail_delivery_status_icon_4);
+            mIcon1 = (CircularImageView) itemView.findViewById(R.id.order_detail_delivery_status_icon_1);
+            mIcon2 = (CircularImageView) itemView.findViewById(R.id.order_detail_delivery_status_icon_2);
+            mIcon3 = (CircularImageView) itemView.findViewById(R.id.order_detail_delivery_status_icon_3);
+            mIcon4 = (CircularImageView) itemView.findViewById(R.id.order_detail_delivery_status_icon_4);
             mRiderName1 = (TextView) itemView.findViewById(R.id.order_detail_delivery_status_rider_name_1);
             mRiderName2 = (TextView) itemView.findViewById(R.id.order_detail_delivery_status_rider_name_2);
             mRiderName3 = (TextView) itemView.findViewById(R.id.order_detail_delivery_status_rider_name_3);

@@ -883,6 +883,9 @@ public class OrderActivity extends BaseActivity implements OnClickListener {
             } else if (mileage % 100 != 0) {
                 new MaterialDialog.Builder(this).content("마일리지는 100원 단위로 사용이 가능합니다.").positiveText("확인").show();
                 return;
+            } else if (mileage > mMenuTotal + mDeliveryTip - mDiscountPriceMenu - mDiscountPriceDelivery - mDiscountPriceCoupon) {
+                new MaterialDialog.Builder(this).content("더 이상 할인받을 금액이 없습니다.").positiveText("확인").show();
+                return;
             } else {
                 mMileage = mileage;
             }

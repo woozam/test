@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -24,7 +25,7 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
 import com.foodfly.gcm.R;
 import com.foodfly.gcm.app.activity.BaseActivity;
 import com.foodfly.gcm.app.activity.kickOff.LoginActivity;
@@ -337,19 +338,19 @@ public class CartActivity extends BaseActivity implements RealmChangeListener<Re
 
     public static class CartHeaderViewHolder extends CartViewHolder {
 
-        private NetworkImageView mImage;
+        private ImageView mImage;
         private TextView mName;
 
         public CartHeaderViewHolder(View itemView) {
             super(itemView);
-            mImage = (NetworkImageView) itemView.findViewById(R.id.cart_header_image);
+            mImage = (ImageView) itemView.findViewById(R.id.cart_header_image);
             mName = (TextView) itemView.findViewById(R.id.cart_header_name);
         }
 
         @Override
         public void setItem(Object object) {
             Restaurant restaurant = (Restaurant) object;
-            mImage.setImageUrl(restaurant.getThumbnail(), VolleySingleton.getInstance(mImage.getContext()).getImageLoader());
+            Glide.with(mImage.getContext()).load(restaurant.getThumbnail()).placeholder(R.drawable.placeholder).crossFade().into(mImage);
             mName.setText(restaurant.getName());
         }
     }

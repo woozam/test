@@ -263,6 +263,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key"/>
 
+        <meta-data
+            android:name="com.foodfly.gcm.library.glide.FoodflyGlideModule"
+            android:value="GlideModule"/>
+
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"

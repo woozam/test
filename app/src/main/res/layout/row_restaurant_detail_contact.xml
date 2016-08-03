@@ -19,7 +19,7 @@
         android:text="서울 강남구 논현동 191-3"
         android:textSize="13sp"/>
 
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:id="@+id/restaurant_detail_contact_map_image"
         android:layout_width="match_parent"
         android:layout_height="108dp"

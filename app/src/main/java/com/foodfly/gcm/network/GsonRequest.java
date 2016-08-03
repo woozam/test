@@ -10,6 +10,8 @@ import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.foodfly.gcm.BuildConfig;
+import com.foodfly.gcm.model.user.User;
 import com.foodfly.gcm.model.user.UserResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,8 +20,6 @@ import com.google.gson.JsonSyntaxException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.Map;
-
-import com.foodfly.gcm.BuildConfig;
 
 public class GsonRequest<T> extends Request<T> {
 
@@ -105,7 +105,7 @@ public class GsonRequest<T> extends Request<T> {
                 mResponseHeaders.putAll(response.headers);
             }
             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-            if (type == UserResponse.class) {
+            if (type == UserResponse.class || type == User.class) {
                 json = json.replace("\"address\":[],", "");
             }
             if (BuildConfig.DEBUG) {

@@ -107,6 +107,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
     private Realm mUserRealm;
     private Realm mConnectRealm;
     private Connect mConnect;
+    private String mLastPopupId;
     private String mCategoryId;
     private long mBackPressedTime = 0;
     private boolean mCheckPopup = false;
@@ -281,6 +282,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
         }
         updateAddress();
         expandTab();
+        mViewPager.setCurrentItem(0);
     }
 
     private void showCategory() {
@@ -301,6 +303,15 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
         @Override
         public void onChange(Object element) {
             UserResponse user = UserManager.fetchUser();
+            double lat = 0;
+            double lon = 0;
+            if (mAddress != null) {
+                try {
+                    lat = mAddress.getLat();
+                    lon = mAddress.getLon();
+                } catch (Exception ignored) {
+                }
+            }
             if (user != null) {
                 mAddress = user.getUser().getAddress();
             } else {
@@ -308,6 +319,9 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
             }
             updateAddress();
             expandTab();
+            if (mAddress == null || lat != mAddress.getLat() || lon != mAddress.getLon()) {
+                mViewPager.setCurrentItem(0);
+            }
         }
     };
 
@@ -315,15 +329,11 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
         @Override
         public void onChange(Object element) {
             dismissProgressDialog();
-            boolean newConnect = false;
-            if (mConnect == null) {
-                newConnect = true;
-            }
             mConnect = mConnectRealm.where(Connect.class).findFirst();
-            if (newConnect) {
-                showPopupIfExist();
-            }
+            showPopupIfExist();
             mAdapter.notifyDataSetChanged();
+            mPagerTabStrip.notifyDataSetChanged();
+            updateTabPadding();
             showCategory();
             updateChefly();
         }
@@ -332,7 +342,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
     private void showPopupIfExist() {
         if (mConnect != null) {
             if (mConnect.getPopups().size() > 0) {
-                mConnect.getPopups().get(0).show(this);
+                if (!TextUtils.equals(mLastPopupId, mConnect.getPopups().get(0).getId())) {
+                    mLastPopupId = mConnect.getPopups().get(0).getId();
+                    mConnect.getPopups().get(0).show(this);
+                }
             }
         }
     }
@@ -557,7 +570,11 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
         public Fragment getItem(int position) {
             Bundle args = new Bundle();
             args.putInt(RestaurantListFragment.EXTRA_COLUMN_COUNT, 2);
-            args.putString(RestaurantListFragment.EXTRA_CATEGORY, mConnect.getCategories().get(position).getId());
+            if (mConnect == null) {
+                args.putString(RestaurantListFragment.EXTRA_CATEGORY, "0");
+            } else {
+                args.putString(RestaurantListFragment.EXTRA_CATEGORY, mConnect.getCategories().get(position).getId());
+            }
             if (position == 0) {
                 args.putBoolean(RestaurantListFragment.EXTRA_USE_BANNER, true);
             }
@@ -570,13 +587,17 @@ public class MainActivity extends BaseActivity implements OnClickListener, Realm
             if (mConnect != null) {
                 return mConnect.getCategories().size();
             } else {
-                return 0;
+                return 1;
             }
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return mConnect.getCategories().get(position).getName();
+            if (mConnect == null) {
+                return "전체";
+            } else {
+                return mConnect.getCategories().get(position).getName();
+            }
         }
     }
 }

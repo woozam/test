@@ -25,8 +25,22 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.foodfly.gcm.R;
+import com.foodfly.gcm.app.activity.BaseActivity;
+import com.foodfly.gcm.app.activity.setting.AddressActivity;
+import com.foodfly.gcm.app.view.recyclerView.LinearDividerItemDecoration;
 import com.foodfly.gcm.app.view.recyclerView.RecyclerViewEmptySupport;
+import com.foodfly.gcm.data.RealmUtils;
+import com.foodfly.gcm.model.BaseResponse;
+import com.foodfly.gcm.model.connect.Connect;
+import com.foodfly.gcm.model.restaurant.Cart;
+import com.foodfly.gcm.model.restaurant.Restaurant;
+import com.foodfly.gcm.model.user.MapAddress;
+import com.foodfly.gcm.model.user.UserManager;
 import com.foodfly.gcm.model.user.UserResponse;
+import com.foodfly.gcm.network.APIs;
+import com.foodfly.gcm.network.GsonRequest;
+import com.foodfly.gcm.network.VolleySingleton;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
@@ -37,20 +51,6 @@ import java.util.Locale;
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
-import com.foodfly.gcm.R;
-import com.foodfly.gcm.app.activity.BaseActivity;
-import com.foodfly.gcm.app.activity.setting.AddressActivity;
-import com.foodfly.gcm.app.view.recyclerView.LinearDividerItemDecoration;
-import com.foodfly.gcm.data.RealmUtils;
-import com.foodfly.gcm.model.BaseResponse;
-import com.foodfly.gcm.model.connect.Connect;
-import com.foodfly.gcm.model.restaurant.Cart;
-import com.foodfly.gcm.model.restaurant.Restaurant;
-import com.foodfly.gcm.model.user.MapAddress;
-import com.foodfly.gcm.model.user.UserManager;
-import com.foodfly.gcm.network.APIs;
-import com.foodfly.gcm.network.GsonRequest;
-import com.foodfly.gcm.network.VolleySingleton;
 
 /**
  * Created by woozam on 2016-07-08.
@@ -264,6 +264,7 @@ public class SelectAddressActivity extends BaseActivity implements RealmChangeLi
                     user.getUser().setAddress(address);
                     UserManager.setUser(user);
                     Connect.updateConnect();
+                    finish();
                 }
             }, new ErrorListener() {
                 @Override

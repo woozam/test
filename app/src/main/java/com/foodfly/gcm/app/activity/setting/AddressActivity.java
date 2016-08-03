@@ -8,12 +8,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -62,6 +62,12 @@ import com.foodfly.gcm.model.user.UserResponse;
 import com.foodfly.gcm.network.APIs;
 import com.foodfly.gcm.network.GsonRequest;
 import com.foodfly.gcm.network.VolleySingleton;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
@@ -76,14 +82,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import io.realm.Realm;
 
-public class AddressActivity extends BaseActivity implements OnMapReadyCallback, OnCameraChangeListener, OnClickListener, OnEditorActionListener, OnTouchListener, OnTouchUpListener {
+public class AddressActivity extends BaseActivity implements OnMapReadyCallback, OnCameraChangeListener, OnClickListener, OnEditorActionListener, OnTouchListener, OnTouchUpListener, ConnectionCallbacks, OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     private static final int REQ_CODE_MY_LOCATION = 0x0010;
     public static final int REQ_CODE_ADDRESS = AddressActivity.class.hashCode() & 0x000000ff;
@@ -121,6 +126,9 @@ public class AddressActivity extends BaseActivity implements OnMapReadyCallback,
     private View mSearchGuide;
     private double mLastLat;
     private double mLastLon;
+    LocationRequest mLocationRequest;
+    GoogleApiClient mGoogleApiClient;
+    LatLng latLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,6 +180,33 @@ public class AddressActivity extends BaseActivity implements OnMapReadyCallback,
         mAddress = MapAddress.getAddress();
         LatLng defaultLatLng = new LatLng(mAddress.getLat(), mAddress.getLon());
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 16));
+
+        buildGoogleApiClient();
+
+        mGoogleApiClient.connect();
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(LocationServices.API).build();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
     @Override
@@ -280,43 +315,58 @@ public class AddressActivity extends BaseActivity implements OnMapReadyCallback,
     @SuppressWarnings("MissingPermission")
     private void moveToMyLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String provider = locationManager.getBestProvider(criteria, true);
-        Location location = locationManager.getLastKnownLocation(provider);
-        if (location != null) {
+        if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) && !locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            new MaterialDialog.Builder(this).content("내 위치 정보를 사용하려면, 단말기의 설정에서 '위치 서비스' 사용을 허용해주세요.").positiveText("설정").negativeText("취소").onPositive(new SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+            }).show();
+        } else {
+            if (mGoogleApiClient != null) {
+                mLocationRequest = new LocationRequest();
+                mLocationRequest.setInterval(5000); //5 seconds
+                mLocationRequest.setFastestInterval(3000); //3 seconds
+                mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            }
+//            Criteria criteria = new Criteria();
+//            String bestProvider = locationManager.getBestProvider(criteria, true);
+//            Location location = locationManager.getLastKnownLocation(bestProvider);
+//            if (location != null) {
+//                double latitude = location.getLatitude();
+//                double longitude = location.getLongitude();
+//                LatLng latLng = new LatLng(latitude, longitude);
+//                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+//            }
+//            locationManager.requestSingleUpdate(LocationManager.PASSIVE_PROVIDER, mLocationListener, null);
+//            locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, mLocationListener, null);
+//            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, mLocationListener, null);
+        }
+    }
+
+    private LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             LatLng latLng = new LatLng(latitude, longitude);
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
-        } else {
-            List<String> providers = locationManager.getProviders(true);
-            for (String each : providers) {
-                if (!TextUtils.equals(each, provider)) {
-                    locationManager.requestSingleUpdate(each, new LocationListener() {
-                        @Override
-                        public void onLocationChanged(Location location) {
-                            double latitude = location.getLatitude();
-                            double longitude = location.getLongitude();
-                            LatLng latLng = new LatLng(latitude, longitude);
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
-                        }
-
-                        @Override
-                        public void onStatusChanged(String provider, int status, Bundle extras) {
-                        }
-
-                        @Override
-                        public void onProviderEnabled(String provider) {
-                        }
-
-                        @Override
-                        public void onProviderDisabled(String provider) {
-                        }
-                    }, null);
-                }
-            }
         }
-    }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+        }
+    };
 
     private void done() {
         final UserResponse user = UserManager.fetchUser();

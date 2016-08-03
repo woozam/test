@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.android.volley.toolbox.NetworkImageView
+        <ImageView
             android:id="@+id/restaurant_image"
             android:layout_width="90dp"
             android:layout_height="0dp"

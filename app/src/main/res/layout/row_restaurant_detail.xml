@@ -10,12 +10,13 @@
               android:paddingRight="18dp"
               android:paddingStart="18dp">
 
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:id="@+id/restaurant_detail_logo"
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="24dp"/>
+        android:layout_marginTop="24dp"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/restaurant_detail_message"

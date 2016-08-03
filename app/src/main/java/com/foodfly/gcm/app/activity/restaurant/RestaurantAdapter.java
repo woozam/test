@@ -17,6 +17,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
+import com.foodfly.gcm.R;
+import com.foodfly.gcm.app.activity.restaurant.RestaurantAdapter.RestaurantChildViewHolder;
+import com.foodfly.gcm.app.activity.restaurant.RestaurantAdapter.RestaurantGroupViewHolder;
+import com.foodfly.gcm.app.view.DeliveryTipView;
 import com.foodfly.gcm.common.CommonUtils;
 import com.foodfly.gcm.common.UnitUtils;
 import com.foodfly.gcm.model.restaurant.Category;
@@ -30,11 +35,6 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemVie
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Locale;
-
-import com.foodfly.gcm.R;
-import com.foodfly.gcm.app.activity.restaurant.RestaurantAdapter.RestaurantChildViewHolder;
-import com.foodfly.gcm.app.activity.restaurant.RestaurantAdapter.RestaurantGroupViewHolder;
-import com.foodfly.gcm.app.view.DeliveryTipView;
 
 import static com.foodfly.gcm.R.id.restaurant_detail_open_hour_off_day;
 
@@ -436,14 +436,14 @@ public class RestaurantAdapter extends AbstractExpandableItemAdapter<RestaurantG
 
     public static class RestaurantDetailViewHolder extends RestaurantGroupViewHolder {
 
-        private NetworkImageView mLogo;
+        private ImageView mLogo;
         private TextView mMessage;
         private TextView mMessageExpanded;
         private View mExpand;
 
         public RestaurantDetailViewHolder(View itemView) {
             super(itemView);
-            mLogo = (NetworkImageView) itemView.findViewById(R.id.restaurant_detail_logo);
+            mLogo = (ImageView) itemView.findViewById(R.id.restaurant_detail_logo);
             mMessage = (TextView) itemView.findViewById(R.id.restaurant_detail_message);
             mMessageExpanded = (TextView) itemView.findViewById(R.id.restaurant_detail_message_expanded);
             mExpand = itemView.findViewById(R.id.restaurant_detail_message_expand);
@@ -453,7 +453,7 @@ public class RestaurantAdapter extends AbstractExpandableItemAdapter<RestaurantG
         protected void setItem(Object item) {
             if (item != null) {
                 Restaurant restaurant = (Restaurant) item;
-                mLogo.setImageUrl(restaurant.getInfo().getLogo(), VolleySingleton.getInstance(mLogo.getContext()).getImageLoader());
+                Glide.with(mLogo.getContext()).load(restaurant.getInfo().getLogo()).placeholder(R.drawable.placeholder).crossFade().into(mLogo);
                 mLogo.setVisibility(TextUtils.isEmpty(restaurant.getInfo().getLogo()) ? View.GONE : View.VISIBLE);
                 mMessage.setText(Html.fromHtml(restaurant.getInfo().getRestaurantInfo().replace("\n", "<br>")));
                 mMessageExpanded.setText(Html.fromHtml(restaurant.getInfo().getRestaurantInfo().replace("\n", "<br>")));
@@ -532,12 +532,12 @@ public class RestaurantAdapter extends AbstractExpandableItemAdapter<RestaurantG
         private static String NAVER_MAP_URL = "http://openapi.naver.com/map/getStaticMap?version=1.0&crs=EPSG:4326&center=%f,%f&level=13&w=%d&h=%d&maptype=default&markers=%f,%f&key=%s&uri=%s";
 
         private TextView mAddress;
-        private NetworkImageView mMapImage;
+        private ImageView mMapImage;
 
         public RestaurantDetailContactViewHolder(final View itemView) {
             super(itemView);
             mAddress = (TextView) itemView.findViewById(R.id.restaurant_detail_contact_address);
-            mMapImage = (NetworkImageView) itemView.findViewById(R.id.restaurant_detail_contact_map_image);
+            mMapImage = (ImageView) itemView.findViewById(R.id.restaurant_detail_contact_map_image);
         }
 
         @Override
@@ -554,7 +554,7 @@ public class RestaurantAdapter extends AbstractExpandableItemAdapter<RestaurantG
                 mMapImage.post(new Runnable() {
                     @Override
                     public void run() {
-                        mMapImage.setImageUrl(String.format(Locale.getDefault(), NAVER_MAP_URL, lon, lat, mMapImage.getMeasuredWidth(), mMapImage.getMeasuredHeight(), lon, lat, mMapImage.getResources().getString(R.string.api_key_naver), mMapImage.getResources().getString(R.string.api_uri_naver)), VolleySingleton.getInstance(mMapImage.getContext()).getImageLoader());
+                        Glide.with(mMapImage.getContext()).load(String.format(Locale.getDefault(), NAVER_MAP_URL, lon, lat, mMapImage.getMeasuredWidth(), mMapImage.getMeasuredHeight(), lon, lat, mMapImage.getResources().getString(R.string.api_key_naver), mMapImage.getResources().getString(R.string.api_uri_naver))).placeholder(R.drawable.placeholder).crossFade().into(mMapImage);
                         mMapImage.setOnClickListener(new OnClickListener() {
                             @Override
                             public void onClick(View v) {

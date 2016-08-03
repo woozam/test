@@ -21,6 +21,8 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.MaterialDialog.SingleButtonCallback;
 import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.foodfly.gcm.R;
 import com.foodfly.gcm.app.view.CircleViewPagerIndicator;
 import com.foodfly.gcm.app.view.CommonFooter;
@@ -255,10 +257,14 @@ public class RestaurantListAdapter extends LazyAdapter {
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
                 final Banner banner = mBannerList.get(position);
-                NetworkImageView networkImageView = (NetworkImageView) LayoutInflater.from(container.getContext()).inflate(R.layout.item_banner, container, false);
-                container.addView(networkImageView);
-                networkImageView.setImageUrl(banner.getImage(), VolleySingleton.getInstance(container.getContext()).getImageLoader());
-                networkImageView.setOnClickListener(new OnClickListener() {
+                ImageView imageView = (ImageView) LayoutInflater.from(container.getContext()).inflate(R.layout.item_banner, container, false);
+                container.addView(imageView);
+                if (banner.getImage().endsWith("gif")) {
+                    Glide.with(imageView.getContext()).load(banner.getImage()).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.placeholder).crossFade().into(imageView);
+                } else {
+                    Glide.with(imageView.getContext()).load(banner.getImage()).placeholder(R.drawable.placeholder).crossFade().into(imageView);
+                }
+                imageView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         try {
@@ -269,7 +275,7 @@ public class RestaurantListAdapter extends LazyAdapter {
                         }
                     }
                 });
-                return networkImageView;
+                return imageView;
             }
 
             @Override
@@ -308,7 +314,7 @@ public class RestaurantListAdapter extends LazyAdapter {
 
     public static class RestaurantListViewHolder extends LazyViewHolder {
 
-        private NetworkImageView mImage;
+        private ImageView mImage;
         private TextView mName;
         private View mFavorite;
         private TextView mTag;
@@ -325,7 +331,7 @@ public class RestaurantListAdapter extends LazyAdapter {
 
         public RestaurantListViewHolder(View itemView, int imageHeight) {
             super(itemView);
-            mImage = (NetworkImageView) itemView.findViewById(R.id.restaurant_image);
+            mImage = (ImageView) itemView.findViewById(R.id.restaurant_image);
             mImage.getLayoutParams().height = imageHeight;
             mName = (TextView) itemView.findViewById(R.id.restaurant_name);
             mFavorite = itemView.findViewById(R.id.restaurant_favorite);
@@ -344,7 +350,7 @@ public class RestaurantListAdapter extends LazyAdapter {
         }
 
         public void setItem(final Restaurant restaurant) {
-            mImage.setImageUrl(restaurant.getThumbnail(), VolleySingleton.getInstance(mImage.getContext()).getImageLoader());
+            Glide.with(mImage.getContext()).load(restaurant.getThumbnail()).placeholder(R.drawable.placeholder).crossFade().into(mImage);
             mName.setText(restaurant.getName());
             mFavorite.setSelected(restaurant.isFavorite());
             mTag.setText(restaurant.getTag());

@@ -29,7 +29,7 @@ public class VolleySingleton {
         requestQueue = Volley.newRequestQueue(context);
 
         int memClass = ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
-        final int cacheSize = 1024 * 1024 * memClass / 4;
+        final int cacheSize = 1024 * 1024 * memClass / 8;
 
         imageCache = new ImageCache() {
             private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(cacheSize) {

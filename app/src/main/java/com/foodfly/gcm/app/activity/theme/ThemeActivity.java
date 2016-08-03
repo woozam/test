@@ -13,29 +13,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
+import com.foodfly.gcm.R;
 import com.foodfly.gcm.app.activity.BaseActivity;
 import com.foodfly.gcm.app.view.recyclerView.LinearSpacingItemDecoration;
 import com.foodfly.gcm.common.CommonUtils;
 import com.foodfly.gcm.data.RealmUtils;
+import com.foodfly.gcm.model.BaseResponse;
 import com.foodfly.gcm.model.restaurant.Theme;
+import com.foodfly.gcm.model.user.MapAddress;
+import com.foodfly.gcm.network.APIs;
 import com.foodfly.gcm.network.GsonRequest;
 import com.foodfly.gcm.network.VolleySingleton;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-import com.foodfly.gcm.R;
-import com.foodfly.gcm.model.BaseResponse;
-import com.foodfly.gcm.model.user.MapAddress;
-import com.foodfly.gcm.network.APIs;
 
 import static com.foodfly.gcm.R.id.theme_image;
 
@@ -121,16 +121,16 @@ public class ThemeActivity extends BaseActivity {
 
     private static class ThemeViewHolder extends ViewHolder {
 
-        private NetworkImageView mImage;
+        private ImageView mImage;
 
         public ThemeViewHolder(View itemView) {
             super(itemView);
-            mImage = (NetworkImageView) itemView.findViewById(theme_image);
+            mImage = (ImageView) itemView.findViewById(theme_image);
             mImage.getLayoutParams().height = (int) ((CommonUtils.getScreenWidth() - CommonUtils.convertDipToPx(mImage.getContext(), 32)) * 427f / 640f);
         }
 
         public void setTheme(Theme theme) {
-            mImage.setImageUrl(theme.getTitleImage(), VolleySingleton.getInstance(mImage.getContext()).getImageLoader());
+            Glide.with(mImage.getContext()).load(theme.getTitleImage()).placeholder(R.drawable.placeholder).crossFade().into(mImage);
         }
     }
 }

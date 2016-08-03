@@ -7,7 +7,7 @@ public class ResponseError {
 
     public int code;
     public String type;
-    public ErrorDetail detail;
+//    public ErrorDetail detail;
     public String message;
 
 }

@@ -37,7 +37,7 @@
             android:layout_marginTop="24dp"
             android:orientation="horizontal">
 
-            <com.android.volley.toolbox.NetworkImageView
+            <com.foodfly.gcm.app.view.CircularImageView
                 android:id="@+id/order_detail_delivery_status_icon_1"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
@@ -45,9 +45,10 @@
                 android:layout_marginLeft="13dp"
                 android:layout_marginRight="13dp"
                 android:layout_marginStart="13dp"
-                android:background="@drawable/profile_selector"/>
+                android:background="@drawable/profile_selector"
+                android:scaleType="centerCrop"/>
 
-            <com.android.volley.toolbox.NetworkImageView
+            <com.foodfly.gcm.app.view.CircularImageView
                 android:id="@+id/order_detail_delivery_status_icon_2"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
@@ -55,9 +56,10 @@
                 android:layout_marginLeft="13dp"
                 android:layout_marginRight="13dp"
                 android:layout_marginStart="13dp"
-                android:background="@drawable/profile_selector"/>
+                android:background="@drawable/profile_selector"
+                android:scaleType="centerCrop"/>
 
-            <com.android.volley.toolbox.NetworkImageView
+            <com.foodfly.gcm.app.view.CircularImageView
                 android:id="@+id/order_detail_delivery_status_icon_3"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
@@ -65,9 +67,10 @@
                 android:layout_marginLeft="13dp"
                 android:layout_marginRight="13dp"
                 android:layout_marginStart="13dp"
-                android:background="@drawable/profile_selector"/>
+                android:background="@drawable/profile_selector"
+                android:scaleType="centerCrop"/>
 
-            <com.android.volley.toolbox.NetworkImageView
+            <com.foodfly.gcm.app.view.CircularImageView
                 android:id="@+id/order_detail_delivery_status_icon_4"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
@@ -75,7 +78,8 @@
                 android:layout_marginLeft="13dp"
                 android:layout_marginRight="13dp"
                 android:layout_marginStart="13dp"
-                android:background="@drawable/profile_selector"/>
+                android:background="@drawable/profile_selector"
+                android:scaleType="centerCrop"/>
 
         </LinearLayout>
 

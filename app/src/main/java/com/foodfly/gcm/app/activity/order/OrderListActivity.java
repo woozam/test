@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -19,13 +20,16 @@ import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
+import com.foodfly.gcm.R;
 import com.foodfly.gcm.app.activity.BaseActivity;
 import com.foodfly.gcm.app.view.recyclerView.LinearDividerItemDecoration;
 import com.foodfly.gcm.app.view.recyclerView.RecyclerViewEmptySupport;
 import com.foodfly.gcm.common.TimeUtils;
 import com.foodfly.gcm.data.RealmUtils;
+import com.foodfly.gcm.model.BaseResponse;
 import com.foodfly.gcm.model.order.OrderListItem;
+import com.foodfly.gcm.model.user.UserManager;
 import com.foodfly.gcm.model.user.UserResponse;
 import com.foodfly.gcm.network.APIs;
 import com.foodfly.gcm.network.GsonRequest;
@@ -35,10 +39,6 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.TimeZone;
-
-import com.foodfly.gcm.R;
-import com.foodfly.gcm.model.BaseResponse;
-import com.foodfly.gcm.model.user.UserManager;
 
 /**
  * Created by woozam on 2016-07-29.
@@ -134,19 +134,19 @@ public class OrderListActivity extends BaseActivity {
 
     public static class OrderListViewHolder extends ViewHolder {
 
-        private NetworkImageView mImage;
+        private ImageView mImage;
         private TextView mDate;
         private TextView mName;
 
         public OrderListViewHolder(View itemView) {
             super(itemView);
-            mImage = (NetworkImageView) itemView.findViewById(R.id.order_list_image);
+            mImage = (ImageView) itemView.findViewById(R.id.order_list_image);
             mDate = (TextView) itemView.findViewById(R.id.order_list_date);
             mName = (TextView) itemView.findViewById(R.id.order_list_restaurant_name);
         }
 
         public void setItem(OrderListItem order) {
-            mImage.setImageUrl(order.getRestaurant().getThumbnail(), VolleySingleton.getInstance(mImage.getContext()).getImageLoader());
+            Glide.with(mImage.getContext()).load(order.getRestaurant().getThumbnail()).placeholder(R.drawable.placeholder).crossFade().into(mImage);
             mDate.setText(TimeUtils.getYearMonthDateTimeString(order.getTimestamp().getTime() + TimeZone.getDefault().getRawOffset()));
             mName.setText(order.getRestaurant().getName());
         }

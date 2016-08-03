@@ -4,7 +4,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="16dp">
 
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:id="@+id/order_detail_restaurant_image"
         android:layout_width="84dp"
         android:layout_height="84dp"

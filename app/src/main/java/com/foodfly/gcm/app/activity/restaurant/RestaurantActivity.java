@@ -50,7 +50,7 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
-import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
 import com.foodfly.gcm.R;
 import com.foodfly.gcm.app.activity.BaseActivity;
 import com.foodfly.gcm.app.activity.etc.ImageViewerActivity;
@@ -886,11 +886,11 @@ public class RestaurantActivity extends BaseActivity implements OnOffsetChangedL
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             Bundle args = getArguments();
             final String url = args.getString("url");
-            NetworkImageView imageView = new NetworkImageView(getContext());
+            ImageView imageView = new ImageView(getContext());
             imageView.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
             imageView.setScaleType(ScaleType.CENTER_CROP);
             imageView.setBackgroundResource(R.drawable.empty_l);
-            imageView.setImageUrl(url, VolleySingleton.getInstance(getContext()).getImageLoader());
+            Glide.with(imageView.getContext()).load(url).placeholder(R.drawable.placeholder).crossFade().into(imageView);
             imageView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

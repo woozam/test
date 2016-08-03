@@ -75,7 +75,9 @@ public class ThemeRestaurantActivity extends BaseActivity {
     }
 
     private void showThemeRestaurantList(Theme theme) {
-        getSupportActionBar().setTitle(theme.getName());
+        if (!TextUtils.isEmpty(theme.getName())) {
+            getSupportActionBar().setTitle(theme.getName());
+        }
 
         Bundle args = new Bundle();
         args.putInt(RestaurantListFragment.EXTRA_COLUMN_COUNT, 1);
@@ -102,7 +104,9 @@ public class ThemeRestaurantActivity extends BaseActivity {
                         return;
                     }
                 }
-                finish();
+                Theme theme = new Theme();
+                theme.setId(id);
+                showThemeRestaurantList(theme);
             }
         }, new ErrorListener() {
             @Override
